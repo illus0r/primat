@@ -1,0 +1,23 @@
+id	миротряд	order	superfamily	family	subfamily	genus	location	period_start	period_end	origin	origin_confedence	debug
+1		Отряд SCANDENTIA		сем. Tupaildae	подсем. Ptilocercinae	Eodendrogale parvum	Китай	45	42.7			
+2		Отряд SCANDENTIA		сем. Tupaildae	подсем. Ptilocercinae	—		0	0	1	0.5	
+3		Отряд SCANDENTIA		сем. Tupaildae	подсем. Ptilocercinae	Tupaia miocenica	Таиланд	18	16.8			
+4		Отряд SCANDENTIA		сем. Tupaildae	подсем. Ptilocercinae	Tupaia sivalicus	Индия	10	9.8			
+5		Отряд SCANDENTIA		сем. Tupaildae	подсем. Ptilocercinae	Prodendrogale yunnanica	Китай	6.8	5.6			
+6		Отряд SCANDENTIA		сем. Tupaildae	подсем. Tupaiinae	—		0	0
+7
+8		Отряд DERMOPTERA	надсем. PLAGIOMENOIDEA	сем. Cynocephalidae	—	—		0	0	11	0.5	
+12		Отряд DERMOPTERA	надсем. PLAGIOMENOIDEA	сем. Mixodectidae	—	—	США	66	60.2			
+13		Отряд DERMOPTERA	надсем. PLAGIOMENOIDEA	сем. Placentidentidae	—	—	Франция	53.1	51			
+9		Отряд DERMOPTERA	надсем. PLAGIOMENOIDEA	Cynocephalidae	—	Dermotherium sp.	Бирма	38.8	37.4			
+10		Отряд DERMOPTERA	надсем. PLAGIOMENOIDEA	Cynocephalidae	—	Dermotherium major	Таиланд	36.5	34.3	9	0.5	
+11		Отряд DERMOPTERA	надсем. PLAGIOMENOIDEA	Cynocephalidae	—	Dermotherium chimaera	Пакистан	32.2	30.1	10	0.5	
+1011		Отряд DERMOPTERA	надсем. PLAGIOMENOIDEA	Cynocephalidae	—	Dermotherium chimaera	Таиланд	26.8	24.7	11	0.5	
+14		Отряд DERMOPTERA	надсем. PLAGIOMENOIDEA		подсем. incertae sedis	—	США	64.4	60.2			
+15		Отряд DERMOPTERA	надсем. PLAGIOMENOIDEA	Plagiomenidae	Plagiomeninae	—	США, Канада	57.2	50			
+16		Отряд DERMOPTERA	надсем. PLAGIOMENOIDEA	Plagiomenidae	подсем. Thylacaelurinae	—	Канада	36.8	35.5	15	0.5	
+17		Отряд DERMOPTERA	надсем. PLAGIOMENOIDEA	Plagiomenidae	подсем. Ekgmowechashalinae	—	Таиланд	34.78	33.73			debug761
+18		Отряд DERMOPTERA	надсем. PLAGIOMENOIDEA	Plagiomenidae	подсем. Ekgmowechashalinae	—	США	28	26	17	0.5	debug739
+19												
+20	PRIMATOMORPHA	отряд INCERTAE SEDIS		Purgatoriidae			США					
+21	PRIMATOMORPHA											
