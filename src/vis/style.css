@@ -5,3 +5,14 @@ svg {background-color: aliceblue;}
     text-anchor: middle;
     fill: black;
 }
+#onGenusClick{
+    stroke: darkslategray;
+    height: 50px;
+    width: 50px;
+}
+
+.trackLine{
+    stroke:#231f20;
+    stroke-width: 1px;
+    pointer-events: none;
+}

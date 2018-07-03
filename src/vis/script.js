@@ -1,4 +1,4 @@
-var width = 600,
+var width = 700,
     height = 500;
 var svg = d3.select("body").append("svg").attr("width",width).attr("height",height);
 var zoomedArea=svg.append("g").attr("class","zoomable");
@@ -10,7 +10,7 @@ var x = d3.scaleLinear()
 //var y=d3.scaleLinear().range([-50,height+50]).domain(-20,100);
 
 var zoom = d3.zoom()
-    .scaleExtent([1, 32])
+    .scaleExtent([1, 3])
     .translateExtent([[0, 0], [width, height]])
     .extent([[0, 0], [width, height]])
     .on("zoom", zoomed);
@@ -20,12 +20,12 @@ g.append("g").attr("class", "axis axis--x").call(xAxis.tickSize(5).tickSizeInner
 //g.append("g").call(d3.axisRight(y));
 
 
-
 d3.tsv("Primat - from PDF.tsv").then(function(d) { //read data from tsv
 
     zoomedArea.selectAll("rect").data(d).enter().append("rect") //create lines of period
-        .attr("rx", 3)
-        .attr("ry", 3)
+        .on ("click",handleGenusClick)
+        .attr("rx", 4)
+        .attr("ry", 4)
         .attr("x", (d) => x(-1 * d.period_start))
         .attr("y", (d, i) => i * 20 + 30)
         .attr("width", function (d, i) {
@@ -40,8 +40,8 @@ d3.tsv("Primat - from PDF.tsv").then(function(d) { //read data from tsv
     svg.call(zoom).transition()
         .duration(1500)
         .call(zoom.transform, d3.zoomIdentity
-            .scale(width / (x(50) - x(20)))
-            .translate(-x(-60), 0));
+            .scale(1)
+            .translate(0, 0));
 
     zoomedArea.selectAll('text.genus').data(d).enter().append("text")//create signs for lines
         .attr("class","genus")
@@ -64,3 +64,29 @@ function zoomed() {
     g.select(".axis--x").call(xAxis.scale(xt));
     zoomedArea.attr("transform",  d3.event.transform );
 }
+
+function handleGenusClick(d,i) { //TODO: genus details overlay
+    var x=d3.select(this).attr("x");
+    var y=d3.select(this).attr("y");
+    svg.append("rect")
+        .attr("id", "onGenusClick")
+        .attr("x", x)
+        .attr("transform",  d3.select(this).transform )
+        .attr("y",y);
+    console.log("click on "+d.genus+ x);
+}
+
+var vertical = svg.append("path").attr("class", "trackLine");//add the mouse-tracking vertical line
+
+svg.on("mousemove", function(){
+    mousex = d3.mouse(this);
+    vertical.style("display", null).attr("d", function () {
+        var d = "M" + mousex[0] + "," + (height);
+        d += " " + mousex[0] + "," + 10;
+        return d;
+    })
+})
+    .on("mouseout", function(){ //hide the line
+    mousex = d3.mouse(this);
+    mousex = mousex[0] + 5;
+    vertical.style("display", "none")});
