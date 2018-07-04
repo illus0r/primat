@@ -7,17 +7,23 @@ var g = svg.append("g");
 var x = d3.scaleLinear()
     .domain([-70, 10])
     .range([50, width-50]);
-//var y=d3.scaleLinear().range([-50,height+50]).domain(-20,100);
+
+var xAxis = d3.axisBottom(x);
 
 var zoom = d3.zoom()
     .scaleExtent([1, 3])
     .translateExtent([[0, 0], [width, height]])
     .extent([[0, 0], [width, height]])
     .on("zoom", zoomed);
-
-var xAxis = d3.axisBottom(x);
-g.append("g").attr("class", "axis axis--x").call(xAxis.tickSize(5).tickSizeInner(5).tickSizeOuter(-50));
-//g.append("g").call(d3.axisRight(y));
+var periods=[];
+d3.tsv("Primat - Layers.tsv").then(function (data) { // make axis with periods from tsv
+    data.forEach(function (d) {
+        periods.push(d.date_start*(-1));
+    });
+    g.append("g").attr("class", "axis axis--x")
+        .call(xAxis.tickSize(5).tickSizeInner(5).tickSizeOuter(5) //ticks format
+        .tickValues(periods));
+});
 
 
 d3.tsv("Primat - from PDF.tsv").then(function(d) { //read data from tsv
