@@ -1,4 +1,4 @@
-var width = 700,
+var width = 900,
     height = 500;
 var svg = d3.select("body").append("svg").attr("width",width).attr("height",height);
 var zoomedArea=svg.append("g").attr("class","zoomable");
@@ -9,12 +9,14 @@ var x = d3.scaleLinear()
     .range([50, width-50]);
 
 var xAxis = d3.axisBottom(x);
+var xAxisPeriods=d3.axisTop(x);
 
 var zoom = d3.zoom()
     .scaleExtent([1, 3])
     .translateExtent([[0, 0], [width, height]])
     .extent([[0, 0], [width, height]])
     .on("zoom", zoomed);
+
 var periods=[];
 d3.tsv("Primat - Layers.tsv").then(function (data) { // make axis with periods from tsv
     data.forEach(function (d) {
@@ -25,13 +27,22 @@ d3.tsv("Primat - Layers.tsv").then(function (data) { // make axis with periods f
         .tickValues(periods));
 });
 
+var periodNames = ["мел","палеоцен", "эоцен", "олигоцен","миоцен","плиоцен","плейстоцен","голоцен"];
+g.append("g").attr("class", "axis periods")
+    .call(xAxisPeriods
+        .tickValues([-105.5,-61,-44.95,-28.465,-14.1815,-3.5695,-0.90885,0])
+        .tickFormat(function (d,i) {
+            return periodNames[i];
+        })
+        .tickPadding(5)
+        .tickSize(0));
 
 d3.tsv("Primat - from PDF.tsv").then(function(d) { //read data from tsv
 
     zoomedArea.selectAll("rect").data(d).enter().append("rect") //create lines of period
         .on ("click",handleGenusClick)
-        .attr("rx", 4)
-        .attr("ry", 4)
+        .attr("rx", 1)
+        .attr("ry", 1)
         .attr("x", (d) => x(-1 * d.period_start))
         .attr("y", (d, i) => i * 20 + 30)
         .attr("width", function (d, i) {
@@ -39,9 +50,9 @@ d3.tsv("Primat - from PDF.tsv").then(function(d) { //read data from tsv
             if (wid<5) wid=5;
             return wid;
         })
-        .attr("height", 3)
+        .attr("height", 2)
         .attr("stroke", "none")
-        .attr("fill", (d) => d3.rgb(0.5, 0.5, 0));
+        .attr("fill", "#c061c0");
 
     svg.call(zoom).transition()
         .duration(1500)
@@ -68,7 +79,12 @@ d3.tsv("Primat - from PDF.tsv").then(function(d) { //read data from tsv
 function zoomed() {
     var t = d3.event.transform, xt = t.rescaleX(x);
     g.select(".axis--x").call(xAxis.scale(xt));
+    g.select(".periods").call(xAxisPeriods.scale(xt));
+
+    //zoomedArea.attr("transform",  `scale(`+d3.event.transform.k+`, 1)` );
+    //console.log(d3.event.transform.k);
     zoomedArea.attr("transform",  d3.event.transform );
+    //view.attr('transform', `scale(${d3.event.transform.k}, 1)`);
 }
 
 function handleGenusClick(d,i) { //TODO: genus details overlay
