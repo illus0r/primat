@@ -1,5 +1,5 @@
 var width = 900,
-    height = 500;
+    height = 1000;
 var svg = d3.select("body").append("svg").attr("width",width).attr("height",height);
 var zoomedArea=svg.append("g").attr("class","zoomable");
 var g = svg.append("g");
@@ -67,9 +67,9 @@ d3.tsv("Primat - from PDF.tsv").then(function(d) { //read data from tsv
     zoomedArea.selectAll('text.genus').data(d).enter().append("text")//create signs for lines
         .attr("class","genus")
         .text(function(d){
-            if (d.genus=="—") { // oh really, no genus?
-                if (d.subfamily=="—") return d.family;
-                else return d.subfamily;
+            if (d.genus=="—" || d.genus=="") { // oh really, no genus?
+                if (d.subfamily=="—" || d.subfamily=="") return "сем. "+d.family;
+                else return "подсем."+d.subfamily;
             }
             else return d.genus})
         .attr("x", function (d) {
