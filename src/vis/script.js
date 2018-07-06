@@ -12,12 +12,13 @@ var xAxis = d3.axisBottom(x);
 var xAxisPeriods=d3.axisTop(x);
 
 var zoom = d3.zoom()
-    .scaleExtent([1, 3])
+    .scaleExtent([1, 1])
     .translateExtent([[0, 0], [width, height]])
     .extent([[0, 0], [width, height]])
     .on("zoom", zoomed);
 
 var periods=[];
+var pp;
 d3.tsv("Primat - Layers.tsv").then(function (data) { // make axis with periods from tsv
     data.forEach(function (d) {
         periods.push(d.date_start*(-1));
@@ -25,7 +26,10 @@ d3.tsv("Primat - Layers.tsv").then(function (data) { // make axis with periods f
     g.append("g").attr("class", "axis axis--x")
         .call(xAxis.tickSize(5).tickSizeInner(5).tickSizeOuter(5) //ticks format
         .tickValues(periods));
+    pp=data;
+    return data;
 });
+console.log(pp);
 
 var periodNames = ["мел","палеоцен", "эоцен", "олигоцен","миоцен","плиоцен","плейстоцен","голоцен"];
 g.append("g").attr("class", "axis periods")
@@ -100,15 +104,41 @@ function handleGenusClick(d,i) { //TODO: genus details overlay
 
 var vertical = svg.append("path").attr("class", "trackLine");//add the mouse-tracking vertical line
 
+var begunokG=svg.append("g").attr("id","begunok");
+var begunokRect=begunokG.append("rect");
+var begunokText= begunokG.append("text");
+
 svg.on("mousemove", function(){
     mousex = d3.mouse(this);
     vertical.style("display", null).attr("d", function () {
         var d = "M" + mousex[0] + "," + (height);
         d += " " + mousex[0] + "," + 10;
         return d;
+    });
+    begunokRect.attr("id","begunok").attr("y",-20)
+        .attr( "x",function (d){return (mousex[0]-35)});
+
+    var format = d3.format(".1f");
+    var time=-x.invert(mousex[0]);
+    //console.log(time);
+    d3.tsv("Primat - Layers.tsv").then(function (data) { //
+        data.forEach(function (d,i,a) {
+           if (i<a.length-1) {
+               //console.log(a[i].date_start +" " + time +" "+ a[i + 1].date_start);
+               if (a[i].date_start > time && a[i + 1].date_start <time) {
+                   //console.log("период " + a[i].layer_ru + "  " + a[i].sublayer);
+                   begunokText.text(a[i].sublayer + "  " + a[i].layer_ru)
+                       .attr("x",function () {return (mousex[0]-30)})
+                       .attr("y",-5);
+               }
+           }
+        })
     })
+    /*begunokText.text(format(x.invert(mousex[0])))
+        .attr("x",function () {return (mousex[0]-20)})
+        .attr("y",-5);*/
 })
-    .on("mouseout", function(){ //hide the line
+    /*.on("mouseout", function(){ //hide the line
     mousex = d3.mouse(this);
     mousex = mousex[0] + 5;
-    vertical.style("display", "none")});
+    vertical.style("display", "none")});*/

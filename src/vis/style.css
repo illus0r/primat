@@ -23,3 +23,13 @@ svg {
 h1{font-family: Arial;
     font-size: 29px;
 }
+
+#begunok{
+    fill: #fff;
+    border: 1px solid #B6FFD4;
+    width: 70px;
+    height: 20px;
+    font-size: 10px;
+
+}
+#begunok text{fill:#000;}
