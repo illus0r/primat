@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Nest Test</title>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <style>
+        body { margin:0;position:fixed;top:0;right:0;bottom:0;left:0; }
+        pre { width: 100%; height: 100%; font-size: 10px; overflow-y: scroll; }
+    </style>
+</head>
+<body>
+<pre id="json">  </pre>
+<script>
+
+    function process(d) {
+        var processed = {
+
+            id: d.id,
+            mir: d.миротряд,
+            order: d.order,
+            suborder: d.suborder,
+            hyporder:d.hyporder,
+            infraorder:d.infraorder,
+            parvorder:d.parvorder,
+            superfamily:d.superfamily,
+            family:d.family,
+            subfamily:d.subfamily,
+            genus:d.genus,
+            location:d.location_ru
+        }
+        return processed;
+    }
+
+    d3.tsv("Primat - from PDF.tsv").then( function(rawdata) {
+        console.log("rawdata", rawdata);
+
+        var data = rawdata.map(process);
+        console.log("data", data);
+
+        d3.select("#json").text(JSON.stringify(data, null, 2));
+
+        var locations = d3.nest()
+            .key(function (d) { return d.mir })
+            .key(function (d) { return d.order })
+            .key(function (d) { return d.suborder })
+            .key(function (d) { return d.hyporder })
+            .key(function (d) { return d.infraorder })
+            .key(function (d) { return d.parvorder })
+            .key(function (d) { return d.superfamily })
+            .key(function(d) { return d.family })
+            .key(function (d) { return d.subfamily})
+            .key(function (d) { return d.genus})
+            //.rollup(function(v) { return v.length })
+            .entries(data);
+
+        console.log("locations"+JSON.stringify(locations));
+        console.table(locations.sort(function(a,b) { return b.values - a.values }));
+
+        d3.select("#json").text(JSON.stringify(locations, null, 3));
+        
+    });
+</script>
+</body>
+</html>
