@@ -5,11 +5,26 @@
     <title>Nest Test</title>
     <script src="https://d3js.org/d3.v5.min.js"></script>
     <style>
-        body { margin:0;position:fixed;top:0;right:0;bottom:0;left:0; }
+        body { margin:0;top:0;right:0;bottom:0;left:0; }
         pre { width: 100%; height: 100%; font-size: 10px; overflow-y: scroll; }
+        rect {
+            fill: cadetblue;
+            opacity: 0.3;
+            stroke: white;
+        }
+        text {
+            font-family: "Helvetica Neue", Helvetica, sans-serif;
+            fill: white;
+            font-size: 10px;
+        }
+
     </style>
 </head>
 <body>
+<svg width="820" height="820">
+    <g></g>
+</svg>
+
 <pre id="json">  </pre>
 <script>
 
@@ -51,14 +66,56 @@
             .key(function(d) { return d.family })
             .key(function (d) { return d.subfamily})
             .key(function (d) { return d.genus})
-            //.rollup(function(v) { return v.length })
+            .rollup(function(v) { return v.length })
             .entries(data);
 
         console.log("locations"+JSON.stringify(locations));
         console.table(locations.sort(function(a,b) { return b.values - a.values }));
 
         d3.select("#json").text(JSON.stringify(locations, null, 3));
-        
+
+
+       
+
+    var treemapLayout = d3.treemap()
+        .size([800, 800])
+        .paddingOuter(16);
+
+    treemapLayout.tile(d3.treemapSlice)
+
+    var rootNode = d3.hierarchy(locations);
+
+        var root = d3.hierarchy({values: locations}, function(d) { return d.values; })
+            .sum(function(d) { return d.value; })
+            .sort(function(a, b) { return b.value - a.value; });
+
+
+    rootNode.sum(function(d) {
+        return d.value;
+    });
+
+    treemapLayout(root);
+
+    var nodes = d3.select('svg g')
+        .selectAll('g')
+        .data(root.descendants())
+        .enter()
+        .append('g')
+        .attr('transform', function(d) {return 'translate(' + [d.x0, d.y0] + ')'})
+
+    nodes
+        .append('rect')
+        .attr('width', function(d) { return d.x1 - d.x0; })
+        .attr('height', function(d) { return d.y1 - d.y0; })
+
+    nodes
+        .append('text')
+        .attr('dx', 4)
+        .attr('dy', 14)
+        .text(function(d) {
+            return d.data.key;
+        })
+
     });
 </script>
 </body>
