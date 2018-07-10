@@ -21,7 +21,7 @@
     </style>
 </head>
 <body>
-<svg width="820" height="820">
+<svg width="820" height="3000">
     <g></g>
 </svg>
 
@@ -56,16 +56,17 @@
         d3.select("#json").text(JSON.stringify(data, null, 2));
 
         var locations = d3.nest()
-            .key(function (d) { return d.mir })
-            .key(function (d) { return d.order })
-            .key(function (d) { return d.suborder })
-            .key(function (d) { return d.hyporder })
-            .key(function (d) { return d.infraorder })
-            .key(function (d) { return d.parvorder })
-            .key(function (d) { return d.superfamily })
-            .key(function(d) { return d.family })
-            .key(function (d) { return d.subfamily})
-            .key(function (d) { return d.genus})
+            //.key(function (d) { return d.mir })
+            .key(function (d) { return "отр. "+d.order })
+            //.key(function (d) { return d.suborder })
+            //.key(function (d) { return d.hyporder })
+            //.key(function (d) { return d.infraorder })
+            //.key(function (d) { return d.parvorder })
+            //.key(function (d) { return d.superfamily })
+            .key(function(d) { return "сем. "+d.family })
+            .key(function (d) { return "подсем. "+d.subfamily})
+            .key(function (d) { return "род "+d.genus})
+            .key(function (d) { return "локация "+d.location})
             .rollup(function(v) { return v.length })
             .entries(data);
 
@@ -75,10 +76,10 @@
         d3.select("#json").text(JSON.stringify(locations, null, 3));
 
 
-       
+
 
     var treemapLayout = d3.treemap()
-        .size([800, 800])
+        .size([800, 3000])
         .paddingOuter(16);
 
     treemapLayout.tile(d3.treemapSlice)
