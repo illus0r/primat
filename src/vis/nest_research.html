@@ -50,12 +50,12 @@
         return processed;
     }
 
-    d3.tsv("Primat - from PDF.tsv").then( function(rawdata) {
+    d3.tsv("Primat .tsv").then( function(rawdata) {
 
         var data = rawdata.map(process);
 
         var locations = d3.nest()
-        //.key(function (d) { return d.mir })
+        .key(function (d) { return "root" })
             .key(function (d) { return "отр. "+d.order })
             //.key(function (d) { return d.suborder })
             //.key(function (d) { return d.hyporder })
@@ -77,21 +77,21 @@
             .paddingOuter(16);
         treemapLayout.tile(d3.treemapSlice)
 
-
+/*
         var root = d3.hierarchy(locations,function(d) {
             return d.values;
         })
-           // .sum(function(d) { return d.value; })
-           // .sort(function(a, b) { return b.value - a.value; });
+            .sum(function(d) { return d.value; })
+            .sort(function(a, b) { return b.value - a.value; });
 
-        //treemapLayout(root);
+        treemapLayout(root);
 
         var childrens=root.descendants();
 
         root.each(function (d,i) {
             console.log(i+" "+d.data[i-1]);
         })
-
+*/
         var myleaves=[];
 
         function getLeafNodes(leafNodes, obj){
@@ -101,14 +101,12 @@
                 leafNodes.push(obj);
             }
             myleaves=leafNodes;
-
         }
 
         function findIds(json,name){
             if(json.values){
                 //console.log('WE ARE IN '+json.key)
                 if(json.key==name)  {
-                    //console.log("inside")
                     var leafNodes = [];
                     getLeafNodes(leafNodes,json);
                     //console.log("leafNodes = "+leafNodes.map(function(leafNode){ return leafNode.id; })); //Logs leaf node ids to the console
@@ -137,6 +135,7 @@
         var myOrders=findOrders();
         console.log(JSON.stringify(myOrders,null,2))
         d3.select("#one").append("p").text("all orders = "+ JSON.stringify(myOrders,null,2))
+        d3.select("#one").append("hr")
 
         function findFamilys() {
             var myFams=d3.nest()
@@ -157,21 +156,30 @@
             return famByOrder
         }
 
-        /*var someOrder="DERMOPTERA";
+        /*var someOrder="DERMOPTERA"; // for example get familys of order DERMOPTERA
         var someFams=FindFamByOrder(someOrder)
         console.log("some fams  by order "+someOrder+" = "+ JSON.stringify(someFams,null,2))
         d3.select("#one").append("p").text("familys  by order "+someOrder+" = "+ JSON.stringify(someFams,null,2))
         */
-        
-        myOrders.forEach(function (order) {
+
+        myOrders.forEach(function (order) { //get all familys by orders
             var fams=FindFamByOrder(order);
-            d3.select("#one").append("p").text("familys  by order "+order+" = "+ JSON.stringify(fams,null,2))
+            d3.select("#one").append("p").text("familys  by order "+order+" = "+ JSON.stringify(fams,null,2));
+            fams.forEach(function (fam) {
+                findIds(locations[0],"сем. "+fam);
+                d3.select("#one").append("p")
+                    .text("ids of family "+fam+" = "
+                        + JSON.stringify(myleaves.map(function(node){ return node.id; }),null,2));
+            })
+            d3.select("#one").append("hr")
         })
+
+        //d3.select("#json").text(JSON.stringify(root, null, 3));
 
         const taxon="подсем. Tupaiinae";
         const taxon2="подсем. Ptilocercinae"
 
-        findIds(locations[0],taxon);
+        findIds(locations[0],taxon2);
 
         myleaves.forEach(function (c) {
             console.log("each "+ c.period_start + c.genus)
@@ -189,7 +197,7 @@
         const height_of_taxon=myleaves.length;
         console.log("height=",height_of_taxon)
 
-        d3.select("#some").text("id of leaf nodes of "+taxon+" = "+myleaves.map(function(leafNode){ return leafNode.id; })+
+        d3.select("#some").text("id of leaf nodes of "+taxon2+" = "+myleaves.map(function(leafNode){ return leafNode.id; })+
         "     "+ "min="+min_period+"   max="+max_period+"     height="+height_of_taxon);
     });
 </script>
