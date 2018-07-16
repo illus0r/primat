@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Nest Test</title>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <style>
+        body { margin:0;top:0;right:0;bottom:0;left:0; }
+        pre { width: 100%; height: 100%; font-size: 10px; overflow-y: scroll; }
+        #some {background-color: #B6FFD4}
+        #json {background-color: antiquewhite}
+        rect {
+            fill: cadetblue;
+            opacity: 0.3;
+            stroke: white;
+        }
+        text {
+            font-family: "Helvetica Neue", Helvetica, sans-serif;
+            fill: white;
+            font-size: 10px;
+        }
+
+    </style>
+</head>
+<body>
+<pre id="some">  </pre>
+<pre id="json">  </pre>
+<svg width="820" height="1000"><g></g></svg>
+<script>
+
+    function process(d) {
+        var processed = {
+
+            id: d.id,
+            mir: d.миротряд,
+            order: d.order,
+            suborder: d.suborder,
+            hyporder:d.hyporder,
+            infraorder:d.infraorder,
+            parvorder:d.parvorder,
+            superfamily:d.superfamily,
+            family:d.family,
+            subfamily:d.subfamily,
+            genus:d.genus,
+            location:d.location_ru,
+            period_start:d.period_start,
+            period_end:d.period_end
+        }
+        return processed;
+    }
+
+    d3.tsv("test.tsv").then( function(rawdata) {
+
+        var data = rawdata.map(process);
+
+        var locations = d3.nest()
+        //.key(function (d) { return d.mir })
+            .key(function (d) { return "отр. "+d.order })
+            //.key(function (d) { return d.suborder })
+            //.key(function (d) { return d.hyporder })
+            //.key(function (d) { return d.infraorder })
+            //.key(function (d) { return d.parvorder })
+            //.key(function (d) { return d.superfamily })
+            .key(function(d) { return "сем. "+d.family })
+            .key(function (d) { return "подсем. "+d.subfamily})
+            .key(function (d) { return "род "+d.genus})
+            .key(function (d) { return "локация "+d.location})
+            //.rollup(function(v) { return v.length })
+            .entries(data);
+
+        d3.select("#json").text(JSON.stringify(locations, null, 3));
+
+
+        var treemapLayout = d3.treemap()
+            .size([800, 1000])
+            .paddingOuter(16);
+        treemapLayout.tile(d3.treemapSlice)
+
+
+        var root = d3.hierarchy(locations,function(d) {
+            return d.values;
+        })
+           // .sum(function(d) { return d.value; })
+           // .sort(function(a, b) { return b.value - a.value; });
+
+        //treemapLayout(root);
+
+        const jsonka={
+            "id":0,
+            "name": "Eve",
+            "children": [
+            {
+                "id":1,
+                "name": "Cain"
+            },
+            {
+                "id":2,
+                "name": "Seth",
+                "children": [
+                    {
+                        "id":3,
+                        "name": "Enos"
+                    },
+                    {
+                        "id":4,
+                        "name": "Noam"
+                    }
+                ]
+            },
+            {
+                "id":5,
+                "name": "Abel"
+            },
+            {
+                "id":6,
+                "name": "Awan",
+                "children": [
+                    {
+                        "id":7,
+                        "name": "Enoch"
+                    }
+                ]
+            },
+            {
+                "id":8,
+                "name": "Azura"
+            }
+        ]
+        };
+
+        var childrens=root.descendants();
+
+        root.each(function (d,i) {
+            console.log(i+" "+d.data[i-1]);
+        })
+
+        var myleaves=[];
+
+        function getLeafNodes(leafNodes, obj){
+            if(obj.values){
+                obj.values.forEach(function(child){getLeafNodes(leafNodes,child)});
+            } else{
+                leafNodes.push(obj);
+            }
+            myleaves=leafNodes;
+
+        }
+
+        function findIds(json,name){
+            if(json.values){
+                console.log('WE ARE IN '+json.key)
+                if(json.key==name)  {
+                    console.log("inside")
+                    var leafNodes = [];
+                    getLeafNodes(leafNodes,json);
+                    console.log("leafNodes = "+leafNodes.map(function(leafNode){ return leafNode.id; })); //Logs leaf node ids to the console
+
+
+                } else {
+                    json.values.forEach(function(child){
+                        findIds(child,name);
+                    });
+                }
+            }
+            else console.log("other leaf "+JSON.stringify(json,null,1));
+            //console.log("leafNodes end = "+leafNodes); //Logs leaf node ids to the console
+
+        }
+
+        const taxon="подсем. Tupaiinae";
+        const taxon2="подсем. Ptilocercinae"
+
+        findIds(locations[0],taxon);
+
+        myleaves.forEach(function (c) {
+            console.log("each "+ c.period_start + c.genus)
+        })
+
+        const max_period=d3.max(myleaves, function (d) {
+            return +d.period_start
+        })
+        console.log("max "+max_period)
+        const min_period=d3.min(myleaves,function (d) {
+            return +d.period_end
+        })
+        console.log("min "+min_period)
+
+        const height_of_taxon=myleaves.length;
+        console.log("height=",height_of_taxon)
+
+        d3.select("#some").text("id of leaf nodes of "+taxon+" = "+myleaves.map(function(leafNode){ return leafNode.id; })+
+        "     "+ "min="+min_period+"   max="+max_period+"     height="+height_of_taxon);
+    });
+</script>
+</body>
+</html>
