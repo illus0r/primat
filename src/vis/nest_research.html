@@ -23,6 +23,7 @@
     </style>
 </head>
 <body>
+<pre id="one">  </pre>
 <pre id="some">  </pre>
 <pre id="json">  </pre>
 <svg width="820" height="1000"><g></g></svg>
@@ -49,7 +50,7 @@
         return processed;
     }
 
-    d3.tsv("test.tsv").then( function(rawdata) {
+    d3.tsv("Primat - from PDF.tsv").then( function(rawdata) {
 
         var data = rawdata.map(process);
 
@@ -85,49 +86,6 @@
 
         //treemapLayout(root);
 
-        const jsonka={
-            "id":0,
-            "name": "Eve",
-            "children": [
-            {
-                "id":1,
-                "name": "Cain"
-            },
-            {
-                "id":2,
-                "name": "Seth",
-                "children": [
-                    {
-                        "id":3,
-                        "name": "Enos"
-                    },
-                    {
-                        "id":4,
-                        "name": "Noam"
-                    }
-                ]
-            },
-            {
-                "id":5,
-                "name": "Abel"
-            },
-            {
-                "id":6,
-                "name": "Awan",
-                "children": [
-                    {
-                        "id":7,
-                        "name": "Enoch"
-                    }
-                ]
-            },
-            {
-                "id":8,
-                "name": "Azura"
-            }
-        ]
-        };
-
         var childrens=root.descendants();
 
         root.each(function (d,i) {
@@ -148,24 +106,67 @@
 
         function findIds(json,name){
             if(json.values){
-                console.log('WE ARE IN '+json.key)
+                //console.log('WE ARE IN '+json.key)
                 if(json.key==name)  {
-                    console.log("inside")
+                    //console.log("inside")
                     var leafNodes = [];
                     getLeafNodes(leafNodes,json);
-                    console.log("leafNodes = "+leafNodes.map(function(leafNode){ return leafNode.id; })); //Logs leaf node ids to the console
-
-
+                    //console.log("leafNodes = "+leafNodes.map(function(leafNode){ return leafNode.id; })); //Logs leaf node ids to the console
                 } else {
                     json.values.forEach(function(child){
                         findIds(child,name);
                     });
                 }
             }
-            else console.log("other leaf "+JSON.stringify(json,null,1));
+            //else console.log("other leaf "+JSON.stringify(json,null,1));
             //console.log("leafNodes end = "+leafNodes); //Logs leaf node ids to the console
-
         }
+
+        function findOrders() {
+            var myOrdersData = d3.nest()
+                .key(function (d) { return d.order })
+                //.rollup(function (v) {
+                //    return v.length
+                //})
+                .entries(data);
+            console.log("orders = "+myOrdersData.map(function(node){ return node.key; }));
+            var myOrders=myOrdersData.map(function(node){ return node.key; })
+            return myOrders;
+        }
+
+        var myOrders=findOrders();
+        console.log(JSON.stringify(myOrders,null,2))
+        d3.select("#one").append("p").text("all orders = "+ JSON.stringify(myOrders,null,2))
+
+        function findFamilys() {
+            var myFams=d3.nest()
+                .key(function (d) {return "сем. "+d.family})
+                .entries(data);
+            console.log("famylys = "+myFams.map(function(node){ return node.key; }))
+            return myFams
+        }
+
+        var myFams=findFamilys()
+
+        function FindFamByOrder(order){
+            var scandyFamsData=data.filter(function (d) {return d.order===order})
+            var scandyFams= d3.nest()
+                .key(function (d) {return d.family})
+                .entries(scandyFamsData)
+            var famByOrder=scandyFams.map(function(node){ return node.key; })
+            return famByOrder
+        }
+
+        /*var someOrder="DERMOPTERA";
+        var someFams=FindFamByOrder(someOrder)
+        console.log("some fams  by order "+someOrder+" = "+ JSON.stringify(someFams,null,2))
+        d3.select("#one").append("p").text("familys  by order "+someOrder+" = "+ JSON.stringify(someFams,null,2))
+        */
+        
+        myOrders.forEach(function (order) {
+            var fams=FindFamByOrder(order);
+            d3.select("#one").append("p").text("familys  by order "+order+" = "+ JSON.stringify(fams,null,2))
+        })
 
         const taxon="подсем. Tupaiinae";
         const taxon2="подсем. Ptilocercinae"
