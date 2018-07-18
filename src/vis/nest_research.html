@@ -4,25 +4,25 @@
     <meta charset="UTF-8">
     <title>Nest Test</title>
     <script src="https://d3js.org/d3.v5.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
     <style>
         body { margin:0;top:0;right:0;bottom:0;left:0; }
         pre { width: 100%; height: 100%; font-size: 10px; overflow-y: scroll; }
         #some {background-color: #B6FFD4}
         #json {background-color: antiquewhite}
-        rect {
-            fill: cadetblue;
-            opacity: 0.3;
-            stroke: white;
-        }
         text {
             font-family: "Helvetica Neue", Helvetica, sans-serif;
-            fill: white;
+            fill: #000;
             font-size: 10px;
         }
 
     </style>
 </head>
 <body>
+<svg id="chart" width="960" height="3000"
+     viewBox="0 0 960 3000"
+     preserveAspectRatio="xMidYMid meet">
+</svg>
 <pre id="one">  </pre>
 <pre id="some">  </pre>
 <pre id="json">  </pre>
@@ -51,7 +51,7 @@
     }
     var myleaves=[];
 
-    d3.tsv("Primat .tsv").then( function(rawdata) {
+    d3.tsv("Primat.tsv").then( function(rawdata) {
 
         var data = rawdata.map(process);
 
@@ -93,8 +93,9 @@
             console.log(i+" "+d.data[i-1]);
         })
 */
-
-
+        drawAnSVG()
+        drawAnAxis()
+        drawBegunok()
 
         var myOrders=findOrders(data);
         console.log(JSON.stringify(myOrders,null,2))
@@ -125,6 +126,7 @@
             d3.select("#one").append("p").text("familys  by order "+order+" = "+ JSON.stringify(fams,null,2));
             fams.forEach(function (fam) {
                 findIds(locations[0],"сем. "+fam);
+                drawBricks(myleaves, fam);
                 d3.select("#one").append("p")
                     .text("ids of family "+fam+" = "
                         + JSON.stringify(myleaves.map(function(node){ return node.id; }),null,2));
@@ -216,6 +218,150 @@
         const height_of_taxon=myleaves.length;
         d3.select("#one").append("p")
             .text( "min="+min_period+"   max="+max_period+"     height="+height_of_taxon);
+
+    }
+
+    function drawAnSVG() {
+        svg = d3.select("svg");
+        g = svg.append("g");
+    }
+
+    function drawAnAxis() {
+        var width=960
+         x = d3.scaleLinear()
+            .domain([-70, 10])
+            .range([50, width-50])
+
+        var xAxis = d3.axisBottom(x)
+        var xAxisPeriods=d3.axisTop(x)
+        var periods=[];
+        var pp;
+
+        d3.tsv("Primat - Layers.tsv").then(function (data) { // make axis with periods from tsv
+            data.forEach(function (d) {
+                periods.push(d.date_start*(-1));
+            });
+            g.append("g").attr("class", "axis axis--x")
+                .call(xAxis.tickSize(5).tickSizeInner(5).tickSizeOuter(5) //ticks format
+                    .tickValues(periods));
+            pp=data;
+            return data;
+        });
+
+        var periodNames = ["мел","палеоцен", "эоцен", "олигоцен","миоцен","плиоцен","плейстоцен","голоцен"];
+        g.append("g").attr("class", "axis periods")
+            .call(xAxisPeriods
+                .tickValues([-105.5,-61,-44.95,-28.465,-14.1815,-3.5695,-0.90885,0])
+                .tickFormat(function (d,i) {
+                    return periodNames[i];
+                })
+                .tickPadding(5)
+                .tickSize(0));
+
+    }
+
+    function drawBegunok() {
+        height=3000
+        var vertical = svg.append("path").attr("class", "trackLine");//add the mouse-tracking vertical line
+
+        var begunokG=svg.append("g").attr("id","begunok");
+        var begunokRect=begunokG.append("rect");
+        var begunokText= begunokG.append("text");
+
+        svg.on("mousemove", function(){
+            mousex = d3.mouse(this);
+            vertical.style("display", null).attr("d", function () {
+                var d = "M" + mousex[0] + "," + (height);
+                d += " " + mousex[0] + "," + 10;
+                return d;
+            });
+            begunokRect.attr("id","begunok").attr("y",-20)
+                .attr( "x",function (d){return (mousex[0]-35)});
+
+            var format = d3.format(".1f");
+            var time=-x.invert(mousex[0]);
+            //console.log(time);
+            d3.tsv("Primat - Layers.tsv").then(function (data) { //
+                data.forEach(function (d,i,a) {
+                    if (i<a.length-1) {
+                        //console.log(a[i].date_start +" " + time +" "+ a[i + 1].date_start);
+                        if (a[i].date_start > time && a[i + 1].date_start <time) {
+                            //console.log("период " + a[i].layer_ru + "  " + a[i].sublayer);
+                            begunokText.text(a[i].sublayer + "  " + a[i].layer_ru)
+                                .attr("x",function () {return (mousex[0]-30)})
+                                .attr("y",-5);
+                        }
+                    }
+                })
+            })
+            /*begunokText.text(format(x.invert(mousex[0])))
+                .attr("x",function () {return (mousex[0]-20)})
+                .attr("y",-5);*/
+        })
+        /*.on("mouseout", function(){ //hide the line
+        mousex = d3.mouse(this);
+        mousex = mousex[0] + 5;
+        vertical.style("display", "none")});*/
+    }
+
+    function drawBricks(bricks,fam){
+        const max_period=d3.max(bricks, function (d) {
+            return +d.period_start
+        })
+        const min_period=d3.min(bricks,function (d) {
+            return +d.period_end
+        })
+        const height_of_taxon=bricks.length;
+
+
+        d3.select("#one").append("p")
+            .text( "min="+min_period+"   max="+max_period+"     height="+height_of_taxon);
+
+        //g.append("text").text(fam).attr("y",(d)=>d.id);
+        g1=g.append("g").attr("id",fam)
+
+        g1.append("rect")
+            .attr("class","rec_fam")
+            .attr("x", x(-1*max_period)-10)
+            .attr("y",bricks[0].id*20+20)
+            .attr("width",x((max_period))-x((min_period))+20)
+            .attr("height",height_of_taxon*20)
+            g1.append("text")
+            //.attr("class","rec_fam")
+            .attr("x", x(-1*(min_period))+10)
+            .attr("y",bricks[0].id*20+20)
+            .attr("text-anchor","end")
+            .text(fam)
+
+        g1.selectAll("rect.brick").data(bricks).enter().append("rect").attr("class","brick") //create lines of period
+            //.on ("click",handleGenusClick)
+            .attr("rx", 3)
+            .attr("ry", 3)
+            .attr("x", (d) => x(-1 * d.period_start))
+            .attr("y", (d, i) => d.id * 20 + 30)
+            .attr("width", function (d, i) {
+                wid = x(d.period_start) - x(d.period_end); //calculate length of line
+                if (wid<5) wid=5;
+                return wid;
+            })
+            .attr("height", 5)
+            .attr("stroke", "none")
+            .attr("fill", "#ff8a00");
+
+        g1.selectAll('text.genus').data(bricks).enter().append("text")//create signs for lines
+            .attr("class","genus")
+            .text(function(d){
+                if (d.genus=="—" || d.genus=="") { // oh really, no genus?
+                    if (d.subfamily=="—" || d.subfamily=="") return d.id+" "+"сем. "+d.family+" ("+d.location+")";
+                    else return d.id+" "+"подсем."+d.subfamily +" ("+d.location+")";
+                }
+                else return d.id+" "+d.genus+" ("+d.location+")"})
+            .attr("x", function (d) {
+                return x(-1*d.period_start);
+            })
+            .attr("y", function (d, j) {
+                return d.id *20 +28 ;
+            });
     }
 
 
