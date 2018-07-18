@@ -25,8 +25,8 @@ id	миротряд	order	suborder	hyporder	infraorder	parvorder	superfamily	fam
 29	PRIMATOMORPHA	PLESIADAPIFORMES	HAPLORRHINI				PLESIADAPOIDEA	Plesiadapidae	Plesiadapinae		Европа	europe	66	51
 30	PRIMATOMORPHA	PLESIADAPIFORMES	HAPLORRHINI				PLESIADAPOIDEA	Plesiadapidae	Plesiadapinae		Северная Америка	n_america	66	51
 31	PRIMATOMORPHA	PLESIADAPIFORMES	HAPLORRHINI				PLESIADAPOIDEA	Plesiadapidae	Plesiadapinae		Пакистан	asia	66	51
-32	PRIMATOMORPHA	PLESIADAPIFORMES	HAPLORRHINI				PLESIADAPOIDEA	Saxonellidae			Канада	s_america	58	56,3
-33	PRIMATOMORPHA	PLESIADAPIFORMES	HAPLORRHINI				PLESIADAPOIDEA	Saxonellidae			Германия	europe	58	56,3
+32	PRIMATOMORPHA	PLESIADAPIFORMES	HAPLORRHINI				PLESIADAPOIDEA	Saxonellidae			Канада	s_america	58	56.3
+33	PRIMATOMORPHA	PLESIADAPIFORMES	HAPLORRHINI				PLESIADAPOIDEA	Saxonellidae			Германия	europe	58	56.3
 34	PRIMATOMORPHA	PLESIADAPIFORMES	HAPLORRHINI				CARPOLESTOIDEA	Carpolestidae	Carpolestinae		Китай	asia	64.1	53.9
 35	PRIMATOMORPHA	PLESIADAPIFORMES	HAPLORRHINI				CARPOLESTOIDEA	Carpolestidae	Carpolestinae		Северная_Америка	n_america	64.1	53.9
 36	PRIMATOMORPHA	PLESIADAPIFORMES	HAPLORRHINI				CARPOLESTOIDEA	Carpolestidae	Chronolestinae		Китай	asia	53.1	51
@@ -41,9 +41,8 @@ id	миротряд	order	suborder	hyporder	infraorder	parvorder	superfamily	fam
 45	PRIMATOMORPHA		HAPLORRHINI				 MICROSYOPOIDEA	Toliapinidae			Пакистан	asia	60	44.2
 46	PRIMATOMORPHA		HAPLORRHINI				 MICROSYOPOIDEA	 Palaechthonidae	 Plesiolestinae		США	n_america	64.2	56.9
 47	PRIMATOMORPHA		HAPLORRHINI				 MICROSYOPOIDEA	 Palaechthonidae	 Palaechthoninae 		США	n_america	64	57
-48	PRIMATOMORPHA		HAPLORRHINI				 INCERTAE SEDIS	 Micromomyidae	 Micromomyinae
-		Северная Аерика	n_america	56.5	53
-49	PRIMATOMORPHA		HAPLORRHINI				INCERTAE SEDIS	Micromomyidae	Tinimomyinae		США	n_america	57.2	53
+48	PRIMATOMORPHA		HAPLORRHINI				 INCERTAE SEDIS	 Micromomyidae	 Micromomyinae      Северная Аерика	n_america   56.5    53
+49	PRIMATOMORPHA		HAPLORRHINI				INCERTAE SEDIS	Micromomyidae	Tinimomyinae        США	n_america	57.2	53
 50	PRIMATOMORPHA		HAPLORRHINI				INCERTAE SEDIS	 Picrodontidae			Северная Аерика	n_america	61.5	56.2
 51	PRIMATOMORPHA		HAPLORRHINI				INCERTAE SEDIS	 Picromomyidae			Северная Аерика	n_america	55.8	46
 52	PRIMATOMORPHA	 PRIMATES	STREPSIRRHINI					incertae sedis		Petrolemur brevirostre	Китай	asia	58.2	56.2

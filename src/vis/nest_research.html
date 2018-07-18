@@ -49,6 +49,7 @@
         }
         return processed;
     }
+    var myleaves=[];
 
     d3.tsv("Primat .tsv").then( function(rawdata) {
 
@@ -92,60 +93,17 @@
             console.log(i+" "+d.data[i-1]);
         })
 */
-        var myleaves=[];
 
-        function getLeafNodes(leafNodes, obj){
-            if(obj.values){
-                obj.values.forEach(function(child){getLeafNodes(leafNodes,child)});
-            } else{
-                leafNodes.push(obj);
-            }
-            myleaves=leafNodes;
-        }
 
-        function findIds(json,name){
-            if(json.values){
-                //console.log('WE ARE IN '+json.key)
-                if(json.key==name)  {
-                    var leafNodes = [];
-                    getLeafNodes(leafNodes,json);
-                    //console.log("leafNodes = "+leafNodes.map(function(leafNode){ return leafNode.id; })); //Logs leaf node ids to the console
-                } else {
-                    json.values.forEach(function(child){
-                        findIds(child,name);
-                    });
-                }
-            }
-            //else console.log("other leaf "+JSON.stringify(json,null,1));
-            //console.log("leafNodes end = "+leafNodes); //Logs leaf node ids to the console
-        }
 
-        function findOrders() {
-            var myOrdersData = d3.nest()
-                .key(function (d) { return d.order })
-                //.rollup(function (v) {
-                //    return v.length
-                //})
-                .entries(data);
-            console.log("orders = "+myOrdersData.map(function(node){ return node.key; }));
-            var myOrders=myOrdersData.map(function(node){ return node.key; })
-            return myOrders;
-        }
-
-        var myOrders=findOrders();
+        var myOrders=findOrders(data);
         console.log(JSON.stringify(myOrders,null,2))
         d3.select("#one").append("p").text("all orders = "+ JSON.stringify(myOrders,null,2))
         d3.select("#one").append("hr")
 
-        function findFamilys() {
-            var myFams=d3.nest()
-                .key(function (d) {return "сем. "+d.family})
-                .entries(data);
-            console.log("famylys = "+myFams.map(function(node){ return node.key; }))
-            return myFams
-        }
 
-        var myFams=findFamilys()
+
+        var myFams=findFamilys(data)
 
         function FindFamByOrder(order){
             var scandyFamsData=data.filter(function (d) {return d.order===order})
@@ -170,6 +128,7 @@
                 d3.select("#one").append("p")
                     .text("ids of family "+fam+" = "
                         + JSON.stringify(myleaves.map(function(node){ return node.id; }),null,2));
+                getBounaries(fam,myleaves);
             })
             d3.select("#one").append("hr")
         })
@@ -200,6 +159,66 @@
         d3.select("#some").text("id of leaf nodes of "+taxon2+" = "+myleaves.map(function(leafNode){ return leafNode.id; })+
         "     "+ "min="+min_period+"   max="+max_period+"     height="+height_of_taxon);
     });
+
+    function getLeafNodes(leafNodes, obj){
+        if(obj.values){
+            obj.values.forEach(function(child){getLeafNodes(leafNodes,child)});
+        } else{
+            leafNodes.push(obj);
+        }
+        myleaves=leafNodes;
+    }
+
+    function findIds(json,name){
+        if(json.values){
+            //console.log('WE ARE IN '+json.key)
+            if(json.key==name)  {
+                var leafNodes = [];
+                getLeafNodes(leafNodes,json);
+                //console.log("leafNodes = "+leafNodes.map(function(leafNode){ return leafNode.id; })); //Logs leaf node ids to the console
+            } else {
+                json.values.forEach(function(child){
+                    findIds(child,name);
+                });
+            }
+        }
+        //else console.log("other leaf "+JSON.stringify(json,null,1));
+        //console.log("leafNodes end = "+leafNodes); //Logs leaf node ids to the console
+    }
+
+    function findOrders(data) {
+        var myOrdersData = d3.nest()
+            .key(function (d) { return d.order })
+            //.rollup(function (v) {
+            //    return v.length
+            //})
+            .entries(data);
+        console.log("orders = "+myOrdersData.map(function(node){ return node.key; }));
+        var myOrders=myOrdersData.map(function(node){ return node.key; })
+        return myOrders;
+    }
+
+    function findFamilys(data) {
+        var myFams=d3.nest()
+            .key(function (d) {return "сем. "+d.family})
+            .entries(data);
+        console.log("famylys = "+myFams.map(function(node){ return node.key; }))
+        return myFams
+    }
+    
+    function getBounaries(fam,ids) {
+        const max_period=d3.max(ids, function (d) {
+            return +d.period_start
+        })
+        const min_period=d3.min(ids,function (d) {
+            return +d.period_end
+        })
+        const height_of_taxon=myleaves.length;
+        d3.select("#one").append("p")
+            .text( "min="+min_period+"   max="+max_period+"     height="+height_of_taxon);
+    }
+
+
 </script>
 </body>
 </html>
