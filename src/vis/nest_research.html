@@ -98,13 +98,13 @@
         drawBegunok()
 
         var myOrders=findOrders(data);
-        console.log(JSON.stringify(myOrders,null,2))
+        console.log("orders = "+JSON.stringify(myOrders,null,2))
         d3.select("#one").append("p").text("all orders = "+ JSON.stringify(myOrders,null,2))
         d3.select("#one").append("hr")
 
 
 
-        var myFams=findFamilys(data)
+        //var myFams=findFamilys(data)
 
         function FindFamByOrder(order){
             var scandyFamsData=data.filter(function (d) {return d.order===order})
@@ -120,7 +120,7 @@
         console.log("some fams  by order "+someOrder+" = "+ JSON.stringify(someFams,null,2))
         d3.select("#one").append("p").text("familys  by order "+someOrder+" = "+ JSON.stringify(someFams,null,2))
         */
-
+/*
         myOrders.forEach(function (order) { //get all familys by orders
             var fams=FindFamByOrder(order);
             d3.select("#one").append("p").text("familys  by order "+order+" = "+ JSON.stringify(fams,null,2));
@@ -133,6 +133,46 @@
                 getBounaries(fam,myleaves);
             })
             d3.select("#one").append("hr")
+        })
+*/
+        myOrders.forEach(function (order) {
+            subOrders=getSubOrders(order,data)
+            console.log("suborders of ("+order+") = "+JSON.stringify(subOrders,null,2))
+            subOrders.forEach(function (subOrder) {
+                hypOrders=getHypOrders(subOrder,data)
+                console.log("hypOrders of ("+order+"-"+subOrder+") = "+JSON.stringify(hypOrders,null,2))
+                hypOrders.forEach(function (hypOrder) {
+                    infraOrders=getInfraOrders(hypOrder,data)
+                    console.log("infraOrders of ("+order+"-"+subOrder+"-"+hypOrder+") = "+JSON.stringify(infraOrders,null,2))
+                    infraOrders.forEach(function (infraOrder) {
+                        parvOrders=getParvOrders(infraOrder,data)
+                        parvOrders.forEach(function (parvOrder) {
+                            superFamilys=getSuperFamilys(parvOrder,data)
+                            superFamilys.forEach(function (superFamily ){
+                                familys=getFamilys(superFamily,data)
+                                familys.forEach(function (family) {
+                                    findIds(familysDataRoot[0],family)
+                                    console.log("leaves familys ="+ JSON.stringify(myleaves))
+                                    drawRect(myleaves,family, "сем.")
+
+                                    subFamilys=getSubFamilys(family,data)
+                                    console.log("subFamilys of ("+order+"-"+subOrder+"-"+hypOrder+"-"+infraOrder+"-"+parvOrder+"-"+superFamily+"-"+family+")=" +JSON.stringify(subFamilys,null,2))
+                                    subFamilys.forEach(function (subFamily) {
+
+                                        findIds(subfamilysDataRoot[0],subFamily);
+                                        console.log("leaves subfam ="+ JSON.stringify(myleaves))
+                                        d3.select("#one").append("p")
+                                            .text("ids of subfamily "+subFamily+" = "
+                                                + JSON.stringify(myleaves.map(function(node){ return node.id; }),null,2));
+                                        drawBricks(myleaves, subFamily, familys);
+                                    })
+                                })
+                            })
+
+                        })
+                    })
+                })
+            })
         })
 
         //d3.select("#json").text(JSON.stringify(root, null, 3));
@@ -304,6 +344,29 @@
         vertical.style("display", "none")});*/
     }
 
+    function drawRect(ids,name,prefix) {
+        const max_period=d3.max(ids, function (d) {return +d.period_start})
+        const min_period=d3.min(ids,function (d) {return +d.period_end})
+        const height_of_taxon=ids.length;
+
+        g1=g.append("g").attr("id",prefix+" " +name)
+
+        g1.append("rect")
+            .attr("class","rec_fam")
+            .attr("x", x(-1*max_period)-15)
+            .attr("y",ids[0].id*20+10)
+            .attr("width",x((max_period))-x((min_period))+25)
+            .attr("height",height_of_taxon*20+10)
+        g1.append("text")
+        //.attr("class","rec_fam")
+            .attr("x", x(-1*(min_period))+5)
+            .attr("y",ids[0].id*20+10)
+            .attr("text-anchor","end")
+            .text(prefix+" " +name)
+
+
+    }
+
     function drawBricks(bricks,fam){
         const max_period=d3.max(bricks, function (d) {
             return +d.period_start
@@ -318,22 +381,22 @@
             .text( "min="+min_period+"   max="+max_period+"     height="+height_of_taxon);
 
         //g.append("text").text(fam).attr("y",(d)=>d.id);
-        g1=g.append("g").attr("id",fam)
+        g2=g1.append("g").attr("id",fam)
 
-        g1.append("rect")
-            .attr("class","rec_fam")
+        g2.append("rect")
+            .attr("class","rec_subfam")
             .attr("x", x(-1*max_period)-10)
             .attr("y",bricks[0].id*20+20)
             .attr("width",x((max_period))-x((min_period))+20)
             .attr("height",height_of_taxon*20)
-            g1.append("text")
+            g2.append("text")
             //.attr("class","rec_fam")
             .attr("x", x(-1*(min_period))+10)
             .attr("y",bricks[0].id*20+20)
             .attr("text-anchor","end")
-            .text(fam)
+            .text("подсем. "+fam)
 
-        g1.selectAll("rect.brick").data(bricks).enter().append("rect").attr("class","brick") //create lines of period
+        g2.selectAll("rect.brick").data(bricks).enter().append("rect").attr("class","brick") //create lines of period
             //.on ("click",handleGenusClick)
             .attr("rx", 3)
             .attr("ry", 3)
@@ -348,7 +411,7 @@
             .attr("stroke", "none")
             .attr("fill", "#ff8a00");
 
-        g1.selectAll('text.genus').data(bricks).enter().append("text")//create signs for lines
+        g2.selectAll('text.genus').data(bricks).enter().append("text")//create signs for lines
             .attr("class","genus")
             .text(function(d){
                 if (d.genus=="—" || d.genus=="") { // oh really, no genus?
@@ -362,6 +425,78 @@
             .attr("y", function (d, j) {
                 return d.id *20 +28 ;
             });
+    }
+
+    function getSubOrders(order,data) {
+        OrdersData=data.filter(function (d) {return d.order===order})
+        var SubOrdersData= d3.nest()
+            .key(function (d) {return d.suborder})
+            .entries(OrdersData)
+        var subOrders=SubOrdersData.map(function(node){ return node.key; })
+        return subOrders
+    }
+
+    function getHypOrders(subOrder,data) {
+        subOrdersData=OrdersData.filter(function (d) {return d.suborder===subOrder})
+        var HypOrdersData= d3.nest()
+            .key(function (d) {return d.hyporder})
+            .entries(subOrdersData)
+        var hypOrders=HypOrdersData.map(function(node){ return node.key; })
+        return hypOrders
+    }
+
+    function getInfraOrders(hypOrder,data) {
+        hypOrdersData=subOrdersData.filter(function (d) {return d.hyporder===hypOrder})
+        var infraOrdersData= d3.nest()
+            .key(function (d) {return d.infraorder})
+            .entries(hypOrdersData)
+        var infraOrders=infraOrdersData.map(function(node){ return node.key; })
+        return infraOrders
+    }
+
+    function getParvOrders(infraOrder,data) {
+        infraOrdersData=hypOrdersData.filter(function (d) {return d.infraorder===infraOrder})
+        var parvOrdersData= d3.nest()
+            .key(function (d) {return d.parvorder})
+            .entries(infraOrdersData)
+        var parvOrders=parvOrdersData.map(function(node){ return node.key; })
+        return parvOrders
+    }
+
+    function getSuperFamilys(parvOrder,data) {
+        parvOrdersData=infraOrdersData.filter(function (d) {return d.parvorder===parvOrder})
+        var superFamilysData= d3.nest()
+            .key(function (d) {return d.superfamily})
+            .entries(parvOrdersData)
+        var superFamilys=superFamilysData.map(function(node){ return node.key; })
+        return superFamilys
+    }
+
+    function getFamilys(superFamily,data) {
+        superFamilysData=parvOrdersData.filter(function (d) {return d.superfamily===superFamily})
+        familysDataRoot= d3.nest()
+            .key(function (d) { return "root" })
+            .key(function (d) {return d.family})
+            .entries(superFamilysData)
+        familysData= d3.nest()
+            .key(function (d) {return d.family})
+            .entries(superFamilysData)
+        var familys=familysData.map(function(node){ return node.key; })
+        return familys
+    }
+
+    function getSubFamilys(family,data) {
+        familysData=superFamilysData.filter(function (d) {return d.family===family})
+        subfamilysDataRoot= d3.nest()
+            .key(function (d) { return "root" })
+            .key(function (d) {return d.subfamily})
+            .entries(familysData)
+        subfamilysData= d3.nest()
+            .key(function (d) {return d.subfamily})
+            .entries(familysData)
+        console.log("JJ="+JSON.stringify(subfamilysData[0],null,2))
+        var subFamilys=subfamilysData.map(function(node){ return node.key; })
+        return subFamilys
     }
 
 

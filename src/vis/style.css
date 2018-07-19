@@ -5,7 +5,7 @@ svg {
 }
 .genus{
     font-family: sans-serif;
-    font-size: 12px;
+    font-size: 10px;
     fill: black;
 }
 #onGenusClick{
@@ -35,7 +35,14 @@ h1{font-family: Arial;
 #begunok text{fill:#000;}
 
 .rec_fam{
-    opacity:1;
+    opacity:0.5;
+    fill:cornflowerblue;
+    rx:3px;
+    ry:3px;
+}
+
+.rec_subfam{
+    opacity:0.5;
     fill: #eeeeee;
     rx:3px;
     ry:3px;
