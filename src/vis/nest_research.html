@@ -6,27 +6,18 @@
     <script src="https://d3js.org/d3.v5.min.js"></script>
     <link rel="stylesheet" type="text/css" href="style.css">
     <style>
-        body { margin:0;top:0;right:0;bottom:0;left:0; }
-        pre { width: 100%; height: 100%; font-size: 10px; overflow-y: scroll; }
-        #some {background-color: #B6FFD4}
-        #json {background-color: antiquewhite}
-        text {
-            font-family: "Helvetica Neue", Helvetica, sans-serif;
-            fill: #000;
-            font-size: 10px;
-        }
 
     </style>
 </head>
 <body>
-<svg id="chart" width="960" height="3000"
-     viewBox="0 0 960 3000"
+<svg id="chart" width="1200" height="3000"
+     viewBox="0 0 1200 3000"
      preserveAspectRatio="xMidYMid meet">
 </svg>
 <pre id="one">  </pre>
 <pre id="some">  </pre>
 <pre id="json">  </pre>
-<svg width="820" height="1000"><g></g></svg>
+
 <script>
 
     function process(d) {
@@ -136,6 +127,7 @@
         })
 */ypos=30
         myOrders.forEach(function (order) {
+            drawEpicOrderName(order,"отряд");
             subOrders=getSubOrders(order,data)
             //console.log("suborders of ("+order+") = "+JSON.stringify(subOrders,null,2))
             subOrders.forEach(function (subOrder) {
@@ -277,7 +269,7 @@
     }
 
     function drawAnAxis() {
-        var width=960
+        var width=1200
          x = d3.scaleLinear()
             .domain([-70, 10])
             .range([50, width-50])
@@ -352,6 +344,14 @@
         mousex = d3.mouse(this);
         mousex = mousex[0] + 5;
         vertical.style("display", "none")});*/
+    }
+
+    function drawEpicOrderName(name,taxon){
+        g.append("text")
+            .attr("class","epicOrderName").text(taxon+" "+name)
+            .attr("y",ypos+30)
+            .attr("x",960/2)
+        ypos=ypos+50;
     }
 
     d3.selection.prototype.last = function()
