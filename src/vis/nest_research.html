@@ -10,8 +10,8 @@
     </style>
 </head>
 <body>
-<svg id="chart" width="1200" height="3000"
-     viewBox="0 0 1200 3000"
+<svg id="chart" width="1200" height="10000"
+     viewBox="0 0 1200 10000"
      preserveAspectRatio="xMidYMid meet">
 </svg>
 <pre id="one">  </pre>
@@ -24,7 +24,7 @@
         var processed = {
 
             id: d.id,
-            mir: d.миротряд,
+            mir: d.mirorder,
             order: d.order,
             suborder: d.suborder,
             hyporder:d.hyporder,
@@ -64,10 +64,6 @@
         d3.select("#json").text(JSON.stringify(locations, null, 3));
 
 
-        var treemapLayout = d3.treemap()
-            .size([800, 1000])
-            .paddingOuter(16);
-        treemapLayout.tile(d3.treemapSlice)
 
 /*
         var root = d3.hierarchy(locations,function(d) {
@@ -303,7 +299,7 @@
     }
 
     function drawBegunok() {
-        height=3000
+        height=10000
         var vertical = svg.append("path").attr("class", "trackLine");//add the mouse-tracking vertical line
 
         var begunokG=svg.append("g").attr("id","begunok");
@@ -350,7 +346,7 @@
         g.append("text")
             .attr("class","epicOrderName").text(taxon+" "+name)
             .attr("y",ypos+30)
-            .attr("x",960/2)
+            .attr("x",1200/2)
         ypos=ypos+50;
     }
 
@@ -358,6 +354,7 @@
     { return d3.select(this.nodes()[this.size() - 1]);}
 
     function resizeRect(name) {
+        name=name.replace(/[|(|)|]| |=/g,"")
         ypos=g.selectAll("g").last().node().getBBox().y+g.selectAll("g").last().node().getBBox().height
         var rect= g.selectAll("g#"+name).last().select("rect");
         if (rect.node())
@@ -374,6 +371,7 @@
     }
 
     function drawRect(ids,name,prefix,taxon) {
+        name=name.replace(/[|(|)|]| |=/g,"")
         const max_period=d3.max(ids, function (d) {return +d.period_start})
         const min_period=d3.min(ids,function (d) {return +d.period_end})
         const height_of_taxon=ids.length;
