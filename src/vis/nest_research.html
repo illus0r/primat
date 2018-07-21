@@ -63,23 +63,6 @@
 
         d3.select("#json").text(JSON.stringify(locations, null, 3));
 
-
-
-/*
-        var root = d3.hierarchy(locations,function(d) {
-            return d.values;
-        })
-            .sum(function(d) { return d.value; })
-            .sort(function(a, b) { return b.value - a.value; });
-
-        treemapLayout(root);
-
-        var childrens=root.descendants();
-
-        root.each(function (d,i) {
-            console.log(i+" "+d.data[i-1]);
-        })
-*/
         drawAnSVG()
         drawAnAxis()
         drawBegunok()
@@ -132,9 +115,13 @@
                 hypOrders=getHypOrders(subOrder,data)
                 //console.log("hypOrders of ("+order+"-"+subOrder+") = "+JSON.stringify(hypOrders,null,2))
                 hypOrders.forEach(function (hypOrder) {
+                    findIds(HypOrdersDataRoot[0],hypOrder)
+                    if (hypOrder) drawRect(myleaves,hypOrder,"гипотряд.","hypOrder")
                     infraOrders=getInfraOrders(hypOrder,data)
                     //console.log("infraOrders of ("+order+"-"+subOrder+"-"+hypOrder+") = "+JSON.stringify(infraOrders,null,2))
                     infraOrders.forEach(function (infraOrder) {
+                        findIds(infraOrdersDataRoot[0],infraOrder)
+                        if (infraOrder) drawRect(myleaves,infraOrder,"инфраотряд.","infraOrder")
                         parvOrders=getParvOrders(infraOrder,data)
                         parvOrders.forEach(function (parvOrder) {
                             findIds(parvOrdersDataRoot[0],parvOrder)
@@ -166,7 +153,9 @@
                             })
                             if (parvOrder) resizeRect(parvOrder)
                         })
+                        if (infraOrder) resizeRect(infraOrder)
                     })
+                    if (hypOrder) resizeRect(hypOrder)
                 })
                 if (subOrder) resizeRect(subOrder)
             })
@@ -354,7 +343,7 @@
     { return d3.select(this.nodes()[this.size() - 1]);}
 
     function resizeRect(name) {
-        name=name.replace(/[|(|)|]| |=/g,"")
+        name=name.replace(/[|(|)|]| |=|\?/g,"")
         ypos=g.selectAll("g").last().node().getBBox().y+g.selectAll("g").last().node().getBBox().height
         var rect= g.selectAll("g#"+name).last().select("rect");
         if (rect.node())
@@ -371,38 +360,27 @@
     }
 
     function drawRect(ids,name,prefix,taxon) {
-        name=name.replace(/[|(|)|]| |=/g,"")
+        name=name.replace(/[|(|)|]| |=|\?/g,"")
         const max_period=d3.max(ids, function (d) {return +d.period_start})
         const min_period=d3.min(ids,function (d) {return +d.period_end})
         const height_of_taxon=ids.length;
 
-        g1=g.select("g:last-of-type")
-
         g1=g.append("g").attr("id",name).attr("class", taxon)
-        /*if (taxon=="superfamily") g1=g.append("g").attr("id",name).attr("class", taxon)
-        if (taxon=="family" )
-            if (g.select("g.superfamily:last-of-type").node())
-                g1=g.select("g.superfamily:last-of-type").append("g").attr("id",name).attr("class", taxon)
-            else  g1=g.append("g").attr("id",name).attr("class", taxon)
-        */
-        //g1=g.append("g").attr("id",name).attr("class", prefix)
 
         g1.append("rect")
             .attr("class","rec_fam")
             .attr("x", x(-1*max_period)-15)
-            //.attr("y",ids[0].id*20+10)
             .attr("y",ypos)
             .attr("width",x((max_period))-x((min_period))+25)
             .attr("height",height_of_taxon*20+10)
         g1.append("text")
         //.attr("class","rec_fam")
             .attr("x", x(-1*(min_period))+5)
-            //.attr("y",ids[0].id*20+10)
             .attr("y",ypos)
             .attr("text-anchor","end")
             .text(prefix+" " +name)
 
-ypos=ypos+10
+        ypos=ypos+10
     }
 
     function drawBricks(bricks,fam){
@@ -418,9 +396,6 @@ ypos=ypos+10
         d3.select("#one").append("p")
             .text( "min="+min_period+"   max="+max_period+"     height="+height_of_taxon);
 
-        //g.append("text").text(fam).attr("y",(d)=>d.id);
-        //console.log("BB="+g1.node().getBBox().height)
-
         if (g1.selectAll("g:last-of-type").node())
             ypos=g1.select("g:last-of-type").node().getBBox().y+g1.select("g:last-of-type").node().getBBox().height
         else ypos=g1.node().getBBox().y
@@ -430,14 +405,12 @@ ypos=ypos+10
         g2.append("rect")
             .attr("class","rec_subfam")
             .attr("x", x(-1*max_period)-10)
-            //.attr("y",bricks[0].id*20+20)
             .attr("y",ypos+20)
             .attr("width",x((max_period))-x((min_period))+20)
             .attr("height",height_of_taxon*20)
         g2.append("text")
             //.attr("class","rec_fam")
             .attr("x", x(-1*(min_period))+10)
-            //.attr("y",bricks[0].id*20+20)
             .attr("y",ypos+20)
             .attr("text-anchor","end")
             .text("подсем. "+fam)
@@ -447,7 +420,6 @@ ypos=ypos+10
             .attr("rx", 3)
             .attr("ry", 3)
             .attr("x", (d) => x(-1 * d.period_start))
-            //.attr("y", (d, i) => d.id * 20 + 30)
             .attr("y",(d,i)=>ypos+i*20+30)
             .attr("width", function (d, i) {
                 wid = x(d.period_start) - x(d.period_end); //calculate length of line
@@ -471,7 +443,6 @@ ypos=ypos+10
             })
             .attr("y", function (d, j) {
                 return ypos+j*20 +28 ;
-                //return d.id*20+ypos
             });
     }
 
@@ -490,6 +461,10 @@ ypos=ypos+10
 
     function getHypOrders(subOrder,data) {
         subOrdersData=OrdersData.filter(function (d) {return d.suborder===subOrder})
+        HypOrdersDataRoot= d3.nest()
+            .key(function (d) { return "root" })
+            .key(function (d) {return d.hyporder})
+            .entries(subOrdersData)
         var HypOrdersData= d3.nest()
             .key(function (d) {return d.hyporder})
             .entries(subOrdersData)
@@ -499,6 +474,10 @@ ypos=ypos+10
 
     function getInfraOrders(hypOrder,data) {
         hypOrdersData=subOrdersData.filter(function (d) {return d.hyporder===hypOrder})
+        infraOrdersDataRoot= d3.nest()
+            .key(function (d) { return "root" })
+            .key(function (d) {return d.infraorder})
+            .entries(hypOrdersData)
         var infraOrdersData= d3.nest()
             .key(function (d) {return d.infraorder})
             .entries(hypOrdersData)
