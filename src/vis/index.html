@@ -316,9 +316,14 @@
         name=name.replace(/[|(|)|]| |=|\?/g,"")
         ypos=g.selectAll("g").last().node().getBBox().y+g.selectAll("g").last().node().getBBox().height
         var rect= g.selectAll("g#"+name).last().select("rect");
-        if (rect.node())
-            newheight= ypos-rect.node().getBBox().y
+        if (rect.node()) {
+            newheight = ypos - rect.node().getBBox().y+10
+            newwidth=rect.node().getBBox().width+10
+            newex=rect.node().getBBox().x-10
+        }
         rect.attr("height",newheight)
+            .attr("width", newwidth)
+            .attr("x", newex)
         ypos=ypos+20
     }
 
@@ -328,17 +333,20 @@
         const min_period=d3.min(ids,function (d) {return +d.period_end})
         const height_of_taxon=ids.length;
 
-        var emptySubFam=false
+        var emptySubFam=false, atLeastOneSubTaxon=false,  atLeastOneGen=false
+
         /*flag of empty subFamily*/
         if (taxon=="family")
         ids.forEach(function (id) {
             if (id.subfamily=="" && id.genus=="") emptySubFam=true /*so, we don't need a family rectangle*/
+            if (id.subfamily) atLeastOneSubTaxon=true
+            if (id.genus) atLeastOneGen=true
         })
 
 
         g1=g.append("g").attr("id",trimname).attr("class", taxon)
 
-        if (emptySubFam==false) {
+        if (emptySubFam==false || atLeastOneSubTaxon==true || atLeastOneGen==true) {
 
             g1.append("rect")
                 .attr("class", "rec_fam")
@@ -352,8 +360,6 @@
                 .attr("y", ypos)
                 .attr("text-anchor", "end")
                 .text(prefix + " " + name)
-
-
         }
         else { /*invisible rectangle*/
             g1.append("rect")
@@ -389,15 +395,16 @@
 
 
         g2 = g1.append("g").attr("id", fam)
-        var emptyGen=false
+        var emptyGen=false, atLeastOneSubTaxon=false, atLeastOneGen=false, greenRec=false
         /*flag of empty genus*/
         bricks.forEach(function (brick) {
             if (brick.genus=="") emptyGen=true /*so, we don't need a subfamily rectangle*/
+            if (brick.subfamily) atLeastOneSubTaxon=true
+            if (brick.genus) atLeastOneGen=true
         })
 
 
-        if (bricks[0].subfamily && emptyGen==false) {
-
+        if (atLeastOneGen==true && bricks[0].subfamily) {
         g2.append("rect")
             .attr("class", "rec_subfam")
             .attr("x", x(-1 * max_period) - 10)
@@ -410,6 +417,7 @@
             .attr("y", ypos + 20)
             .attr("text-anchor", "end")
             .text("подсем. " + fam)
+            greenRec=true
         }
 
         g2.selectAll("rect.brick").data(bricks).enter().append("rect").attr("class","brick") //create lines of period
@@ -431,8 +439,18 @@
             .attr("class","genus")
             .text(function(d){
                 if (d.genus=="—" || d.genus=="") { // oh really, no genus?
-                    if (d.subfamily=="—" || d.subfamily=="") return d.id+" "+"сем. "+d.family+" ("+d.location+")";
-                    else return d.id+" "+"подсем."+d.subfamily +" ("+d.location+")";
+                    if (d.subfamily=="—" || d.subfamily=="") {
+                        if (atLeastOneGen==true) return d.id+" "+" ("+d.location+")"; //завершающая пустышка семейства
+                        else
+                        return d.id+" "+"сем. "+d.family+" ("+d.location+")";
+                    }
+
+                    else {
+                        if (atLeastOneSubTaxon == true && greenRec) return d.id + " " + " (" + d.location + ")";//завершающая пустышка подсемейства
+                        else
+
+                            return d.id + " " + "подсем." + d.subfamily + " (" + d.location + ")";
+                    }
                 }
                 else return d.id+" "+d.genus+" ("+d.location+")"})
             .attr("x", function (d) {
