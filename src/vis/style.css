@@ -52,6 +52,8 @@ h1{font-family: Arial;
     ry:3px;
 }
 
+.rec_invisible{opacity: 0;}
+
 .rec_subfam{
     opacity:0.5;
     fill: greenyellow;

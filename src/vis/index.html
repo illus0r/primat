@@ -97,10 +97,6 @@
         d3.select("#one").append("p").text("all orders = "+ JSON.stringify(myOrders,null,2))
         d3.select("#one").append("hr")
 
-
-
-        //var myFams=findFamilys(data)
-
         function FindFamByOrder(order){
             var scandyFamsData=data.filter(function (d) {return d.order===order})
             var scandyFams= d3.nest()
@@ -140,16 +136,11 @@
                                     findIds(familysDataRoot[0],family);
                                     //console.log("leaves familys ="+ JSON.stringify(myleaves))
                                     drawRect(myleaves,family, "сем.","family");
-
                                     subFamilys=getSubFamilys(family,data);
                                     //console.log("subFamilys of ("+order+"-"+subOrder+"-"+hypOrder+"-"+infraOrder+"-"+parvOrder+"-"+superFamily+"-"+family+")=" +JSON.stringify(subFamilys,null,2))
                                     subFamilys.forEach(function (subFamily) {
-
                                         findIds(subfamilysDataRoot[0],subFamily);
                                         //console.log("leaves subfam ="+ JSON.stringify(myleaves))
-                                        d3.select("#one").append("p")
-                                            .text("ids of subfamily "+subFamily+" = "
-                                                + JSON.stringify(myleaves.map(function(node){ return node.id; }),null,2));
                                         drawBricks(myleaves, subFamily, familys);
                                     });
                                     if (family) resizeRect(family);
@@ -224,7 +215,6 @@
         const height_of_taxon=myleaves.length;
         d3.select("#one").append("p")
             .text( "min="+min_period+"   max="+max_period+"     height="+height_of_taxon);
-
     }
 
     function drawAnSVG() {
@@ -333,60 +323,94 @@
     }
 
     function drawRect(ids,name,prefix,taxon) {
-        name=name.replace(/[|(|)|]| |=|\?/g,"")
+        trimname=name.replace(/[|(|)|]| |=|\?/g,"")
         const max_period=d3.max(ids, function (d) {return +d.period_start})
         const min_period=d3.min(ids,function (d) {return +d.period_end})
         const height_of_taxon=ids.length;
 
-        g1=g.append("g").attr("id",name).attr("class", taxon)
+        var emptySubFam=false
+        /*flag of empty subFamily*/
+        if (taxon=="family")
+        ids.forEach(function (id) {
+            if (id.subfamily=="" && id.genus=="") emptySubFam=true /*so, we don't need a family rectangle*/
+        })
 
-        g1.append("rect")
-            .attr("class","rec_fam")
-            .attr("x", x(-1*max_period)-15)
-            .attr("y",ypos)
-            .attr("width",x((max_period))-x((min_period))+25)
-            .attr("height",height_of_taxon*20+10)
-        g1.append("text")
-        //.attr("class","rec_fam")
-            .attr("x", x(-1*(min_period))+5)
-            .attr("y",ypos)
-            .attr("text-anchor","end")
-            .text(prefix+" " +name)
 
-        ypos=ypos+10
+        g1=g.append("g").attr("id",trimname).attr("class", taxon)
+
+        if (emptySubFam==false) {
+
+            g1.append("rect")
+                .attr("class", "rec_fam")
+                .attr("x", x(-1 * max_period) - 15)
+                .attr("y", ypos)
+                .attr("width", x((max_period)) - x((min_period)) + 25)
+                .attr("height", height_of_taxon * 20 + 10)
+            g1.append("text")
+            //.attr("class","rec_fam")
+                .attr("x", x(-1 * (min_period)) + 5)
+                .attr("y", ypos)
+                .attr("text-anchor", "end")
+                .text(prefix + " " + name)
+
+
+        }
+        else { /*invisible rectangle*/
+            g1.append("rect")
+                .attr("class", "rec_invisible")
+                .attr("x", x(-1 * max_period) - 15)
+                .attr("y", ypos)
+                .attr("width", x((max_period)) - x((min_period)) + 25)
+                .attr("height", height_of_taxon * 20 + 10)
+
+        }
+        ypos = ypos + 10
+
     }
 
-    function drawBricks(bricks,fam){
-        const max_period=d3.max(bricks, function (d) {
+    function drawBricks(bricks,fam) {
+        const max_period = d3.max(bricks, function (d) {
             return +d.period_start
         })
-        const min_period=d3.min(bricks,function (d) {
+        const min_period = d3.min(bricks, function (d) {
             return +d.period_end
         })
-        const height_of_taxon=bricks.length;
+        const height_of_taxon = bricks.length;
 
 
         d3.select("#one").append("p")
-            .text( "min="+min_period+"   max="+max_period+"     height="+height_of_taxon);
+            .text("min=" + min_period + "   max=" + max_period + "     height=" + height_of_taxon);
 
         if (g1.selectAll("g:last-of-type").node())
-            ypos=g1.select("g:last-of-type").node().getBBox().y+g1.select("g:last-of-type").node().getBBox().height
-        else ypos=g1.node().getBBox().y
+            ypos = g1.select("g:last-of-type").node().getBBox().y + g1.select("g:last-of-type").node().getBBox().height
+        else ypos = g1.node().getBBox().y
 
-        g2=g1.append("g").attr("id",fam)
+
+
+
+        g2 = g1.append("g").attr("id", fam)
+        var emptyGen=false
+        /*flag of empty genus*/
+        bricks.forEach(function (brick) {
+            if (brick.genus=="") emptyGen=true /*so, we don't need a subfamily rectangle*/
+        })
+
+
+        if (bricks[0].subfamily && emptyGen==false) {
 
         g2.append("rect")
-            .attr("class","rec_subfam")
-            .attr("x", x(-1*max_period)-10)
-            .attr("y",ypos+20)
-            .attr("width",x((max_period))-x((min_period))+20)
-            .attr("height",height_of_taxon*20)
+            .attr("class", "rec_subfam")
+            .attr("x", x(-1 * max_period) - 10)
+            .attr("y", ypos + 20)
+            .attr("width", x((max_period)) - x((min_period)) + 20)
+            .attr("height", height_of_taxon * 20)
         g2.append("text")
         //.attr("class","rec_fam")
-            .attr("x", x(-1*(min_period))+10)
-            .attr("y",ypos+20)
-            .attr("text-anchor","end")
-            .text("подсем. "+fam)
+            .attr("x", x(-1 * (min_period)) + 10)
+            .attr("y", ypos + 20)
+            .attr("text-anchor", "end")
+            .text("подсем. " + fam)
+        }
 
         g2.selectAll("rect.brick").data(bricks).enter().append("rect").attr("class","brick") //create lines of period
         //.on ("click",handleGenusClick)
