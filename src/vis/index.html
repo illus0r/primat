@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Nest Test</title>
     <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <link rel="stylesheet" type="text/css" href="style.css">
     <style>
 
@@ -39,10 +40,16 @@
     <!-- /Yandex.Metrika counter -->
 </head>
 <body>
-<svg id="chart" width="1200" height="10000"
-     viewBox="0 0 1200 10000"
-     preserveAspectRatio="xMidYMid meet">
-</svg>
+
+
+<div id="header"> Эволюция приматов</div>
+<div id="axis">  </div>
+<div id="plot">
+    <svg id="chart" width="1200" height="10000"
+         viewBox="0 0 1200 10000"
+         preserveAspectRatio="xMidYMid meet">
+    </svg>
+</div>
 <script>
 
     function process(d) {
@@ -219,7 +226,11 @@
 
     function drawAnSVG() {
         svg = d3.select("svg");
-        g_axis = svg.append("g").attr("class","axis");
+        g_axis=d3.select("#axis").append("svg")
+            .attr("width",1200)
+            .attr("height",20)
+            .append("g").attr("class","axis")
+        //g_axis = svg.append("g").attr("class","axis");
         g = svg.append("g").attr("class","taxons");
     }
 
@@ -259,19 +270,24 @@
 
     function drawBegunok() {
         height=10000
-        var vertical = svg.append("path").attr("class", "trackLine");//add the mouse-tracking vertical line
-
-        var begunokG=svg.append("g").attr("id","begunok");
+        var vertical = g_axis.append("path").attr("class", "trackLine");//add the mouse-tracking vertical line
+        var vertical2 = svg.append("path").attr("class", "trackLine");//add the mouse-tracking vertical line
+        var begunokG=g_axis.append("g").attr("id","begunok");
         var begunokRect=begunokG.append("rect");
         var begunokText= begunokG.append("text");
 
-        svg.on("mousemove", function(){
+        d3.selectAll("svg").on("mousemove", function(){
             mousex = d3.mouse(this);
-            vertical.style("display", null).attr("d", function () {
+            d3.selectAll(".trackLine").style("display", null).attr("d", function () {
                 var d = "M" + mousex[0] + "," + (height);
                 d += " " + mousex[0] + "," + 10;
                 return d;
             });
+            /*vertical2.style("display", null).attr("d", function () {
+                var d = "M" + mousex[0] + "," + (height);
+                d += " " + mousex[0] + "," + 10;
+                return d;
+            });*/
             begunokRect.attr("id","begunok").attr("y",-20)
                 .attr( "x",function (d){return (mousex[0]-35)});
 
@@ -318,7 +334,7 @@
         var rect= g.selectAll("g#"+name).last().select("rect");
         if (rect.node()) {
             newheight = ypos - rect.node().getBBox().y+10
-            newwidth=rect.node().getBBox().width+10
+            newwidth=rect.node().getBBox().width+10+10
             newex=rect.node().getBBox().x-10
         }
         rect.attr("height",newheight)
@@ -553,6 +569,18 @@
         return subFamilys
     }
 
+    $(window).scroll(function() {
+        if ($(this).scrollTop() > $('#header').outerHeight(includeMargin=true)){
+            $('#axis').addClass("sticky");
+
+            //set horizontal position of fixed axis div
+            //var leftpos = ($(window).width() - $('#axis').width())/2;
+            //$('#axis').css("left", leftpos);
+        }
+        else{
+            $('#axis').removeClass("sticky");
+        }
+    });
 
 </script>
 </body>
