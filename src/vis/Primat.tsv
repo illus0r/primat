@@ -1,24 +1,24 @@
 id	mirorder	order	suborder	hyporder	infraorder	parvorder	superfamily	family	subfamily	genus	location_ru	continent_id	period_start	period_end	origin	origin_confedence	debug
 1		SCANDENTIA						Tupaildae	Ptilocercinae	Eodendrogale parvum	Китай	asia	44.9	42.7
-2		SCANDENTIA						Tupaildae	Ptilocercinae	—			0	0	1	0.5
+2		SCANDENTIA						Tupaildae	Ptilocercinae				0	0	1	0.5
 3		SCANDENTIA						Tupaildae	Tupaiinae	Tupaia miocenica	Таиланд	asia	17.9	16.8
 4		SCANDENTIA						Tupaildae	Tupaiinae	Tupaia sivalicus	Индия	asia	9.9	8.8
 5		SCANDENTIA						Tupaildae	Tupaiinae	Prodendrogale yunnanica	Китай	asia	6.8	5.6
-6		SCANDENTIA						Tupaildae	Tupaiinae	—			0	0
-7		DERMOPTERA					PLAGIOMENOIDEA	Mixodectidae	—	—	США	n_america	66	60.2
-8		DERMOPTERA					PLAGIOMENOIDEA	Placentidentidae	—	—	Франция	europe	53.1	51
-9		DERMOPTERA					PLAGIOMENOIDEA	Cynocephalidae	—	Dermotherium sp.	Бирма	asia	38.8	37.4
-10		DERMOPTERA					PLAGIOMENOIDEA	Cynocephalidae	—	Dermotherium major	Таиланд	asia	36.5	34.3	9	0.5
-11		DERMOPTERA					PLAGIOMENOIDEA	Cynocephalidae	—	Dermotherium chimaera	Пакистан	asia	32.2	30.1	10	0.5
-12		DERMOPTERA					PLAGIOMENOIDEA	Cynocephalidae	—	Dermotherium chimaera	Таиланд	asia	26.8	24.7	11	0.5
-13		DERMOPTERA					PLAGIOMENOIDEA	Cynocephalidae	—	—			0	0	11	0.5
-14		DERMOPTERA					PLAGIOMENOIDEA	Plagiomenidae	incertae sedis	—	США	n_america	64.4	60.2
-15		DERMOPTERA					PLAGIOMENOIDEA	Plagiomenidae	Plagiomeninae	—	США, Канада	n_america	57.2	50
-16		DERMOPTERA					PLAGIOMENOIDEA	Plagiomenidae	Thylacaelurinae	—	Канада	n_america	36.8	35.5	15	0.5
-17		DERMOPTERA					PLAGIOMENOIDEA	Plagiomenidae	Ekgmowechashalinae	—	Таиланд	asia	34.78	33.73			debug761
-18		DERMOPTERA					PLAGIOMENOIDEA	Plagiomenidae	Ekgmowechashalinae	—	США	n_america	28	26	17	0.5	debug739
+6		SCANDENTIA						Tupaildae	Tupaiinae				0	0
+7		DERMOPTERA					PLAGIOMENOIDEA	Mixodectidae			США	n_america	66	60.2
+8		DERMOPTERA					PLAGIOMENOIDEA	Placentidentidae			Франция	europe	53.1	51
+9		DERMOPTERA					PLAGIOMENOIDEA	Cynocephalidae		Dermotherium sp.	Бирма	asia	38.8	37.4
+10		DERMOPTERA					PLAGIOMENOIDEA	Cynocephalidae		Dermotherium major	Таиланд	asia	36.5	34.3	9	0.5
+11		DERMOPTERA					PLAGIOMENOIDEA	Cynocephalidae		Dermotherium chimaera	Пакистан	asia	32.2	30.1	10	0.5
+12		DERMOPTERA					PLAGIOMENOIDEA	Cynocephalidae		Dermotherium chimaera	Таиланд	asia	26.8	24.7	11	0.5
+13		DERMOPTERA					PLAGIOMENOIDEA	Cynocephalidae					0	0	11	0.5
+14		DERMOPTERA					PLAGIOMENOIDEA	Plagiomenidae	incertae sedis		США	n_america	64.4	60.2
+15		DERMOPTERA					PLAGIOMENOIDEA	Plagiomenidae	Plagiomeninae		США, Канада	n_america	57.2	50
+16		DERMOPTERA					PLAGIOMENOIDEA	Plagiomenidae	Thylacaelurinae		Канада	n_america	36.8	35.5	15	0.5
+17		DERMOPTERA					PLAGIOMENOIDEA	Plagiomenidae	Ekgmowechashalinae		Таиланд	asia	34.78	33.73			debug761
+18		DERMOPTERA					PLAGIOMENOIDEA	Plagiomenidae	Ekgmowechashalinae		США	n_america	28	26	17	0.5	debug739
 20	PRIMATOMORPHA	INCERTAE SEDIS						Purgatoriidae			США	n_america	66	64
-21	PRIMATOMORPHA	PLESIADAPIFORMES					PLESIADAPOIDEA	Adapisoriculidae				europe	66	55
+21	PRIMATOMORPHA	PLESIADAPIFORMES					PLESIADAPOIDEA	Adapisoriculidae			Европа	europe	66	55
 22	PRIMATOMORPHA	PLESIADAPIFORMES					PLESIADAPOIDEA	Adapisoriculidae			Северная Африка	africa	66	55
 23	PRIMATOMORPHA	PLESIADAPIFORMES					PLESIADAPOIDEA	Adapisoriculidae			Индия	asia	66	55
 24	PRIMATOMORPHA	PLESIADAPIFORMES					PLESIADAPOIDEA	Plesiadapidae	Asioplesiadapinae		Китай	asia	53	51
@@ -120,10 +120,10 @@ id	mirorder	order	suborder	hyporder	infraorder	parvorder	superfamily	family	subf
 130	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	TARSIIFORMES	OMOMYIFORMES (=надсем. OMOMYOIDEA)			Omomyidae	Tarkadectinae		Китай	asia	46	42
 131	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	TARSIIFORMES	OMOMYIFORMES (=надсем. OMOMYOIDEA)?			Archicebidae			Китай	asia	55.8	54.9
 132	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	TARSIIFORMES	TARSIIFORMES			Tarsiidae		Xanthorhysis tabrumi	Китай	asia	45.5	44.5
-133	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	TARSIIFORMES	TARSIIFORMES			Tarsiidae		Tarsius eocaenus	Китай	asia	34.3	33.3
-134	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	TARSIIFORMES	TARSIIFORMES			Tarsiidae		Tarsius thailandica	Тайланд	asia	37	36
-135	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	TARSIIFORMES	TARSIIFORMES			Tarsiidae		Hesperotarsius sindhensis	Пакистан	asia	38.3	36.1
-136	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	TARSIIFORMES	TARSIIFORMES			Tarsiidae			Тайланд	asia	33.9	32.7
+133	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	TARSIIFORMES	TARSIIFORMES			Tarsiidae		Tarsius eocaenus	Китай	asia	38	37
+134	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	TARSIIFORMES	TARSIIFORMES			Tarsiidae		Tarsius thailandica	Тайланд	asia	18.3	16
+135	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	TARSIIFORMES	TARSIIFORMES			Tarsiidae		Hesperotarsius sindhensis	Пакистан	asia	18.3	16
+136	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	TARSIIFORMES	TARSIIFORMES			Tarsiidae		Tarsius Sirindhornae	Тайланд	asia	13.8	12.7
 137	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	TARSIIFORMES	TARSIIFORMES			Tarsiidae			Китай	asia	0	0
 138	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	TARSIIFORMES	TARSIIFORMES			Tarsiidae			Пакистан	asia	0	0
 139	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	TARSIIFORMES	TARSIIFORMES			Tarsiidae			Тайланд	asia	0	0
