@@ -113,6 +113,7 @@
             return famByOrder
         }
         ypos=30
+        delta=0
         myOrders.forEach(function (order) {
             drawEpicOrderName(order,"отряд");
             subOrders=getSubOrders(order,data)
@@ -333,19 +334,21 @@
         ypos=g.selectAll("g").last().node().getBBox().y+g.selectAll("g").last().node().getBBox().height
         var rect= g.selectAll("g#"+name+i).last().select("rect");
         if (rect.node()) {
-            newheight = ypos - rect.node().getBBox().y+10
-            newwidth=rect.node().getBBox().width+10+10
-            newex=rect.node().getBBox().x-10
+            newheight = ypos - rect.node().getBBox().y+10+delta
+            newwidth=rect.node().getBBox().width+10+10+delta*2
+            newex=rect.node().getBBox().x-10-delta
         }
         rect.attr("height",newheight)
             .attr("width", newwidth)
             .attr("x", newex)
-        ypos=ypos+20
+        ypos=ypos+20+delta*1.5
+        delta=delta+10
 
 
     }
 
     function drawRect(ids,name,prefix,taxon,i) {
+        delta=0
         trimname=name.replace(/[|(|)|]| |=|\?|\./g,"")
         const max_period=d3.max(ids, function (d) {return +d.period_start})
         const min_period=d3.min(ids,function (d) {return +d.period_end})
