@@ -117,32 +117,32 @@
             drawEpicOrderName(order,"отряд");
             subOrders=getSubOrders(order,data)
             //console.log("suborders of ("+order+") = "+JSON.stringify(subOrders,null,2))
-            subOrders.forEach(function (subOrder) {
+            subOrders.forEach(function (subOrder,i) {
                 findIds(SubOrdersDataRoot[0],subOrder)
-                if (subOrder) drawRect(myleaves,subOrder,"подотряд.","subOrder")
+                if (subOrder) drawRect(myleaves,subOrder,"подотряд.","subOrder",i)
                 hypOrders=getHypOrders(subOrder,data)
                 //console.log("hypOrders of ("+order+"-"+subOrder+") = "+JSON.stringify(hypOrders,null,2))
-                hypOrders.forEach(function (hypOrder) {
+                hypOrders.forEach(function (hypOrder,i) {
                     findIds(HypOrdersDataRoot[0],hypOrder)
-                    if (hypOrder) drawRect(myleaves,hypOrder,"гипотряд.","hypOrder")
+                    if (hypOrder) drawRect(myleaves,hypOrder,"гипотряд.","hypOrder",i)
                     infraOrders=getInfraOrders(hypOrder,data)
                     //console.log("infraOrders of ("+order+"-"+subOrder+"-"+hypOrder+") = "+JSON.stringify(infraOrders,null,2))
-                    infraOrders.forEach(function (infraOrder) {
+                    infraOrders.forEach(function (infraOrder,i) {
                         findIds(infraOrdersDataRoot[0],infraOrder)
-                        if (infraOrder) drawRect(myleaves,infraOrder,"инфраотряд.","infraOrder")
+                        if (infraOrder) drawRect(myleaves,infraOrder,"инфраотряд.","infraOrder",i)
                         parvOrders=getParvOrders(infraOrder,data)
-                        parvOrders.forEach(function (parvOrder) {
+                        parvOrders.forEach(function (parvOrder,i) {
                             findIds(parvOrdersDataRoot[0],parvOrder)
-                            if (parvOrder) drawRect(myleaves,parvOrder,"парвотряд.","parvOrder")
+                            if (parvOrder) drawRect(myleaves,parvOrder,"парвотряд.","parvOrder",i)
                             superFamilys=getSuperFamilys(parvOrder,data)
-                            superFamilys.forEach(function (superFamily ){
+                            superFamilys.forEach(function (superFamily,i ){
                                 findIds(superFamilysDataRoot[0],superFamily)
-                                if (superFamily) drawRect(myleaves,superFamily,"суперсем.","superfamily")
+                                if (superFamily) drawRect(myleaves,superFamily,"суперсем.","superfamily",i)
                                 familys=getFamilys(superFamily,data)
-                                familys.forEach(function (family) {
+                                familys.forEach(function (family,i) {
                                     findIds(familysDataRoot[0],family);
                                     //console.log("leaves familys ="+ JSON.stringify(myleaves))
-                                    drawRect(myleaves,family, "сем.","family");
+                                    drawRect(myleaves,family, "сем.","family",i);
                                     subFamilys=getSubFamilys(family,data);
                                     //console.log("subFamilys of ("+order+"-"+subOrder+"-"+hypOrder+"-"+infraOrder+"-"+parvOrder+"-"+superFamily+"-"+family+")=" +JSON.stringify(subFamilys,null,2))
                                     subFamilys.forEach(function (subFamily) {
@@ -150,17 +150,17 @@
                                         //console.log("leaves subfam ="+ JSON.stringify(myleaves))
                                         drawBricks(myleaves, subFamily, familys);
                                     });
-                                    if (family) resizeRect(family);
+                                    if (family) resizeRect(family,i);
                                 })
-                                if (superFamily) resizeRect(superFamily)
+                                if (superFamily) resizeRect(superFamily,i)
                             })
-                            if (parvOrder) resizeRect(parvOrder)
+                            if (parvOrder) resizeRect(parvOrder,i)
                         })
-                        if (infraOrder) resizeRect(infraOrder)
+                        if (infraOrder) resizeRect(infraOrder,i)
                     })
-                    if (hypOrder) resizeRect(hypOrder)
+                    if (hypOrder) resizeRect(hypOrder,i)
                 })
-                if (subOrder) resizeRect(subOrder)
+                if (subOrder) resizeRect(subOrder,i)
             })
         })
 
@@ -328,10 +328,10 @@
     d3.selection.prototype.last = function()
     { return d3.select(this.nodes()[this.size() - 1]);}
 
-    function resizeRect(name) {
-        name=name.replace(/[|(|)|]| |=|\?/g,"")
+    function resizeRect(name,i) {
+        name=name.replace(/[|(|)|]| |=|\?|\./g,"")
         ypos=g.selectAll("g").last().node().getBBox().y+g.selectAll("g").last().node().getBBox().height
-        var rect= g.selectAll("g#"+name).last().select("rect");
+        var rect= g.selectAll("g#"+name+i).last().select("rect");
         if (rect.node()) {
             newheight = ypos - rect.node().getBBox().y+10
             newwidth=rect.node().getBBox().width+10+10
@@ -341,10 +341,12 @@
             .attr("width", newwidth)
             .attr("x", newex)
         ypos=ypos+20
+
+
     }
 
-    function drawRect(ids,name,prefix,taxon) {
-        trimname=name.replace(/[|(|)|]| |=|\?/g,"")
+    function drawRect(ids,name,prefix,taxon,i) {
+        trimname=name.replace(/[|(|)|]| |=|\?|\./g,"")
         const max_period=d3.max(ids, function (d) {return +d.period_start})
         const min_period=d3.min(ids,function (d) {return +d.period_end})
         const height_of_taxon=ids.length;
@@ -360,7 +362,7 @@
         })
 
 
-        g1=g.append("g").attr("id",trimname).attr("class", taxon)
+        g1=g.append("g").attr("id",trimname+i).attr("class", taxon)
 
         if (emptySubFam==false || atLeastOneSubTaxon==true || atLeastOneGen==true) {
 
@@ -440,7 +442,7 @@
         //.on ("click",handleGenusClick)
             .attr("rx", 3)
             .attr("ry", 3)
-            .attr("x", (d) => x(-1 * d.period_start))
+            .attr("x", (d) => {if (!d.period_start) console.log("alert! no period start! id="+d.id);return x(-1 * d.period_start);})
             .attr("y",(d,i)=>ypos+i*20+30)
             .attr("width", function (d, i) {
                 wid = x(d.period_start) - x(d.period_end); //calculate length of line
@@ -572,13 +574,14 @@
     $(window).scroll(function() {
         if ($(this).scrollTop() > $('#header').outerHeight(includeMargin=true)){
             $('#axis').addClass("sticky");
-
+            $('#plot').addClass("sticky_plot");
             //set horizontal position of fixed axis div
             //var leftpos = ($(window).width() - $('#axis').width())/2;
             //$('#axis').css("left", leftpos);
         }
         else{
             $('#axis').removeClass("sticky");
+            $('#plot').removeClass("sticky_plot");
         }
     });
 
