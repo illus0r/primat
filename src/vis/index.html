@@ -118,32 +118,32 @@
             drawEpicOrderName(order,"отряд");
             subOrders=getSubOrders(order,data)
             //console.log("suborders of ("+order+") = "+JSON.stringify(subOrders,null,2))
-            subOrders.forEach(function (subOrder,i) {
+            subOrders.forEach(function (subOrder,o) {
                 findIds(SubOrdersDataRoot[0],subOrder)
-                if (subOrder) drawRect(myleaves,subOrder,"подотряд.","subOrder",i)
+                if (subOrder) drawRect(myleaves,subOrder,"подотряд.","subOrder",o*10+6)
                 hypOrders=getHypOrders(subOrder,data)
                 //console.log("hypOrders of ("+order+"-"+subOrder+") = "+JSON.stringify(hypOrders,null,2))
-                hypOrders.forEach(function (hypOrder,i) {
+                hypOrders.forEach(function (hypOrder,n) {
                     findIds(HypOrdersDataRoot[0],hypOrder)
-                    if (hypOrder) drawRect(myleaves,hypOrder,"гипотряд.","hypOrder",i)
+                    if (hypOrder) drawRect(myleaves,hypOrder,"гипотряд.","hypOrder",n*100+o*10+5)
                     infraOrders=getInfraOrders(hypOrder,data)
                     //console.log("infraOrders of ("+order+"-"+subOrder+"-"+hypOrder+") = "+JSON.stringify(infraOrders,null,2))
-                    infraOrders.forEach(function (infraOrder,i) {
+                    infraOrders.forEach(function (infraOrder,m) {
                         findIds(infraOrdersDataRoot[0],infraOrder)
-                        if (infraOrder) drawRect(myleaves,infraOrder,"инфраотряд.","infraOrder",i)
+                        if (infraOrder) drawRect(myleaves,infraOrder,"инфраотряд.","infraOrder",m*1000+n*100+o*10+4)
                         parvOrders=getParvOrders(infraOrder,data)
-                        parvOrders.forEach(function (parvOrder,i) {
+                        parvOrders.forEach(function (parvOrder,l) {
                             findIds(parvOrdersDataRoot[0],parvOrder)
-                            if (parvOrder) drawRect(myleaves,parvOrder,"парвотряд.","parvOrder",i)
+                            if (parvOrder) drawRect(myleaves,parvOrder,"парвотряд.","parvOrder",l*10000+m*1000+n*100+o*10+3)
                             superFamilys=getSuperFamilys(parvOrder,data)
-                            superFamilys.forEach(function (superFamily,i ){
+                            superFamilys.forEach(function (superFamily,k ){
                                 findIds(superFamilysDataRoot[0],superFamily)
-                                if (superFamily) drawRect(myleaves,superFamily,"суперсем.","superfamily",i)
+                                if (superFamily) drawRect(myleaves,superFamily,"суперсем.","superfamily",k*100000+l*10000+m*1000+n*100+o*10+2)
                                 familys=getFamilys(superFamily,data)
-                                familys.forEach(function (family,i) {
+                                familys.forEach(function (family,j) {
                                     findIds(familysDataRoot[0],family);
                                     //console.log("leaves familys ="+ JSON.stringify(myleaves))
-                                    drawRect(myleaves,family, "сем.","family",i);
+                                    drawRect(myleaves,family, "сем.","family",j*1000000+k*100000+l*10000+m*1000+n*100+o*10+1);
                                     subFamilys=getSubFamilys(family,data);
                                     //console.log("subFamilys of ("+order+"-"+subOrder+"-"+hypOrder+"-"+infraOrder+"-"+parvOrder+"-"+superFamily+"-"+family+")=" +JSON.stringify(subFamilys,null,2))
                                     subFamilys.forEach(function (subFamily) {
@@ -151,17 +151,17 @@
                                         //console.log("leaves subfam ="+ JSON.stringify(myleaves))
                                         drawBricks(myleaves, subFamily, familys);
                                     });
-                                    if (family) resizeRect(family,i);
+                                    if (family) resizeRect(family,j*1000000+k*100000+l*10000+m*1000+n*100+o*10+1);
                                 })
-                                if (superFamily) resizeRect(superFamily,i)
+                                if (superFamily) resizeRect(superFamily,k*100000+l*10000+m*1000+n*100+o*10+2)
                             })
-                            if (parvOrder) resizeRect(parvOrder,i)
+                            if (parvOrder) resizeRect(parvOrder,l*10000+m*1000+n*100+o*10+3)
                         })
-                        if (infraOrder) resizeRect(infraOrder,i)
+                        if (infraOrder) resizeRect(infraOrder,m*1000+n*100+o*10+4)
                     })
-                    if (hypOrder) resizeRect(hypOrder,i)
+                    if (hypOrder) resizeRect(hypOrder,n*100+o*10+5)
                 })
-                if (subOrder) resizeRect(subOrder,i)
+                if (subOrder) resizeRect(subOrder,o*10+6)
             })
         })
 
@@ -333,17 +333,45 @@
         name=name.replace(/[|(|)|]| |=|\?|\./g,"")
         ypos=g.selectAll("g").last().node().getBBox().y+g.selectAll("g").last().node().getBBox().height
         var rect= g.selectAll("g#"+name+i).last().select("rect");
+        var text= g.selectAll("g#"+name+i).last().select("text");
+        ///rect.clone(true).attr("stroke","red");
+        var maxRightEdge=0
+        var flaf=false
+        g.selectAll("#" + name + i + " ~ g > rect.rec_fam").nodes().forEach(function (node) {
+            flaf=true
+            rightEdge=node.getBBox().x+node.getBBox().width
+            if (rightEdge>maxRightEdge) {
+                maxRightEdge = rightEdge
+            }
+        })
+
         if (rect.node()) {
             newheight = ypos - rect.node().getBBox().y+10+delta
-            newwidth=rect.node().getBBox().width+10+10+delta*2
-            newex=rect.node().getBBox().x-10-delta
+            newwidth=rect.node().getBBox().width+10+delta*2
+            newex=rect.node().getBBox().x-delta
+            //console.log ("made resize "+name+" "+delta)
         }
-        rect.attr("height",newheight)
-            .attr("width", newwidth)
-            .attr("x", newex)
-        ypos=ypos+20+delta*1.5
-        delta=delta+10
+        if (rect.classed("rec_invisible")) {
+            //console.log("invis"+ name)
+            newex=newex-delta*2
+            newheight=newheight-delta
+            newwidth=newwidth-delta
+            }
 
+            rect.attr("height", newheight)
+                .attr("width", newwidth)
+                .attr("x", newex)
+
+            text.attr("x", newex)
+
+       if (flaf) {
+            maxWidth=maxRightEdge-rect.node().getBBox().x
+            rect
+                //.clone(true).attr("class","rec_fam rec_clone")
+                .attr("width", maxWidth+10);
+        }
+            ypos = ypos + 20 + delta * 1.5
+            delta = delta + 10
 
     }
 
@@ -371,24 +399,24 @@
 
             g1.append("rect")
                 .attr("class", "rec_fam")
-                .attr("x", x(-1 * max_period) - 15)
+                .attr("x", x(-1 * max_period) - 10)
                 .attr("y", ypos)
-                .attr("width", x((max_period)) - x((min_period)) + 25)
+                .attr("width", x((max_period)) - x((min_period)) + 10)
                 .attr("height", height_of_taxon * 20 + 10)
             g1.append("text")
             //.attr("class","rec_fam")
-                .attr("x", x(-1 * (min_period)) + 5)
+                .attr("x", x(-1 * (max_period)) + 1)
                 .attr("y", ypos)
-                .attr("text-anchor", "end")
+                .attr("text-anchor", "start")
                 .text(prefix + " " + name)
         }
         else { /*invisible rectangle*/
             g1.append("rect")
-                .attr("class", "rec_invisible")
-                .attr("x", x(-1 * max_period) - 15)
+                .attr("class", "rec_fam rec_invisible")
+                .attr("x", x(-1 * max_period) )
                 .attr("y", ypos)
-                .attr("width", x((max_period)) - x((min_period)) + 25)
-                .attr("height", height_of_taxon * 20 + 10)
+                .attr("width", x(max_period) - x(min_period)+1 )
+                .attr("height", height_of_taxon * 20 )
 
         }
         ypos = ypos + 10
@@ -396,6 +424,7 @@
     }
 
     function drawBricks(bricks,fam) {
+
         const max_period = d3.max(bricks, function (d) {
             return +d.period_start
         })
@@ -404,10 +433,10 @@
         })
         const height_of_taxon = bricks.length;
 
-
+        /*
         d3.select("#one").append("p")
             .text("min=" + min_period + "   max=" + max_period + "     height=" + height_of_taxon);
-
+        */
         if (g1.selectAll("g:last-of-type").node())
             ypos = g1.select("g:last-of-type").node().getBBox().y + g1.select("g:last-of-type").node().getBBox().height
         else ypos = g1.node().getBBox().y
@@ -434,11 +463,12 @@
             .attr("height", height_of_taxon * 20)
         g2.append("text")
         //.attr("class","rec_fam")
-            .attr("x", x(-1 * (min_period)) + 10)
+            .attr("x", x(-1 * (max_period))-10 )
             .attr("y", ypos + 20)
-            .attr("text-anchor", "end")
+            .attr("text-anchor", "start")
             .text("подсем. " + fam)
             greenRec=true
+            delta=10
         }
 
         g2.selectAll("rect.brick").data(bricks).enter().append("rect").attr("class","brick") //create lines of period
@@ -446,7 +476,7 @@
             .attr("rx", 3)
             .attr("ry", 3)
             .attr("x", (d) => {if (!d.period_start) console.log("alert! no period start! id="+d.id);return x(-1 * d.period_start);})
-            .attr("y",(d,i)=>ypos+i*20+30)
+            .attr("y",(d,i)=>ypos+i*20+32)
             .attr("width", function (d, i) {
                 wid = x(d.period_start) - x(d.period_end); //calculate length of line
                 if (wid<5) wid=5;
@@ -478,7 +508,7 @@
                 return x(-1*d.period_start);
             })
             .attr("y", function (d, j) {
-                return ypos+j*20 +28 ;
+                return ypos+j*20 +30 ;
             });
     }
 

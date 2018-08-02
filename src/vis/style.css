@@ -59,6 +59,8 @@ h1{font-family: Arial;
     ry:3px;
 }
 
+.rec_clone{fill: none; stroke: red}
+
 .rec_invisible{opacity: 0;}
 
 .rec_subfam{
