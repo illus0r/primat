@@ -57,6 +57,7 @@ h1{font-family: Arial;
     fill:cornflowerblue;
     rx:3px;
     ry:3px;
+    fill: #ffffff;
 }
 
 .rec_clone{fill: none; stroke: red}
@@ -68,6 +69,7 @@ h1{font-family: Arial;
     fill: greenyellow;
     rx:3px;
     ry:3px;
+    fill: #ffffff;
 }
 
 text.epicOrderName{

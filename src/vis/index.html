@@ -392,6 +392,8 @@
             if (id.genus) atLeastOneGen=true
         })
 
+        initFilter()
+
 
         g1=g.append("g").attr("id",trimname+i).attr("class", taxon)
 
@@ -403,6 +405,7 @@
                 .attr("y", ypos)
                 .attr("width", x((max_period)) - x((min_period)) + 10)
                 .attr("height", height_of_taxon * 20 + 10)
+                .attr("filter", "url(#dropshadow)")
             g1.append("text")
             //.attr("class","rec_fam")
                 .attr("x", x(-1 * (max_period)) + 1)
@@ -442,17 +445,25 @@
         else ypos = g1.node().getBBox().y
 
 
-
-
         g2 = g1.append("g").attr("id", fam)
         var emptyGen=false, atLeastOneSubTaxon=false, atLeastOneGen=false, greenRec=false
-        /*flag of empty genus*/
-        bricks.forEach(function (brick) {
+        var firstLocation=bricks[0].location, sameGens=false, locations="("+firstLocation
+        var nameOfUnionBrick
+        /*flag of empty genus etc*/
+        bricks.forEach(function (brick,i) {
             if (brick.genus=="") emptyGen=true /*so, we don't need a subfamily rectangle*/
             if (brick.subfamily) atLeastOneSubTaxon=true
             if (brick.genus) atLeastOneGen=true
+            if (i>0 && brick.genus==bricks[0].genus && brick.period_start==bricks[0].period_start && brick.period_end==bricks[0].period_end) {
+                sameGens=true
+                locations=locations+", "+brick.location
+                if (brick.family) nameOfUnionBrick="сем. "+brick.family
+                if (brick.subfamily) nameOfUnionBrick="подсем. "+brick.subfamily
+                if (brick.genus) nameOfUnionBrick=brick.genus
+            }
+            else sameGens=false
         })
-
+        locations=locations+")"
 
         if (atLeastOneGen==true && bricks[0].subfamily) {
         g2.append("rect")
@@ -461,6 +472,7 @@
             .attr("y", ypos + 20)
             .attr("width", x((max_period)) - x((min_period)) + 20)
             .attr("height", height_of_taxon * 20)
+            .attr("filter", "url(#dropshadow)")
         g2.append("text")
         //.attr("class","rec_fam")
             .attr("x", x(-1 * (max_period))-10 )
@@ -471,6 +483,16 @@
             delta=10
         }
 
+        if (sameGens==true){
+            console.log(bricks[0].id+" "+nameOfUnionBrick+" locations=",locations)
+            drawUnionBrick(nameOfUnionBrick, locations,ypos,bricks[0])
+           // drawUsualBricks(bricks,ypos,atLeastOneGen,atLeastOneSubTaxon,greenRec)
+        }
+        else drawUsualBricks(bricks,ypos,atLeastOneGen,atLeastOneSubTaxon,greenRec)
+
+    }
+
+    function drawUsualBricks(bricks,ypos,atLeastOneGen,atLeastOneSubTaxon,greenRec) {
         g2.selectAll("rect.brick").data(bricks).enter().append("rect").attr("class","brick") //create lines of period
         //.on ("click",handleGenusClick)
             .attr("rx", 3)
@@ -493,7 +515,7 @@
                     if (d.subfamily=="—" || d.subfamily=="") {
                         if (atLeastOneGen==true) return d.id+" "+" ("+d.location+")"; //завершающая пустышка семейства
                         else
-                        return d.id+" "+"сем. "+d.family+" ("+d.location+")";
+                            return d.id+" "+"сем. "+d.family+" ("+d.location+")";
                     }
 
                     else {
@@ -510,6 +532,32 @@
             .attr("y", function (d, j) {
                 return ypos+j*20 +30 ;
             });
+    }
+
+    function drawUnionBrick(nameofUnionBrick, locations,ypos,d) {
+
+        g2.append("rect").attr("class","brick") //create lines of period
+        //.on ("click",handleGenusClick)
+            .attr("rx", 3)
+            .attr("ry", 3)
+            .attr("x", function(){if (!d.period_start) console.log("alert! no period start! id="+d.id);return x(-1 * d.period_start);})
+            .attr("y",ypos+32)
+            .attr("width", function(){
+                wid = x(d.period_start) - x(d.period_end); //calculate length of line
+                if (wid<5) wid=5;
+                return wid;
+            })
+            .attr("height", 5)
+            .attr("stroke", "none")
+            .attr("fill", "#ff8a00");
+
+        g2.append("text")//create signs for lines
+            .attr("class","genus")
+            .text(()=>"! "+d.id+" "+nameofUnionBrick+" "+locations)
+            .attr("x", function () {
+                return x(-1*d.period_start);
+            })
+            .attr("y", ypos+30);
     }
 
     function getSubOrders(order,data) {
@@ -602,6 +650,32 @@
         //console.log("JJ="+JSON.stringify(subfamilysData[0],null,2))
         var subFamilys=subfamilysData.map(function(node){ return node.key; })
         return subFamilys
+    }
+
+    function initFilter(){
+        /* For the drop shadow filter*/
+        var defs = svg.append("defs");
+
+        var filter = defs.append("filter")
+            .attr("id", "dropshadow")
+            .attr("height", "130%");
+
+        filter.append("feGaussianBlur")
+            .attr("in", "SourceAlpha")
+            .attr("stdDeviation", 4)
+            .attr("result", "blur");
+        filter.append("feOffset")
+            .attr("in", "blur")
+            .attr("dx", 2)
+            .attr("dy", 2)
+            .attr("result", "offsetBlur");
+
+        var feMerge = filter.append("feMerge");
+
+        feMerge.append("feMergeNode")
+            .attr("in", "offsetBlur")
+        feMerge.append("feMergeNode")
+            .attr("in", "SourceGraphic");
     }
 
     $(window).scroll(function() {
