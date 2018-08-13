@@ -81,3 +81,7 @@ text.epicOrderName{
     font-family: "Times New Roman";
     text-transform: uppercase;
 }
+path {
+    fill: none;
+    stroke: #ff8a00;
+}
