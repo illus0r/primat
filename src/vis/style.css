@@ -65,8 +65,11 @@ h1{font-family: Arial;
 .rec_invisible{opacity: 0;}
 
 .rec_subfam{
-    opacity:0.5;
+    opacity:0.5; /*for test*/
     fill: greenyellow;
+
+    opacity:0.2; /*for production*/
+    fill:cornflowerblue;
     rx:3px;
     ry:3px;
     fill: #ffffff;
@@ -81,7 +84,7 @@ text.epicOrderName{
     font-family: "Times New Roman";
     text-transform: uppercase;
 }
-path {
+.connections path {
     fill: none;
     stroke: #ff8a00;
 }
