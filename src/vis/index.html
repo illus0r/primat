@@ -42,13 +42,28 @@
 <body>
 
 
-<div id="header"> Эволюция приматов</div>
+
 <div id="axis">  </div>
 <div id="plot">
     <svg id="chart" width="1200" height="10000"
          viewBox="0 0 1200 10000"
          preserveAspectRatio="xMidYMid meet">
     </svg>
+</div>
+<div id="header">
+    <h1><img src="https://pp.userapi.com/c847017/v847017002/31c6c/5meK6IkGn8E.jpg?ava=1" width="50" height="50" data-alt="Станислав Дробышевский">
+    Эволюция приматов</h1>
+
+    <p>Эволюция приматов - более сложный процесс, чем многим кажется. Но, слава палеоприматологам, эволюция приматов изучена лучше, чем большинства других организмов. Имея тысячи находок, учитывая их географию и датировки, можно построить общую схему. Однако, насколько мне известно, доселе никто не озаботился этим всерьёз, поэтому пришлось делать всё самому. Итак, перед Вами - единственная в мире всеобщая эволюция приматов с точностью до подсемейств, местами по необходимости указаны и роды. По горизонтали - время, справа - современные группы. Великий предок пургаториус - сверху слева, мы - снизу справа. </p>
+    <p>Станислав Дробышевский, антрополог и популяризатор науки.</p>
+</div>
+<div id="footer">
+    <a href="http://dianov.org">Иван Дианов</a>
+    <p>дизайнер и руководитель</p>
+    <a href="">Ольга Мохова </a>
+    <p>программист</p>
+    <a href="">Лёля</a>
+    <p>скопировала данные</p>
 </div>
 <script>
 
@@ -102,18 +117,7 @@
         initFilter()
 
         var myOrders=findOrders(data);
-        console.log("orders = "+JSON.stringify(myOrders,null,2))
-        d3.select("#one").append("p").text("all orders = "+ JSON.stringify(myOrders,null,2))
-        d3.select("#one").append("hr")
 
-        function FindFamByOrder(order){
-            var scandyFamsData=data.filter(function (d) {return d.order===order})
-            var scandyFams= d3.nest()
-                .key(function (d) {return d.family})
-                .entries(scandyFamsData)
-            var famByOrder=scandyFams.map(function(node){ return node.key; })
-            return famByOrder
-        }
         ypos=30
         delta=0
         myOrders.forEach(function (order) {
@@ -236,30 +240,10 @@
         return myOrders;
     }
 
-    function findFamilys(data) {
-        var myFams=d3.nest()
-            .key(function (d) {return "сем. "+d.family})
-            .entries(data);
-        console.log("famylys = "+myFams.map(function(node){ return node.key; }))
-        return myFams
-    }
-
-    function getBounaries(fam,ids) {
-        const max_period=d3.max(ids, function (d) {
-            return +d.period_start
-        })
-        const min_period=d3.min(ids,function (d) {
-            return +d.period_end
-        })
-        const height_of_taxon=myleaves.length;
-        d3.select("#one").append("p")
-            .text( "min="+min_period+"   max="+max_period+"     height="+height_of_taxon);
-    }
-
     function drawAnSVG() {
         svg = d3.select("svg");
         g_axis=d3.select("#axis").append("svg")
-            .attr("width",1200)
+            .attr("width",1000)
             .attr("height",20)
             .append("g").attr("class","axis")
         //g_axis = svg.append("g").attr("class","axis");
@@ -267,10 +251,10 @@
     }
 
     function drawAnAxis() {
-        var width=1200
+        var width=1000
         x = d3.scaleLinear()
-            .domain([-70, 10])
-            .range([50, width-50])
+            .domain([-70, 5])
+            .range([20, width-20])
 
         var xAxis = d3.axisBottom(x)
         var xAxisPeriods=d3.axisTop(x)
@@ -353,7 +337,7 @@
         g.append("text")
             .attr("class","epicOrderName").text(taxon+" "+name)
             .attr("y",ypos+30)
-            .attr("x",1200/2)
+            .attr("x",900/2+50)
         ypos=ypos+50;
     }
 
@@ -546,25 +530,46 @@
             .text(function(d){
                 if (d.genus=="—" || d.genus=="") { // oh really, no genus?
                     if (d.subfamily=="—" || d.subfamily=="") {
-                        if (atLeastOneGen==true) return d.id+" "+" ("+d.location+")"; //завершающая пустышка семейства
-                        else
-                            return d.id+" "+"сем. "+d.family+" ("+d.location+")";
+                        if (atLeastOneGen==true)
+                        {fullText=d.id+" "+" ("+d.location+")";
+                            return d.id+" "+" ("+d.location+")"; }//завершающая пустышка семейства
+                        else{
+                            fullText=d.id+" "+"сем. "+d.family+" ("+d.location+")";
+                            return d.id+" "+"сем. "+d.family+" ("+d.location+")";}
                     }
 
                     else {
-                        if (atLeastOneSubTaxon == true && greenRec) return d.id + " " + " (" + d.location + ")";//завершающая пустышка подсемейства
+                        if (atLeastOneSubTaxon == true && greenRec) {
+                            fullText=d.id + " " + " (" + d.location + ")";
+                            return d.id + " " + " (" + d.location + ")";}//завершающая пустышка подсемейства
                         else
-
-                            return d.id + " " + "подсем." + d.subfamily + " (" + d.location + ")";
+                        {fullText=d.id + " " + "подсем." + d.subfamily + " (" + d.location + ")";
+                            return d.id + " " + "подсем." + d.subfamily + " (" + d.location + ")";}
                     }
                 }
-                else return d.id+" "+d.genus+" ("+d.location+")"})
+                else {
+                    fullText=d.id+" "+d.genus+" ("+d.location+")"
+                    return d.id+" "+d.genus+" ("+d.location+")"}
+            })
+            .attr ("data-fullName", fullText+"full")
             .attr("x", function (d) {
                 return x(-1*d.period_start);
             })
             .attr("y", function (d, j) {
                 return ypos+j*20 +30 ;
-            });
+            })/*
+            .on('mouseover', function(d){
+                d3.select(this).style('fill', 'red').text(function () {if(d3.select(this).text().getComputedTextLength() > 50)
+                    return d3.select(this).text().substring(0,5)+'...';
+                else
+                    return d3.select(this).text(getAttribute("data-fullName"));
+                });
+                //nodeSelection.select("text").style({opacity:'1.0'});
+            })
+            .on ("mouseout", function () {
+                d3.select(this).text(getAttribute("data-fullName"))
+            }*/
+        ;
     }
 
     function drawUnionBrick(nameofUnionBrick, locations,ypos,d) {
