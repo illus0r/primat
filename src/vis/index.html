@@ -45,8 +45,8 @@
 
 <div id="axis">  </div>
 <div id="plot">
-    <svg id="chart" width="1200" height="10000"
-         viewBox="0 0 1200 10000"
+    <svg id="chart" width="1200" height="8100"
+         viewBox="0 0 1200 8100"
          preserveAspectRatio="xMidYMid meet">
     </svg>
 </div>
@@ -232,11 +232,8 @@
     function findOrders(data) {
         var myOrdersData = d3.nest()
             .key(function (d) { return d.order })
-            //.rollup(function (v) {
-            //    return v.length
-            //})
             .entries(data);
-        console.log("orders = "+myOrdersData.map(function(node){ return node.key; }));
+        //console.log("orders = "+myOrdersData.map(function(node){ return node.key; }));
         var myOrders=myOrdersData.map(function(node){ return node.key; })
         return myOrders;
     }
@@ -282,7 +279,6 @@
                 })
                 .tickPadding(5)
                 .tickSize(0));
-
     }
 
     function drawBegunok() {
@@ -300,11 +296,6 @@
                 d += " " + mousex[0] + "," + 10;
                 return d;
             });
-            /*vertical2.style("display", null).attr("d", function () {
-                var d = "M" + mousex[0] + "," + (height);
-                d += " " + mousex[0] + "," + 10;
-                return d;
-            });*/
             begunokRect.attr("id","begunok").attr("y",-20)
                 .attr( "x",function (d){return (mousex[0]-35)});
 
@@ -408,9 +399,6 @@
             if (id.genus) atLeastOneGen=true
         })
 
-
-
-
         g1=g.append("g").attr("id",trimname+i).attr("class", taxon)
 
         if (emptySubFam==false || atLeastOneSubTaxon==true || atLeastOneGen==true) {
@@ -439,7 +427,6 @@
 
         }
         ypos = ypos + 10
-
     }
 
     function drawBricks(bricks,fam) {
@@ -452,10 +439,6 @@
         })
         const height_of_taxon = bricks.length;
 
-        /*
-        d3.select("#one").append("p")
-            .text("min=" + min_period + "   max=" + max_period + "     height=" + height_of_taxon);
-        */
         if (g1.selectAll("g:last-of-type").node())
             ypos = g1.select("g:last-of-type").node().getBBox().y + g1.select("g:last-of-type").node().getBBox().height
         else ypos = g1.node().getBBox().y
@@ -466,19 +449,41 @@
         var firstLocation=bricks[0].location, sameGens=false, locations="("+firstLocation
         var nameOfUnionBrick
         /*flag of empty genus etc*/
-        bricks.forEach(function (brick,i) {
-            if (brick.genus=="") emptyGen=true /*so, we don't need a subfamily rectangle*/
-            if (brick.subfamily) atLeastOneSubTaxon=true
-            if (brick.genus) atLeastOneGen=true
-            if (i>0 && brick.genus==bricks[0].genus && brick.period_start==bricks[0].period_start && brick.period_end==bricks[0].period_end) {
+        i = bricks.length - 1;
+
+        while (i >= 0) {
+            /*if (review[index] === 'a') {
+                review.splice(index, 1);*/
+
+        //bricks.forEach(function (brick,i,object) {
+            console.log (i+ " " + bricks[i].id)
+            if (bricks[i].genus=="") emptyGen=true /*so, we don't need a subfamily rectangle*/
+            if (bricks[i].subfamily) atLeastOneSubTaxon=true
+            if (bricks[i].genus) atLeastOneGen=true
+            /*if (i>0 && brick.genus==bricks[0].genus && brick.period_start==bricks[0].period_start && brick.period_end==bricks[0].period_end) {
                 sameGens=true
                 locations=locations+", "+brick.location
                 if (brick.family) nameOfUnionBrick="сем. "+brick.family
                 if (brick.subfamily) nameOfUnionBrick="подсем. "+brick.subfamily
                 if (brick.genus) nameOfUnionBrick=brick.genus
             }
-            else sameGens=false
-        })
+            else sameGens=false*/
+            /**/
+            if (i>0 && bricks[i-1].period_start==bricks[i].period_start && bricks[i-1].period_end==bricks[i].period_end && bricks[i-1].genus==bricks[i].genus){
+                locations=bricks[i].location+", "+bricks[i-1].location
+                bricks[i-1].location=locations
+                console.log("ok "+bricks[i-1].id+" "+bricks[i].id)
+                bricks.splice(i,1)
+                console.log("after "+bricks.length)
+            }
+            else if (i>0) console.log("no "+bricks[i-1].id+" "+bricks[i].id)
+            sameGens=false
+            /**/
+        //})
+
+
+            i -= 1;
+        }
         locations=locations+")"
 
         if (atLeastOneGen==true && bricks[0].subfamily) {
