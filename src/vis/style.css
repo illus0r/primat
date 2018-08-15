@@ -1,30 +1,20 @@
 body { margin:0;top:0;right:0;bottom:0;left:0; min-width: 1200px;font-family: "Helvetica Neue", Helvetica, sans-serif;font-size: 10px;}
-.column {float: left; }
-.column1{}
-.column2{width: 300px; position:fixed; right: 0px}
-.row:after {
-    content: "";
-    display: table;
-    clear: both;
-}
-#header {position:relative;
-top:0;
-}
-#footer{bottom:1em;position: relative}
-#footer a {color: steelblue}
+
+#header {position:relative;top:0;font-family: Arial}
+#footer{bottom:1em;position: relative; font-size: 11px;}
+#footer a {color: #4a90e2}
 #footer p {margin: 0 0 1px 0}
-@media screen and (min-width:1200px){
+@media screen and (min-width:1000px){
     #header, #footer {
         display:block;
         position: fixed;
-        right: 10px;
-        width: 200px;
+        right: 17.3px;
+        width: 242px;
     }
 }
-#header img
-{border-radius:50% ;float: left; margin-right: 10px}
-#header h1 {font-size: 16px; margin-bottom: 10px; line-height: 25px;}
-
+#header img {border-radius:50% ;margin-top: 27px;}
+#header h1 {font-size: 16px; margin-bottom: 10px; line-height: 19px; font-size: 19px; font-weight: bold;}
+#header p,#header i{font-size: 12px; }
 #plot {margin-top: -55px; background: #fff; z-index: 3; width: 1000px;}
 #axis {background-color: #fff; }
 #axis.sticky{
