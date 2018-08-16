@@ -45,13 +45,13 @@
 
 <div id="axis">  </div>
 <div id="plot">
-    <svg id="chart" width="1200" height="8100"
+    <svg id="chart"  height="8100"
          viewBox="0 0 1200 8100"
-         preserveAspectRatio="xMidYMid meet">
+         preserveAspectRatio="xMidYMin meet">
     </svg>
 </div>
 <div id="header">
-    <img src="header_img.png" width="100" height="100" data-alt="Станислав Дробышевский">
+    <img src="header_img.png" width="100" height="100" alt="Станислав Дробышевский">
     <h1>Эволюция приматов</h1>
     <p>«Эволюция приматов — более сложный процесс, чем многим кажется. Но, слава палеоприматологам, эволюция приматов изучена лучше, чем большинства других организмов.</p>
     <p>Имея тысячи находок, учитывая их географию и датировки, можно построить общую схему. Однако, насколько мне известно, доселе никто не озаботился этим всерьёз, поэтому пришлось делать всё самому.</p>
@@ -66,6 +66,7 @@
     <p><a href="">Лёля Колесникова</a> перенесла данные из ПДФ</p>
 
 </div>
+<div id="legend"><img src="map.png" alt="Легенда"></div>
 <script>
 
     function process(d) {
@@ -180,7 +181,6 @@
         var g=svg.append("g").attr("class","connections")
         data.forEach(function (d) {
             if (d.origin) {
-
                 var brickFrom=svg.select("rect#id"+d.origin+".brick")
                 var brickTo=svg.select("rect#id"+d.id+".brick")
                 if (brickFrom.node() && brickTo.node()) {
@@ -189,18 +189,36 @@
                     var xTo = parseFloat(brickTo.attr("x"))
                     var yTo = parseFloat(brickTo.attr("y")) + 3
 
-
                     var lineGenerator = d3.line().curve(d3.curveStepBefore);
+
                     var points = [
                         [xFrom, yFrom],
                         [xTo, yTo]
                     ];
 
-                    var pathData = lineGenerator(points);
+                    var pathData = lineGenerator(points); // connections with corners
 
-                    g.append('path').attr('d', pathData);
+                    var data1 = [{ //connections with curves
+                        source: {
+                            x: yFrom,
+                            y: xFrom
+                        },
+                        target: {
+                            x: yTo,
+                            y: xTo
+                        }
+                    }, ];
 
-                    //console.log("id=" + d.id + " origin=" + d.origin + " xFrom=" + xFrom + " yFrom=" + yFrom)
+                    var link = d3.linkHorizontal()
+                        .x(function(d) {
+                            return d.y;
+                        })
+                        .y(function(d) {
+                            return d.x;
+                        });
+
+                    //g.append('path').attr('d', pathData);
+                    g.selectAll(null).data(data1).enter().append("path").attr('d', link);
                 }
             }
         })
@@ -242,20 +260,25 @@
     }
 
     function drawAnSVG() {
+        var chartDiv = document.getElementById("plot");
+        ourWidth = chartDiv.clientWidth
+        plotWidth=ourWidth-250
+        console.log("w= "+ourWidth)
         svg = d3.select("svg");
+        svg.attr("width", plotWidth)
+            .attr("viewBox", "0 0 "+plotWidth+" 8100")
         g_axis=d3.select("#axis").append("svg")
-            .attr("width",1000)
+            .attr("width",plotWidth)
             .attr("height",20)
             .append("g").attr("class","axis")
-        //g_axis = svg.append("g").attr("class","axis");
         g = svg.append("g").attr("class","taxons");
     }
 
     function drawAnAxis() {
-        var width=1000
+        var width=plotWidth
         x = d3.scaleLinear()
             .domain([-70, 5])
-            .range([20, width-20])
+            .range([20, width-100])
 
         var xAxis = d3.axisBottom(x)
         var xAxisPeriods=d3.axisTop(x)
@@ -332,7 +355,7 @@
         g.append("text")
             .attr("class","epicOrderName").text(taxon+" "+name)
             .attr("y",ypos+30)
-            .attr("x",900/2+50)
+            .attr("x",plotWidth/2)
         ypos=ypos+50;
     }
 
@@ -459,7 +482,7 @@
                 review.splice(index, 1);*/
 
         //bricks.forEach(function (brick,i,object) {
-            console.log (i+ " " + bricks[i].id)
+            //console.log (i+ " " + bricks[i].id)
             if (bricks[i].genus=="") emptyGen=true /*so, we don't need a subfamily rectangle*/
             if (bricks[i].subfamily) atLeastOneSubTaxon=true
             if (bricks[i].genus) atLeastOneGen=true
@@ -476,11 +499,9 @@
                 locations=bricks[i].location+", "+bricks[i-1].location
                 bricks[i-1].location=locations
                 bricks[i-1].continent_id="mix"
-                console.log("ok "+bricks[i-1].id+" "+bricks[i].id)
                 bricks.splice(i,1)
-                console.log("after "+bricks.length)
             }
-            else if (i>0) console.log("no "+bricks[i-1].id+" "+bricks[i].id)
+            //else if (i>0) console.log("no "+bricks[i-1].id+" "+bricks[i].id)
             sameGens=false
             /**/
         //})
