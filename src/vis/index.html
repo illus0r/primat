@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Nest Test</title>
+    <title>Эволюция приматов</title>
     <script src="https://d3js.org/d3.v5.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <link rel="stylesheet" type="text/css" href="style.css">
@@ -182,23 +182,26 @@
 
                 var brickFrom=svg.select("rect#id"+d.origin+".brick")
                 var brickTo=svg.select("rect#id"+d.id+".brick")
-                var xFrom=parseFloat(brickFrom.attr("x"))+parseFloat(brickFrom.attr("width"))-0.5
-                var yFrom=parseFloat(brickFrom.attr("y"))+3
-                var xTo=parseFloat(brickTo.attr("x"))
-                var yTo=parseFloat(brickTo.attr("y"))+3
+console.log(brickTo.node())
+                if (brickFrom.node() && brickTo.node()) {
+                    var xFrom = parseFloat(brickFrom.attr("x")) + parseFloat(brickFrom.attr("width")) - 0.5
+                    var yFrom = parseFloat(brickFrom.attr("y")) + 3
+                    var xTo = parseFloat(brickTo.attr("x"))
+                    var yTo = parseFloat(brickTo.attr("y")) + 3
 
 
-                var lineGenerator = d3.line().curve(d3.curveStepBefore);
-                var points = [
-                    [xFrom, yFrom],
-                    [xTo, yTo]
-                ];
+                    var lineGenerator = d3.line().curve(d3.curveStepBefore);
+                    var points = [
+                        [xFrom, yFrom],
+                        [xTo, yTo]
+                    ];
 
-                var pathData = lineGenerator(points);
+                    var pathData = lineGenerator(points);
 
-                g.append('path').attr('d', pathData);
+                    g.append('path').attr('d', pathData);
 
-                console.log("id="+d.id+" origin="+d.origin+" xFrom="+xFrom+" yFrom="+yFrom)
+                    console.log("id=" + d.id + " origin=" + d.origin + " xFrom=" + xFrom + " yFrom=" + yFrom)
+                }
             }
         })
     }
@@ -531,50 +534,51 @@
             .attr("stroke", "none")
             .attr("fill", "#ff8a00");
 
+        var desireLength=30;//length of text labels
+
         g2.selectAll('text.genus').data(bricks).enter().append("text")//create signs for lines
             .attr("class","genus")
             .text(function(d){
                 if (d.genus=="—" || d.genus=="") { // oh really, no genus?
                     if (d.subfamily=="—" || d.subfamily=="") {
                         if (atLeastOneGen==true)
-                        {fullText=d.id+" "+" ("+d.location+")";
-                            return d.id+" "+" ("+d.location+")"; }//завершающая пустышка семейства
-                        else{
-                            fullText=d.id+" "+"сем. "+d.family+" ("+d.location+")";
-                            return d.id+" "+"сем. "+d.family+" ("+d.location+")";}
-                    }
-
-                    else {
-                        if (atLeastOneSubTaxon == true && greenRec) {
-                            fullText=d.id + " " + " (" + d.location + ")";
-                            return d.id + " " + " (" + d.location + ")";}//завершающая пустышка подсемейства
+                        fullText=d.id+" "+" ("+d.location+")"; //завершающая пустышка семейства
                         else
-                        {fullText=d.id + " " + "подсем." + d.subfamily + " (" + d.location + ")";
-                            return d.id + " " + "подсем." + d.subfamily + " (" + d.location + ")";}
+                            fullText=d.id+" "+"сем. "+d.family+" ("+d.location+")";
+                    }
+                    else {
+                        if (atLeastOneSubTaxon == true && greenRec)
+                            fullText=d.id + " " + " (" + d.location + ")";//завершающая пустышка подсемейства
+                        else
+                        fullText=d.id + " " + "подсем." + d.subfamily + " (" + d.location + ")";
                     }
                 }
-                else {
+                else
                     fullText=d.id+" "+d.genus+" ("+d.location+")"
-                    return d.id+" "+d.genus+" ("+d.location+")"}
+            return fullText //full name of the brick
             })
-            .attr ("data-fullName", fullText+"full")
+            .attr ("data-fullName", function (){return d3.select(this).text()}) //remember our full name in attr
+            .text(function () {
+                if (this.innerHTML.length>desireLength) dots="..."; else dots=""
+                return d3.select(this).text().substring(0,desireLength)+dots // trim long name
+            })
             .attr("x", function (d) {
                 return x(-1*d.period_start);
             })
             .attr("y", function (d, j) {
                 return ypos+j*20 +30 ;
-            })/*
-            .on('mouseover', function(d){
-                d3.select(this).style('fill', 'red').text(function () {if(d3.select(this).text().getComputedTextLength() > 50)
-                    return d3.select(this).text().substring(0,5)+'...';
-                else
-                    return d3.select(this).text(getAttribute("data-fullName"));
+            })
+            .on('mouseover', function(){
+                d3.select(this).text(function () {
+                    return this.getAttribute("data-fullName") //show full name
                 });
-                //nodeSelection.select("text").style({opacity:'1.0'});
             })
             .on ("mouseout", function () {
-                d3.select(this).text(getAttribute("data-fullName"))
-            }*/
+                d3.select(this).text(function () {
+                    if (this.innerHTML.length>desireLength) dots="..."; else dots=""
+                    return d3.select(this).text().substring(0, desireLength) + dots//back trim name
+                })
+            })
         ;
     }
 

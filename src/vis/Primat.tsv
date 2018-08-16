@@ -1,6 +1,6 @@
 id	mirorder	order	suborder	hyporder	infraorder	parvorder	superfamily	family	subfamily	genus	location_ru	continent_id	period_start	period_end	origin	debug
 1		SCANDENTIA						Tupaildae	Ptilocercinae	Eodendrogale parvum	Китай	asia	44.9	42.7
-2		SCANDENTIA						Tupaildae	Ptilocercinae				0	0	1
+2		SCANDENTIA						Tupaildae	Ptilocercinae				0	0
 3		SCANDENTIA						Tupaildae	Tupaiinae	Tupaia miocenica	Таиланд	asia	17.9	16.8
 4		SCANDENTIA						Tupaildae	Tupaiinae	Tupaia sivalicus	Индия	asia	9.9	8.8
 5		SCANDENTIA						Tupaildae	Tupaiinae	Prodendrogale yunnanica	Китай	asia	6.8	5.6
@@ -8,17 +8,17 @@ id	mirorder	order	suborder	hyporder	infraorder	parvorder	superfamily	family	subf
 7		DERMOPTERA					PLAGIOMENOIDEA	Mixodectidae			США	n_america	66	60.2
 8		DERMOPTERA					PLAGIOMENOIDEA	Placentidentidae			Франция	europe	53.1	51
 9		DERMOPTERA					PLAGIOMENOIDEA	Cynocephalidae		Dermotherium sp.	Бирма	asia	38.8	37.4
-10		DERMOPTERA					PLAGIOMENOIDEA	Cynocephalidae		Dermotherium major	Таиланд	asia	36.5	34.3	9
-11		DERMOPTERA					PLAGIOMENOIDEA	Cynocephalidae		Dermotherium chimaera	Пакистан	asia	32.2	30.1	10
-12		DERMOPTERA					PLAGIOMENOIDEA	Cynocephalidae		Dermotherium chimaera	Таиланд	asia	26.8	24.7	11
-13		DERMOPTERA					PLAGIOMENOIDEA	Cynocephalidae					0	0	11
+10		DERMOPTERA					PLAGIOMENOIDEA	Cynocephalidae		Dermotherium major	Таиланд	asia	36.5	34.3
+11		DERMOPTERA					PLAGIOMENOIDEA	Cynocephalidae		Dermotherium chimaera	Пакистан	asia	32.2	30.1
+12		DERMOPTERA					PLAGIOMENOIDEA	Cynocephalidae		Dermotherium chimaera	Таиланд	asia	26.8	24.7
+13		DERMOPTERA					PLAGIOMENOIDEA	Cynocephalidae					0	0
 14		DERMOPTERA					PLAGIOMENOIDEA	Plagiomenidae	incertae sedis		США	n_america	64.4	60.2
 15		DERMOPTERA					PLAGIOMENOIDEA	Plagiomenidae	Plagiomeninae		США, Канада	n_america	57.2	50
-16		DERMOPTERA					PLAGIOMENOIDEA	Plagiomenidae	Thylacaelurinae		Канада	n_america	36.8	35.5	15
+16		DERMOPTERA					PLAGIOMENOIDEA	Plagiomenidae	Thylacaelurinae		Канада	n_america	36.8	35.5
 17		DERMOPTERA					PLAGIOMENOIDEA	Plagiomenidae	Ekgmowechashalinae		Таиланд	asia	34.78	33.73		debug761
-18		DERMOPTERA					PLAGIOMENOIDEA	Plagiomenidae	Ekgmowechashalinae		США	n_america	28	26	17	debug739
+18		DERMOPTERA					PLAGIOMENOIDEA	Plagiomenidae	Ekgmowechashalinae		США	n_america	28	26		debug739
 20	PRIMATOMORPHA	INCERTAE SEDIS						Purgatoriidae			США	n_america	66	64
-21	PRIMATOMORPHA	PLESIADAPIFORMES					PLESIADAPOIDEA	Adapisoriculidae			Европа	europe	66	55
+21	PRIMATOMORPHA	PLESIADAPIFORMES					PLESIADAPOIDEA	Adapisoriculidae			Европа	europe	66	55	20
 22	PRIMATOMORPHA	PLESIADAPIFORMES					PLESIADAPOIDEA	Adapisoriculidae			Северная Африка	africa	66	55
 23	PRIMATOMORPHA	PLESIADAPIFORMES					PLESIADAPOIDEA	Adapisoriculidae			Индия	asia	66	55
 24	PRIMATOMORPHA	PLESIADAPIFORMES					PLESIADAPOIDEA	Plesiadapidae	Asioplesiadapinae		Китай	asia	53	51
@@ -49,12 +49,12 @@ id	mirorder	order	suborder	hyporder	infraorder	parvorder	superfamily	family	subf
 53	PRIMATOMORPHA	PRIMATES	STREPSIRRHINI		ADAPIFORMES			Notharctidae	Asiadapinae		Индия	asia	52.5	53.5
 54	PRIMATOMORPHA	PRIMATES	STREPSIRRHINI		ADAPIFORMES			Notharctidae	Caenopithecinae		Швейцария	europe	47.8	37
 55	PRIMATOMORPHA	PRIMATES	STREPSIRRHINI		ADAPIFORMES			Notharctidae	Caenopithecinae		Египет	africa	47.8	37
-56	PRIMATOMORPHA	PRIMATES	STREPSIRRHINI		ADAPIFORMES			Notharctidae	Cercamoniinae		Северная Аерика	s_america	53.5	33.9
-57	PRIMATOMORPHA	PRIMATES	STREPSIRRHINI		ADAPIFORMES			Notharctidae	Cercamoniinae		Европа	europe	53.5	33.9
-58	PRIMATOMORPHA	PRIMATES	STREPSIRRHINI		ADAPIFORMES			Notharctidae	Cercamoniinae		Египет	africa	53.5	33.9
-59	PRIMATOMORPHA	PRIMATES	STREPSIRRHINI		ADAPIFORMES			Notharctidae	Cercamoniinae		Оман	asia	53.5	33.9
-60	PRIMATOMORPHA	PRIMATES	STREPSIRRHINI		ADAPIFORMES			Notharctidae	Cercamoniinae		Пакистан	asia	53.5	33.9
-61	PRIMATOMORPHA	PRIMATES	STREPSIRRHINI		ADAPIFORMES			Notharctidae	Cercamoniinae		Китай	asia	53.5	33.9
+56	PRIMATOMORPHA	PRIMATES	STREPSIRRHINI		ADAPIFORMES			Notharctidae	Cercamoniinae		Северная Аерика	s_america	53.5	33.9	47
+57	PRIMATOMORPHA	PRIMATES	STREPSIRRHINI		ADAPIFORMES			Notharctidae	Cercamoniinae		Европа	europe	53.5	33.9	47
+58	PRIMATOMORPHA	PRIMATES	STREPSIRRHINI		ADAPIFORMES			Notharctidae	Cercamoniinae		Египет	africa	53.5	33.9	47
+59	PRIMATOMORPHA	PRIMATES	STREPSIRRHINI		ADAPIFORMES			Notharctidae	Cercamoniinae		Оман	asia	53.5	33.9	47
+60	PRIMATOMORPHA	PRIMATES	STREPSIRRHINI		ADAPIFORMES			Notharctidae	Cercamoniinae		Пакистан	asia	53.5	33.9	47
+61	PRIMATOMORPHA	PRIMATES	STREPSIRRHINI		ADAPIFORMES			Notharctidae	Cercamoniinae		Китай	asia	53.5	33.9	47
 62	PRIMATOMORPHA	PRIMATES	STREPSIRRHINI		ADAPIFORMES			Notharctidae	Notharctinae		Северная Африка	n_america	55.2	39.1
 63	PRIMATOMORPHA	PRIMATES	STREPSIRRHINI		ADAPIFORMES			Notharctidae	Notharctinae		Европа	europe	55.2	39.1
 64	PRIMATOMORPHA	PRIMATES	STREPSIRRHINI		ADAPIFORMES			Sivaladapidae (или подсем. Sivaladapinae сем. Adapidae)			Пакистан	asia	37.7	7.8
@@ -68,16 +68,16 @@ id	mirorder	order	suborder	hyporder	infraorder	parvorder	superfamily	family	subf
 77	PRIMATOMORPHA	PRIMATES	STREPSIRRHINI		LEMURIFORMES		LEMUROIDEA	Indriidae (= надсем. Indrioidea)	Archaeolemurinae		Мадагаскар	africa	0	0
 78	PRIMATOMORPHA	PRIMATES	STREPSIRRHINI		LEMURIFORMES		LEMUROIDEA	Indriidae (= надсем. Indrioidea)	Palaeopropithecinae (= сем. Palaeopropithecidae)		Мадагаскар	africa	0	0
 79	PRIMATOMORPHA	PRIMATES	STREPSIRRHINI		ADAPIFORMES			Azibiidae			Северная Африка	africa	51.8	34.8
-80	PRIMATOMORPHA	PRIMATES	STREPSIRRHINI		ADAPIFORMES			Adapidae	Adapinae		Европа	europe	45.1	35.9
-81	PRIMATOMORPHA	PRIMATES	STREPSIRRHINI		ADAPIFORMES			Adapidae	Adapinae		Китай	asia	45.1	35.9
-82	PRIMATOMORPHA	PRIMATES	STREPSIRRHINI		ADAPIFORMES			Adapidae	Djebelemurinae		Северная Африка	africa	50.4	49.8
-83	PRIMATOMORPHA	PRIMATES	STREPSIRRHINI		ADAPIFORMES			Adapidae	Djebelemurinae		Северная Африка	africa	33.8	35
+80	PRIMATOMORPHA	PRIMATES	STREPSIRRHINI		ADAPIFORMES			Adapidae	Adapinae		Европа	europe	45.1	35.9	56
+81	PRIMATOMORPHA	PRIMATES	STREPSIRRHINI		ADAPIFORMES			Adapidae	Adapinae		Китай	asia	45.1	35.9	56
+82	PRIMATOMORPHA	PRIMATES	STREPSIRRHINI		ADAPIFORMES			Adapidae	Djebelemurinae		Северная Африка	africa	50.4	49.8	56
+83	PRIMATOMORPHA	PRIMATES	STREPSIRRHINI		ADAPIFORMES			Adapidae	Djebelemurinae		Северная Африка	africa	33.8	35	56
 85	PRIMATOMORPHA	PRIMATES	STREPSIRRHINI		LEMURIFORMES		CHEIROGALEOIDEA	Cheirogaleidae	Cheirogaleinae		Мадагаскар	africa	0	0
 87	PRIMATOMORPHA	PRIMATES	STREPSIRRHINI		LEMURIFORMES		CHEIROGALEOIDEA	Cheirogaleidae	Cheirogaleinae	Bugtilemur mathesoni	Пакистан	asia	32.3	30.1
 1087	PRIMATOMORPHA	PRIMATES	STREPSIRRHINI		LEMURIFORMES		CHEIROGALEOIDEA	Cheirogaleidae	Phanerinae		Мадагаскар	africa	0	0
 86	PRIMATOMORPHA	PRIMATES	STREPSIRRHINI		LORISIFORMES		LORISOIDEA	Galagonidae	Galaginae		Африка	africa	0	0
-88	PRIMATOMORPHA	PRIMATES	STREPSIRRHINI		LORISIFORMES		LORISOIDEA	incertae sedis		Chasselasia eldredgei	Швейцария	europe	46.5	43.4
-89	PRIMATOMORPHA	PRIMATES	STREPSIRRHINI		LORISIFORMES		LORISOIDEA	Galagonidae	Galaginae	Saharagalago misrensis	Египет	africa	41.2	35.2
+88	PRIMATOMORPHA	PRIMATES	STREPSIRRHINI		LORISIFORMES		LORISOIDEA	incertae sedis		Chasselasia eldredgei	Швейцария	europe	46.5	43.4	82
+89	PRIMATOMORPHA	PRIMATES	STREPSIRRHINI		LORISIFORMES		LORISOIDEA	Galagonidae	Galaginae	Saharagalago misrensis	Египет	africa	41.2	35.2	88
 90	PRIMATOMORPHA	PRIMATES	STREPSIRRHINI		LORISIFORMES		LORISOIDEA	Galagonidae	Galaginae	Galago farafraensis	Египет	africa	11.2	10
 91	PRIMATOMORPHA	PRIMATES	STREPSIRRHINI		LORISIFORMES		LORISOIDEA	Galagonidae	Galaginae	Galago farafraensis	Египет	africa	5.2	3.2
 92	PRIMATOMORPHA	PRIMATES	STREPSIRRHINI		LORISIFORMES		LORISOIDEA	Galagonidae	Galaginae	Galago farafraensis	Египет	africa	2.2	1.2
@@ -102,11 +102,11 @@ id	mirorder	order	suborder	hyporder	infraorder	parvorder	superfamily	family	subf
 111	PRIMATOMORPHA	PRIMATES	STREPSIRRHINI		ADAPIFORMES		LORISOIDEA	Lorisidae	Lorisinae		Индонезия	asia	0	0
 112	PRIMATOMORPHA	PRIMATES	STREPSIRRHINI		ADAPIFORMES		PLESIOPITHECOIDEA	Plesiopithecidae			Египет	africa	37.4	35.6
 113	PRIMATOMORPHA	PRIMATES	STREPSIRRHINI		CHIROMYIFORMES			incertae sedis		Nosmips aenigmaticus	Египет	africa	36.4	35.7
-114	PRIMATOMORPHA	PRIMATES	STREPSIRRHINI		CHIROMYIFORMES			Daubentoniidae (=Chiromyidae)			Мадагаскар	africa	0	0
+114	PRIMATOMORPHA	PRIMATES	STREPSIRRHINI		CHIROMYIFORMES			Daubentoniidae (=Chiromyidae)			Мадагаскар	africa	0	0	112
 115	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	TARSIIFORMES	OMOMYIFORMES (=надсем. OMOMYOIDEA)			Microchoeridae (=Necrolemuridae)			Европа	europe	55.6	31.5
 116	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	TARSIIFORMES	OMOMYIFORMES (=надсем. OMOMYOIDEA)			Microchoeridae (=Necrolemuridae)			Китай	asia	55.6	31.5
 117	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	TARSIIFORMES	OMOMYIFORMES (=надсем. OMOMYOIDEA)			Microchoeridae (=Necrolemuridae)			Пакистан	asia	55.6	31.5
-118	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	TARSIIFORMES	OMOMYIFORMES (=надсем. OMOMYOIDEA)			Omomyidae	Decoredontinae		Китай	asia	61.5	58.6
+118	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	TARSIIFORMES	OMOMYIFORMES (=надсем. OMOMYOIDEA)			Omomyidae	Decoredontinae		Китай	asia	61.5	58.6	47
 119	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	TARSIIFORMES	OMOMYIFORMES (=надсем. OMOMYOIDEA)			Omomyidae	Anaptomorphinae (=Tetoniidae)		Северная Америка	n_america	55.7	41.8
 120	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	TARSIIFORMES	OMOMYIFORMES (=надсем. OMOMYOIDEA)			Omomyidae	Anaptomorphinae (=Tetoniidae)		Египет	africa	55.7	41.8
 121	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	TARSIIFORMES	OMOMYIFORMES (=надсем. OMOMYOIDEA)			Omomyidae	Anaptomorphinae (=Tetoniidae)		Европа	europe	55.7	41.8
@@ -119,8 +119,8 @@ id	mirorder	order	suborder	hyporder	infraorder	parvorder	superfamily	family	subf
 128	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	TARSIIFORMES	OMOMYIFORMES (=надсем. OMOMYOIDEA)			Omomyidae	incertae sedis		Китай	asia	55.7	52.9
 129	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	TARSIIFORMES	OMOMYIFORMES (=надсем. OMOMYOIDEA)			Omomyidae	Tarkadectinae		США	n_america	46	42
 130	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	TARSIIFORMES	OMOMYIFORMES (=надсем. OMOMYOIDEA)			Omomyidae	Tarkadectinae		Китай	asia	46	42
-131	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	TARSIIFORMES	OMOMYIFORMES (=надсем. OMOMYOIDEA)?			Archicebidae			Китай	asia	55.8	54.9
-132	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	TARSIIFORMES	TARSIIFORMES			Tarsiidae		Xanthorhysis tabrumi	Китай	asia	45.5	44.5
+131	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	TARSIIFORMES	OMOMYIFORMES (=надсем. OMOMYOIDEA)?			Archicebidae			Китай	asia	55.8	54.9	118
+132	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	TARSIIFORMES	TARSIIFORMES			Tarsiidae		Xanthorhysis tabrumi	Китай	asia	45.5	44.5	131
 133	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	TARSIIFORMES	TARSIIFORMES			Tarsiidae		Tarsius eocaenus	Китай	asia	38	37
 134	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	TARSIIFORMES	TARSIIFORMES			Tarsiidae		Tarsius thailandica	Тайланд	asia	18.3	16
 135	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	TARSIIFORMES	TARSIIFORMES			Tarsiidae		Hesperotarsius sindhensis	Пакистан	asia	18.3	16
@@ -133,15 +133,15 @@ id	mirorder	order	suborder	hyporder	infraorder	parvorder	superfamily	family	subf
 142	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	ANTHROPOIDEA	EOSIMIIFORMES			Afrotarsiidae			Ливия	africa	39.2	29.2
 143	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	ANTHROPOIDEA	EOSIMIIFORMES			Afrotarsiidae			Бирма	asia	39.2	29.2
 144	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	ANTHROPOIDEA	EOSIMIIFORMES			Afrotarsiidae			Еипет	africa	39.2	29.2
-145	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	ANTHROPOIDEA	EOSIMIIFORMES			Eosimiidae			Китай	asia	55.2	53.5
+145	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	ANTHROPOIDEA	EOSIMIIFORMES			Eosimiidae			Китай	asia	55.2	53.5	131
 146	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	ANTHROPOIDEA	EOSIMIIFORMES			Eosimiidae			Бирма	asia	45.8	44.8
 147	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	ANTHROPOIDEA	EOSIMIIFORMES			Eosimiidae			Индия	asia	37.8	37
 148	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	ANTHROPOIDEA	EOSIMIIFORMES			Eosimiidae			Пакистан	asia	31.5	29.2
-149	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	ANTHROPOIDEA	INCERTAE SEDIS		PARAPITHECOIDEA	Parapithecidae	Parapithecinae		Египет	africa	39	28.3
+149	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	ANTHROPOIDEA	INCERTAE SEDIS		PARAPITHECOIDEA	Parapithecidae	Parapithecinae		Египет	africa	39	28.3	145
 150	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	ANTHROPOIDEA	INCERTAE SEDIS		PARAPITHECOIDEA	Parapithecidae	Parapithecinae		Ливия	africa	39	28.3
 151	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	ANTHROPOIDEA	INCERTAE SEDIS		PARAPITHECOIDEA	Parapithecidae	Parapithecinae		Кения	africa	39	28.3
 152	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	ANTHROPOIDEA	INCERTAE SEDIS		PARAPITHECOIDEA	Parapithecidae	incertae sedis	Arsinoea kallimos	Египет	africa	34.6	34.1
-153	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	ANTHROPOIDEA	INCERTAE SEDIS		INCERTAE SEDIS	Amphipithecidae			Бирма	asia	38.2	30.8
+153	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	ANTHROPOIDEA	INCERTAE SEDIS		INCERTAE SEDIS	Amphipithecidae			Бирма	asia	38.2	30.8	145
 154	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	ANTHROPOIDEA	INCERTAE SEDIS		INCERTAE SEDIS	Amphipithecidae			Таиланд	asia	38.2	30.8
 155	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	ANTHROPOIDEA	INCERTAE SEDIS		INCERTAE SEDIS	Amphipithecidae			Пакистан	asia	38.2	30.8
 156	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	ANTHROPOIDEA	PLATYRRHINI			Callithrichidae (=Callimiconidae =Hapalidae)	Callithrichinae	Lagonimico conclucatus	Колумбия	s_america	13.9	12.2
@@ -157,7 +157,7 @@ id	mirorder	order	suborder	hyporder	infraorder	parvorder	superfamily	family	subf
 169	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	ANTHROPOIDEA	PLATYRRHINI			Cebidae	Aotinae (=Nyctipithecinae)	Aotus dindensis	Колумбия	s_america	13.8	13.3
 170	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	ANTHROPOIDEA	PLATYRRHINI			Cebidae	Aotinae (=Nyctipithecinae)		Южная Америка	s_america	0	0
 171	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	ANTHROPOIDEA	PLATYRRHINI			Cebidae	Aotinae (=Nyctipithecinae)		Гаити	oceania	0	0
-172	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	TARSIIFORMES	INCERTAE SEDIS		INCERTAE SEDIS	incertae sedis	Perupithecus ucayaliensis		Перу	s_america	40.6	39.8
+172	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	TARSIIFORMES	INCERTAE SEDIS		INCERTAE SEDIS	incertae sedis	Perupithecus ucayaliensis		Перу	s_america	40.6	39.8	153
 173	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	ANTHROPOIDEA	PLATYRRHINI			Cebidae	Callicebinae		Боливия	s_america	27.1	25.8
 174	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	ANTHROPOIDEA	PLATYRRHINI			Cebidae	Callicebinae	Paralouatta marianae	Куба		19.5	18.7
 175	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	ANTHROPOIDEA	PLATYRRHINI			Cebidae	Callicebinae	Miocallicebus villaviejai	Колумбия	s_america	13.8	13.2
@@ -167,8 +167,8 @@ id	mirorder	order	suborder	hyporder	infraorder	parvorder	superfamily	family	subf
 179	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	ANTHROPOIDEA	PLATYRRHINI			Cebidae	Callicebinae		Южная Америка	s_america	0	0
 180	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	ANTHROPOIDEA	PLATYRRHINI			Cebidae	Cebinae		Гаити	oceania	0	0
 181	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	ANTHROPOIDEA	PLATYRRHINI			Cebidae	Cebinae		Южная Америка	s_america	0	0
-182	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	ANTHROPOIDEA	PLATYRRHINI			Cebidae	Cebinae	Dolichocebus gaimanensis	Аргентина	s_america	24.9	15.4
-183	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	ANTHROPOIDEA	PLATYRRHINI			Cebidae	Cebinae	Chilecebus carrascoensis	Чили	s_america	20.5	19.9
+182	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	ANTHROPOIDEA	PLATYRRHINI			Cebidae	Cebinae	Dolichocebus gaimanensis	Аргентина	s_america	24.9	15.4	203
+183	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	ANTHROPOIDEA	PLATYRRHINI			Cebidae	Cebinae	Chilecebus carrascoensis	Чили	s_america	20.5	19.9	203
 184	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	ANTHROPOIDEA	PLATYRRHINI			Cebidae	Cebinae	Laventiana annectens	Колумбия	s_america	13.8	13.2
 185	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	ANTHROPOIDEA	PLATYRRHINI			Cebidae	Cebinae	Acrecebus fraileyi	Бразилия	s_america	8	6
 186	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	ANTHROPOIDEA	PLATYRRHINI			Cebidae	Pitheciinae	Mazzonicebus almendrae	Аргентина	s_america	20.5	19.6
@@ -197,12 +197,12 @@ id	mirorder	order	suborder	hyporder	infraorder	parvorder	superfamily	family	subf
 209	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	ANTHROPOIDEA	CATARRHINI	EOCATARRHINI	PLIOPITHECOIDEA	Pliopithecidae	Pliopithecinae		Европа	europe	17.2	14.6
 210	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	ANTHROPOIDEA	CATARRHINI	EOCATARRHINI	PLIOPITHECOIDEA	Pliopithecidae	Pliopithecinae		Китай	asia	12.5	11.5
 211	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	ANTHROPOIDEA	CATARRHINI	EOCATARRHINI	PLIOPITHECOIDEA	Pliopithecidae	incertae sedis	Paidopithex rhenanus “Semnopithecus eppelsheimensis”			9.8	9.2
-212	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	ANTHROPOIDEA	CATARRHINI	EOCATARRHINI	PLIOPITHECOIDEA	Dionysopithecidae(=подсем. Dionysopithecinae)			Тайланд		20	12
+212	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	ANTHROPOIDEA	CATARRHINI	EOCATARRHINI	PLIOPITHECOIDEA	Dionysopithecidae(=подсем. Dionysopithecinae)			Тайланд		20	12	153
 213	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	ANTHROPOIDEA	CATARRHINI	EOCATARRHINI	PLIOPITHECOIDEA	Dionysopithecidae(=подсем. Dionysopithecinae)			Китай		20	12
 214	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	ANTHROPOIDEA	CATARRHINI	EOCATARRHINI	PLIOPITHECOIDEA	Dionysopithecidae(=подсем. Dionysopithecinae)			Пакистан		20	12
 215	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	ANTHROPOIDEA	CATARRHINI	EOCATARRHINI	PLIOPITHECOIDEA	incertae sedis		Lomorupithecus harrison	Уганда	africa	20	19
-216	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	ANTHROPOIDEA	CATARRHINI	EOCATARRHINI	SAADANIOIDEA	Saadaniidae			Саудовская Аравия	africa	19	18
-217	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	ANTHROPOIDEA	CATARRHINI	EOCATARRHINI	CERCOPITHECOIDEA (=Simiodea =Cynomorpha)	Victoriapithecidae			Восточная Африка	africa	20.3	8.9
+216	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	ANTHROPOIDEA	CATARRHINI	EOCATARRHINI	SAADANIOIDEA	Saadaniidae			Саудовская Аравия	africa	19	18	153
+217	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	ANTHROPOIDEA	CATARRHINI	EOCATARRHINI	CERCOPITHECOIDEA (=Simiodea =Cynomorpha)	Victoriapithecidae			Восточная Африка	africa	20.3	8.9	216
 218	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	ANTHROPOIDEA	CATARRHINI	EOCATARRHINI	CERCOPITHECOIDEA (=Simiodea =Cynomorpha)	Victoriapithecidae			Ливия	africa	20.3	8.9
 219	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	ANTHROPOIDEA	CATARRHINI	EOCATARRHINI	CERCOPITHECOIDEA (=Simiodea =Cynomorpha)	Victoriapithecidae			Египет	africa	20.3	8.9
 220	PRIMATOMORPHA	PRIMATES	HAPLORRHINI	ANTHROPOIDEA	CATARRHINI	EOCATARRHINI	CERCOPITHECOIDEA (=Simiodea =Cynomorpha)	Victoriapithecidae			Восточная Африка	africa	25.7	25
