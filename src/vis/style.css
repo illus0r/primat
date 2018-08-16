@@ -1,10 +1,10 @@
-body { margin:0;top:0;right:0;bottom:0;left:0; min-width: 1200px;font-family: "Helvetica Neue", Helvetica, sans-serif;font-size: 10px;}
+body { margin:0;top:0;right:0;bottom:0;left:0; min-width: 200px;font-family: "Helvetica Neue", Helvetica, sans-serif;font-size: 10px;}
 #legend {position: fixed; bottom: 17.3px; left: 17.3px}
 #header {position:relative;top:0;font-family: Arial}
 #footer{bottom:1em;position: relative; font-size: 11px;}
 #footer a {color: #4a90e2}
 #footer p {margin: 0 0 1px 0}
-@media screen and (min-width:1200px){
+@media screen and (min-width:200px){
     #header, #footer {
         display:block;
         position: fixed;
@@ -91,10 +91,11 @@ h1{font-family: Arial;
 
 text.epicOrderName{
     font-size: 47px;
+    font-size: 3vw;
     color:#231f20;
     opacity: 0.2;
     text-anchor: middle;
-    letter-spacing: 23.7px;
+    letter-spacing: 0.5vw;
     font-family: "Times New Roman";
     text-transform: uppercase;
 }
