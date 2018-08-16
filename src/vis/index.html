@@ -189,6 +189,8 @@
                     var xTo = parseFloat(brickTo.attr("x"))
                     var yTo = parseFloat(brickTo.attr("y")) + 3
 
+                    if (xFrom>xTo) xFrom=parseFloat(brickFrom.attr("x")) +  0.5
+
                     var lineGenerator = d3.line().curve(d3.curveStepBefore);
 
                     var points = [
