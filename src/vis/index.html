@@ -67,11 +67,56 @@
 
 </div>
 <div id="legend"><img src="map.png" alt="Легенда"></div>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/tabletop.js/1.5.1/tabletop.min.js'></script>
 <script>
+    var myleaves=[];
+    var publicSpreadsheetUrl = 'https://docs.google.com/spreadsheets/d/1rTL6r7exf_0SzZifpeW4532ggYn8KukEu1fzEKEex9s/edit?usp=sharing'
 
-    function process(d) {
+    function init() {
+        Tabletop.init( { key: publicSpreadsheetUrl,
+            callback: showInfo,
+            debug:false,
+            wanted:["Data"],
+            simpleSheet: true } )
+    }
+
+    function showInfo(data, tabletop) {
+        //alert('Successfully processed!')
+        //console.log(data);
+        /**/
+        var data = data.map(processData);
+
+        drawAnSVG()
+        drawAnAxis()
+        drawBegunok()
+        initFilter()
+        drawHierarchy(data)
+        drawConnections(data)
+
+        /**/
+
+    }
+
+    window.addEventListener('DOMContentLoaded', init)
+
+
+
+
+   /* d3.tsv("Primat.tsv").then( function(rawdata) {
+
+        var data = rawdata.map(processData);
+
+        drawAnSVG()
+        drawAnAxis()
+        drawBegunok()
+        initFilter()
+        drawHierarchy(data)
+        drawConnections(data)
+
+    });*/
+
+    function processData(d) {
         var processed = {
-
             id: d.id,
             mir: d.mirorder,
             order: d.order,
@@ -91,38 +136,11 @@
         }
         return processed;
     }
-    var myleaves=[];
 
-    d3.tsv("Primat.tsv").then( function(rawdata) {
-
-        var data = rawdata.map(process);
-
-        var locations = d3.nest()
-            .key(function (d) { return "root" })
-            .key(function (d) { return "отр. "+d.order })
-            //.key(function (d) { return d.suborder })
-            //.key(function (d) { return d.hyporder })
-            //.key(function (d) { return d.infraorder })
-            //.key(function (d) { return d.parvorder })
-            //.key(function (d) { return d.superfamily })
-            .key(function(d) { return "сем. "+d.family })
-            .key(function (d) { return "подсем. "+d.subfamily})
-            .key(function (d) { return "род "+d.genus})
-            .key(function (d) { return "локация "+d.location})
-            //.rollup(function(v) { return v.length })
-            .entries(data);
-
-        d3.select("#json").text(JSON.stringify(locations, null, 3));
-
-        drawAnSVG()
-        drawAnAxis()
-        drawBegunok()
-        initFilter()
-
-        var myOrders=findOrders(data);
-
+    function drawHierarchy(data) {
         ypos=30
         delta=0
+        var myOrders=findOrders(data);
         myOrders.forEach(function (order) {
             drawEpicOrderName(order,"отряд");
             subOrders=getSubOrders(order,data)
@@ -173,9 +191,7 @@
                 if (subOrder) resizeRect(subOrder,o*10+6)
             })
         })
-        drawConnections(data)
-
-    });
+    }
 
     function drawConnections(data) {
         var g=svg.append("g").attr("class","connections")
@@ -307,6 +323,8 @@
                 })
                 .tickPadding(5)
                 .tickSize(0));
+        g_axis.append("g").attr("class","pretty_periods").append("rect").attr("fill","#red")
+            .attr("x",x(-61)). attr("y",x(0)).attr("width",20)
     }
 
     function drawBegunok() {
