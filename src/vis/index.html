@@ -308,8 +308,26 @@
                 periods.push(d.date_start*(-1));
             });
             g_axis.append("g").attr("class", "axis axis--x")
-                .call(xAxis.tickSize(5).tickSizeInner(5).tickSizeOuter(5) //ticks format
+                .call(xAxis.tickSize(1).tickSizeInner(1).tickSizeOuter(1) //ticks format
                     .tickValues(periods));
+
+            g_pp=g_axis.append("g").attr("class","pretty_periods")
+            periods.forEach(function (v,i,a) {
+                if (i<a.length-1)
+                g_pp.append("line")
+                    .attr("x1",x(v))
+                    .attr("x2",x(a[i+1]))
+                    .attr("y1",0)
+                    .attr("y2",0)
+                    .attr("stroke-width",2)
+                    .attr("stroke", () =>{
+                        var color="yellow"
+                        if (i%3==0) color="#DFDEDE"
+                        if (i%3==1) color="#918F8F"
+                        if (i%3==2) color="#BDBBBC"
+                        return color
+                    })
+            })
             pp=data;
             return data;
         });
@@ -317,14 +335,13 @@
         var periodNames = ["мел","палеоцен", "эоцен", "олигоцен","миоцен","плиоцен","плейстоцен","голоцен"];
         g_axis.append("g").attr("class", "axis periods")
             .call(xAxisPeriods
-                .tickValues([-105.5,-61,-44.95,-28.465,-14.1815,-3.5695,-0.90885,0])
+                .tickValues([-70,-61,-44.95,-28.465,-14.1815,-3.5695,-0.90885,0])
                 .tickFormat(function (d,i) {
                     return periodNames[i];
                 })
                 .tickPadding(5)
                 .tickSize(0));
-        g_axis.append("g").attr("class","pretty_periods").append("rect").attr("fill","#red")
-            .attr("x",x(-61)). attr("y",x(0)).attr("width",20)
+
     }
 
     function drawBegunok() {

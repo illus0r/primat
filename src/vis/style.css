@@ -21,6 +21,8 @@ body { margin:0;top:0;right:0;bottom:0;left:0; min-width: 200px;font-family: "He
 #header p,#header i{font-size: 12px; }
 #plot {margin-top: -55px; background: #fff; z-index: 3;}
 #axis {background-color: #fff; }
+#axis .axis.axis--x path,#axis .axis.axis--x line{stroke: #fff;}
+#axis .axis.periods path{stroke: #fff;}
 #axis.sticky{
     position: fixed;
     top: 0;

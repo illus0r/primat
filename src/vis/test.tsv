@@ -1,7 +1,0 @@
-id	миротряд	order	suborder	hyporder	infraorder	parvorder	superfamily	family	subfamily	genus	location_ru	continent_id	period_start	period_end	origin	origin_confedence	debug
-1		SCANDENTIA						Tupaildae	Ptilocercinae	Eodendrogale parvum	Китай	asia	45	42.7
-2		SCANDENTIA						Tupaildae	Ptilocercinae	—			0	0	1	0.5
-3		SCANDENTIA						Tupaildae	Tupaiinae	Tupaia miocenica	Таиланд	asia	18	16.8
-4		SCANDENTIA						Tupaildae	Tupaiinae	Tupaia sivalicus	Индия	asia	10	9.8
-5		SCANDENTIA						Tupaildae	Tupaiinae	Prodendrogale yunnanica	Китай	asia	6.8	5.6
-6		SCANDENTIA						Tupaildae	Tupaiinae	—			0	0
