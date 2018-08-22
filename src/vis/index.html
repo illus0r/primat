@@ -419,7 +419,7 @@
         name=name.replace(/[|(|)|]| |=|\?|\./g,"")
         ypos=g.selectAll("g").last().node().getBBox().y+g.selectAll("g").last().node().getBBox().height
         var rect= g.selectAll("g#"+name+i).last().select("rect");
-        var text= g.selectAll("g#"+name+i).last().select("text");
+        var text= g.selectAll("g#"+name+i).last().select("text:not(.genus)");
         ///rect.clone(true).attr("stroke","red");
         var maxRightEdge=0
         var flaf=false
