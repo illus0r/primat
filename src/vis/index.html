@@ -495,6 +495,7 @@
                 .attr("y", ypos)
                 .attr("text-anchor", "start")
                 .text(prefix + " " + name)
+                //.each(moveText)
         }
         else { /*invisible rectangle*/
             g1.append("rect")
@@ -584,7 +585,7 @@
 
         if (sameGens==true){
             console.log(bricks[0].id+" "+nameOfUnionBrick+" locations=",locations)
-            drawUnionBrick(nameOfUnionBrick, locations,ypos,bricks[0])
+            //drawUnionBrick(nameOfUnionBrick, locations,ypos,bricks[0])
            // drawUsualBricks(bricks,ypos,atLeastOneGen,atLeastOneSubTaxon,greenRec)
         }
         else drawUsualBricks(bricks,ypos,atLeastOneGen,atLeastOneSubTaxon,greenRec)
@@ -617,8 +618,8 @@
             .attr("class","brick") //create lines of period
             .attr("id", (d)=>"id"+d.id)
         //.on ("click",handleGenusClick)
-            .attr("rx", 3)
-            .attr("ry", 3)
+            .attr("rx", 2)
+            .attr("ry", 2)
             .attr("x", (d) => {if (!d.period_start) console.log("alert! no period start! id="+d.id); if (d.period_start==0) return x(-1 * (d.period_start+0.5)); return x(-1 * d.period_start);})
             .attr("y",(d,i)=>ypos+i*20+32)
             .attr("width", function (d) {
@@ -629,9 +630,10 @@
             .attr("height", 5)
             .attr("stroke", "none")
             .attr("fill", "#ff8a00")
+
             .attr("fill", (d)=>getColorOfTheBrick(d.continent_id));
 
-        var desireLength=30;//length of text labels
+        var desireLength=120;//length of text labels
 
         g2.selectAll('text.genus').data(bricks).enter().append("text")//create signs for lines
             .attr("class","genus")
@@ -639,7 +641,7 @@
                 if (d.genus=="—" || d.genus=="") { // oh really, no genus?
                     if (d.subfamily=="—" || d.subfamily=="") {
                         if (atLeastOneGen==true)
-                        fullText=d.id+" "+" ("+d.location+")"; //завершающая пустышка семейства
+                            fullText=d.id+" "+" ("+d.location+")"; //завершающая пустышка семейства
                         else
                             fullText=d.id+" "+"сем. "+d.family+" ("+d.location+")";
                     }
@@ -659,12 +661,13 @@
                 if (this.innerHTML.length>desireLength) dots="..."; else dots=""
                 return d3.select(this).text().substring(0,desireLength)+dots // trim long name
             })
-            .attr("x", function (d) {
+            /*.attr("x", function (d) {
+
                 return x(-1*d.period_start);
-            })
+            })*/
             .attr("y", function (d, j) {
                 return ypos+j*20 +30 ;
-            })
+            })/*
             .on('mouseover', function(){
                 d3.select(this).text(function () {
                     return this.getAttribute("data-fullName") //show full name
@@ -675,8 +678,26 @@
                     if (this.innerHTML.length>desireLength) dots="..."; else dots=""
                     return d3.select(this).text().substring(0, desireLength) + dots//back trim name
                 })
-            })
+            })*/
+            .each(moveText)
         ;
+    }
+
+
+    function moveText(d,i) {
+        var newX=0
+        //console.log(this.getBBox().width+" "+ this.getBBox().x)
+        var usualX=x(-1*d.period_start)
+
+        if ((usualX+this.getBBox().width)>(plotWidth-20)){
+            newX=plotWidth-20-this.getBBox().width
+            //console.log(this)
+            this.setAttribute("x",newX)
+            //console.log("we need to resize to "+newX+" "+ this.getAttribute("x"))
+        }
+        else {
+            this.setAttribute("x",usualX)
+        }
     }
 
     function drawUnionBrick(nameofUnionBrick, locations,ypos,d) {
@@ -697,11 +718,11 @@
             .attr("fill", "#ff8a00");
 
         g2.append("text")//create signs for lines
-            .attr("class","genus")
+            .attr("class","genus2")
             .text(()=>"! "+d.id+" "+nameofUnionBrick+" "+locations)
-            .attr("x", function () {
+            /*.attr("x", function () {
                 return x(-1*d.period_start);
-            })
+            })*/
             .attr("y", ypos+30);
     }
 
