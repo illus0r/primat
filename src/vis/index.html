@@ -201,19 +201,29 @@
                 var brickFrom=svg.select("rect#id"+d.origin+".brick")
                 var brickTo=svg.select("rect#id"+d.id+".brick")
                 if (brickFrom.node() && brickTo.node()) {
-                    var xFrom = parseFloat(brickFrom.attr("x")) + parseFloat(brickFrom.attr("width")) - 0.5
-                    var yFrom = parseFloat(brickFrom.attr("y")) + 3
-                    var xTo = parseFloat(brickTo.attr("x"))
-                    var yTo = parseFloat(brickTo.attr("y")) + 3
-                    var color=brickFrom.attr("fill")
 
-                    if (xFrom>xTo) xFrom=parseFloat(brickFrom.attr("x")) +  0.5
+                    /*coordinates of parent brick*/
+                    var x1From = parseFloat(brickFrom.attr("x"))
+                    var x2From = parseFloat(brickFrom.attr("x")) + parseFloat(brickFrom.attr("width")) - 0.5
+                    var yFrom = parseFloat(brickFrom.attr("y")) + 3
+
+                    /*coordinates of child brick*/
+                    var x1To = parseFloat(brickTo.attr("x"))
+                    var x2To = parseFloat(brickTo.attr("x")) + parseFloat(brickTo.attr("width"))
+                    var yTo = parseFloat(brickTo.attr("y")) + 3
+
+                    var color=brickFrom.attr("fill") /*put the color from parent*/
+                    var xSource=x2From /*init start X coordinate of connector*/
+
+                    if (x2From>x1To) xSource=x1From +  0.5 /*if end of parent younger then start of child*/
+
+                    if (x1To>x1From && x1To<x2From) xSource=x1To-3 /*if child start time inside parent time*/
 
                     var lineGenerator = d3.line().curve(d3.curveStepBefore);
 
                     var points = [
-                        [xFrom, yFrom],
-                        [xTo, yTo]
+                        [xSource, yFrom],
+                        [x1To, yTo]
                     ];
 
                     var pathData = lineGenerator(points); // connections with corners
@@ -221,11 +231,11 @@
                     var data1 = [{ //connections with curves
                         source: {
                             x: yFrom,
-                            y: xFrom
+                            y: xSource
                         },
                         target: {
                             x: yTo,
-                            y: xTo
+                            y: x1To
                         }
                     }, ];
 
