@@ -29,6 +29,10 @@ body { margin:0;top:0;right:0;bottom:0;left:0; min-width: 200px;font-family: "He
     height: 50px;
 }
 #plot.sticky_plot{margin-top: 0px;}
+.axis .tick:first-of-type {text-anchor: start}
+.axis.periods .tick{text-anchor: start}
+.axis .tick:last-of-type {text-anchor: end}
+.axis.periods .tick:last-of-type{text-anchor: start}
 text {
     font-family: "Helvetica Neue", Helvetica, sans-serif;
     fill: #000;
@@ -52,7 +56,7 @@ svg {
     width: 50px;
 }
 
-.trackLine{
+.trackLine, .startLine{
     stroke:#231f20;
     stroke-width: 0.5px;
     pointer-events: none;
@@ -62,15 +66,14 @@ h1{font-family: Arial;
     font-size: 29px;
 }
 
-#begunok{
+.scaner_back{
     fill: #fff;
     border: 1px solid #B6FFD4;
-    width: 70px;
     height: 20px;
     font-size: 10px;
-
 }
-#begunok text{fill:#000;}
+
+.scaner_back text{fill:#000;}
 
 .rec_fam{
     opacity:0.2;
