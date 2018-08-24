@@ -217,7 +217,10 @@
 
                     if (x2From>x1To) xSource=x1From +  0.5 /*if end of parent younger then start of child*/
 
-                    if (x1To>x1From && x1To<x2From) xSource=x1To-3 /*if child start time inside parent time*/
+                    /*if child start time inside parent time*/
+                    if (x1To>x1From && x1To<x2From)
+                        if (x1To-8>x1From) xSource=x1To-8
+                        else xSource=x1From+1
 
                     var lineGenerator = d3.line().curve(d3.curveStepBefore);
 
