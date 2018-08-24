@@ -438,6 +438,7 @@
     { return d3.select(this.nodes()[this.size() - 1]);}
 
     function resizeRect(name,i) {
+
         name=name.replace(/[|(|)|]| |=|\?|\./g,"")
         ypos=g.selectAll("g").last().node().getBBox().y+g.selectAll("g").last().node().getBBox().height
         var rect= g.selectAll("g#"+name+i).last().select("rect");
@@ -458,8 +459,8 @@
             newwidth=rect.node().getBBox().width+10+delta*2
             newex=rect.node().getBBox().x-delta
             if (text.node())
-                if ((newex+text.node().getBBox().width)>(plotWidth-20)){ //move text lefter if its on the right edge
-                    newXforText=plotWidth-20-text.node().getBBox().width
+                if ((newex+text.node().getBBox().width)>x(0)){ //move text lefter if its on the right edge
+                    newXforText=x(0)-text.node().getBBox().width
                 }
                 else newXforText=newex
             //console.log ("made resize "+name+" "+delta)
@@ -485,7 +486,6 @@
         }
             ypos = ypos + 20 + delta * 1.5
             delta = delta + 10
-
     }
 
     function drawRect(ids,name,prefix,taxon,i) {
@@ -606,6 +606,7 @@
             .attr("y", ypos + 20)
             .attr("text-anchor", "start")
             .text("подсем. " + fam)
+            .each(moveText)
             greenRec=true
             delta=10
         }
@@ -691,10 +692,9 @@
                 if (this.innerHTML.length>desireLength) dots="..."; else dots=""
                 return d3.select(this).text().substring(0,desireLength)+dots // trim long name
             })
-            /*.attr("x", function (d) {
-
+            .attr("x", function (d) {
                 return x(-1*d.period_start);
-            })*/
+            })
             .attr("y", function (d, j) {
                 return ypos+j*20 +30 ;
             })/*
@@ -714,19 +714,18 @@
     }
 
 
-    function moveText(d,i) {
+    function moveText() {
         var newX=0
         //console.log(this.getBBox().width+" "+ this.getBBox().x)
-        var usualX=x(-1*d.period_start)
+        //var usualX=x(-1*d.period_start)
+        var usualX=this.getBBox().x
 
-        if ((usualX+this.getBBox().width)>(plotWidth-20)){
-            newX=plotWidth-20-this.getBBox().width
+        if ((usualX+this.getBBox().width)>x(0)){
+            //newX=plotWidth-20-this.getBBox().width
+            newX=x(0)-this.getBBox().width
             //console.log(this)
             this.setAttribute("x",newX)
             //console.log("we need to resize to "+newX+" "+ this.getAttribute("x"))
-        }
-        else {
-            this.setAttribute("x",usualX)
         }
     }
 
