@@ -192,6 +192,7 @@
                 if (subOrder) resizeRect(subOrder,o*10+6)
             })
         })
+        svg.attr("height",ypos) /*resize according to content*/
     }
 
     function drawConnections(data) {
@@ -456,6 +457,11 @@
             newheight = ypos - rect.node().getBBox().y+10+delta
             newwidth=rect.node().getBBox().width+10+delta*2
             newex=rect.node().getBBox().x-delta
+            if (text.node())
+                if ((newex+text.node().getBBox().width)>(plotWidth-20)){ //move text lefter if its on the right edge
+                    newXforText=plotWidth-20-text.node().getBBox().width
+                }
+                else newXforText=newex
             //console.log ("made resize "+name+" "+delta)
         }
         if (rect.classed("rec_invisible")) {
@@ -469,7 +475,7 @@
                 .attr("width", newwidth)
                 .attr("x", newex)
 
-            text.attr("x", newex)
+            text.attr("x", newXforText)
 
        if (flaf) {
             maxWidth=maxRightEdge-rect.node().getBBox().x
