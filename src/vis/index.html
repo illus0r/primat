@@ -440,7 +440,8 @@
     function resizeRect(name,i) {
 
         name=name.replace(/[|(|)|]| |=|\?|\./g,"")
-        ypos=g.selectAll("g").last().node().getBBox().y+g.selectAll("g").last().node().getBBox().height
+        ypos=g.selectAll("g").last().node().getBBox().y+g.selectAll("g").last().node().getBBox().height+10
+        if (g.selectAll("g").last().attr("id","")) ypos+=0
         var rect= g.selectAll("g#"+name+i).last().select("rect");
         var text= g.selectAll("g#"+name+i).last().select("text:not(.genus)");
         ///rect.clone(true).attr("stroke","red");
@@ -455,9 +456,14 @@
         })
 
         if (rect.node()) {
-            newheight = ypos - rect.node().getBBox().y+10+delta
+            hasSubFum=g.selectAll("g#"+name+i+".family").last().select("g  rect.rec_subfam")
+
+            newheight = ypos - rect.node().getBBox().y+delta
             newwidth=rect.node().getBBox().width+10+delta*2
+
+            itisFam=g.selectAll("g#"+name+i+".family g").last()
             newex=rect.node().getBBox().x-delta
+            if (hasSubFum.node())  {newwidth+=20; newex-=10;delta=10;}
             if (text.node())
                 if ((newex+text.node().getBBox().width)>x(0)){ //move text lefter if its on the right edge
                     newXforText=x(0)-text.node().getBBox().width
@@ -470,6 +476,7 @@
             newex=newex-delta*2
             newheight=newheight-delta
             newwidth=newwidth-delta
+            ypos=ypos-delta-30+10
             }
 
             rect.attr("height", newheight)
@@ -484,8 +491,11 @@
                 //.clone(true).attr("class","rec_fam rec_clone")
                 .attr("width", maxWidth+10);
         }
-            ypos = ypos + 20 + delta * 1.5
+            //ypos = ypos + 20 + delta * 1.5
+        ypos= ypos+delta+30
+
             delta = delta + 10
+
     }
 
     function drawRect(ids,name,prefix,taxon,i) {
@@ -514,7 +524,7 @@
                 .attr("x", x(-1 * max_period) - 10)
                 .attr("y", ypos)
                 .attr("width", x((max_period)) - x((min_period)) + 10)
-                .attr("height", height_of_taxon * 20 + 10)
+                //.attr("height", height_of_taxon * 20 + 10)
                 .attr("filter", "url(#dropshadow)")
             g1.append("text")
             //.attr("class","rec_fam")
@@ -523,17 +533,18 @@
                 .attr("text-anchor", "start")
                 .text(prefix + " " + name)
                 //.each(moveText)
+            ypos = ypos +10
         }
         else { /*invisible rectangle*/
             g1.append("rect")
                 .attr("class", "rec_fam rec_invisible")
                 .attr("x", x(-1 * max_period) )
-                .attr("y", ypos)
+                .attr("y", ypos-20)
                 .attr("width", x(max_period) - x(min_period)+1 )
                 .attr("height", height_of_taxon * 20 )
-
+            //ypos-=20
         }
-        ypos = ypos + 10
+
     }
 
     function drawBricks(bricks,fam) {
@@ -544,7 +555,7 @@
         const min_period = d3.min(bricks, function (d) {
             return +d.period_end
         })
-        const height_of_taxon = bricks.length;
+        var height_of_taxon = bricks.length;
 
         if (g1.selectAll("g:last-of-type").node())
             ypos = g1.select("g:last-of-type").node().getBBox().y + g1.select("g:last-of-type").node().getBBox().height
@@ -591,6 +602,7 @@
             i -= 1;
         }
         locations=locations+")"
+        height_of_taxon = bricks.length;
 
         if (atLeastOneGen==true && bricks[0].subfamily) {
         g2.append("rect")
@@ -599,7 +611,7 @@
             .attr("y", ypos + 20)
             .attr("width", x((max_period)) - x((min_period)) + 20)
             .attr("height", height_of_taxon * 20)
-            .attr("filter", "url(#dropshadow)")
+            //.attr("filter", "url(#dropshadow)")
         g2.append("text")
         //.attr("class","rec_fam")
             .attr("x", x(-1 * (max_period))-10 )
@@ -608,7 +620,7 @@
             .text("подсем. " + fam)
             .each(moveText)
             greenRec=true
-            delta=10
+            delta=0
         }
 
         if (sameGens==true){
@@ -648,7 +660,7 @@
         //.on ("click",handleGenusClick)
             .attr("rx", 1.5)
             .attr("ry", 1.5)
-            .attr("x", (d) => {if (!d.period_start) console.log("alert! no period start! id="+d.id); if (d.period_start==0) return x(-1 * (d.period_start+0.5)); return x(-1 * d.period_start);})
+            .attr("x", (d) => {if (!d.period_start) console.log("alert! no period start! id="+d.id); if (d.period_start==0) return x(-1 * (d.period_start))-5; return x(-1 * d.period_start);})
             .attr("y",(d,i)=>ypos+i*20+32)
             .attr("width", function (d) {
                 wid = x(d.period_start) - x(d.period_end); //calculate length of line

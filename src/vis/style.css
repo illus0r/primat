@@ -88,14 +88,13 @@ h1{font-family: Arial;
 .rec_invisible{opacity: 0;}
 
 .rec_subfam{
-    opacity:0.5; /*for test*/
+    opacity:0.2; /*for test*/
     fill: greenyellow;
 
-    opacity:0.2; /*for production*/
-    fill:cornflowerblue;
+    opacity:1; /*for production*/
+    fill:#eeeeee;
     rx:3px;
     ry:3px;
-    fill: #ffffff;
 }
 
 text.epicOrderName{
