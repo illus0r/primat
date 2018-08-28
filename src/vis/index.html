@@ -192,7 +192,7 @@
                 if (subOrder) resizeRect(subOrder,o*10+6)
             })
         })
-        svg.attr("height",ypos) /*resize according to content*/
+        svg.attr("height",ypos).attr("viewBox", "0 0 " +plotWidth+ " "+ ypos) /*resize according to content*/
     }
 
     function drawConnections(data) {
