@@ -64,7 +64,7 @@
 </div>
 <div id="footer">
     <p><a href="http://dianov.org">Иван Дианов</a> — дизайнер и руководитель</p>
-    <p><a href="">Ольга Мохова </a> — программист</p>
+    <p><a href="mailto:macrozilla@gmail.com">Ольга Мохова </a> — программист</p>
     <p><a href="">Лёля Колесникова</a> перенесла данные из ПДФ</p>
 
 </div>
@@ -590,6 +590,7 @@
             if (i>0 && bricks[i-1].period_start==bricks[i].period_start && bricks[i-1].period_end==bricks[i].period_end && bricks[i-1].genus==bricks[i].genus){
                 locations=bricks[i].location+", "+bricks[i-1].location
                 bricks[i-1].location=locations
+                if (bricks[i-1].continent_id!=bricks[i].continent_id)
                 bricks[i-1].continent_id="mix"
                 bricks.splice(i,1)
             }

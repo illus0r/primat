@@ -1,5 +1,1 @@
-Зависимости
-pandoc для конвертации исходного документа в ХТМЛ
-
-На входе файл в docx (doc не подойдёт)
-
+# visualisation of evolution of primats
