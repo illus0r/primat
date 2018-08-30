@@ -588,10 +588,12 @@
             else sameGens=false*/
             /**/
             if (i>0 && bricks[i-1].period_start==bricks[i].period_start && bricks[i-1].period_end==bricks[i].period_end && bricks[i-1].genus==bricks[i].genus){
-                locations=bricks[i].location+", "+bricks[i-1].location
+                if (bricks[i-1].location!=bricks[i].location)
+                    locations=bricks[i].location+", "+bricks[i-1].location
+                else locations=bricks[i].location
                 bricks[i-1].location=locations
                 if (bricks[i-1].continent_id!=bricks[i].continent_id)
-                bricks[i-1].continent_id="mix"
+                    bricks[i-1].continent_id="mix"
                 bricks.splice(i,1)
             }
             //else if (i>0) console.log("no "+bricks[i-1].id+" "+bricks[i].id)
