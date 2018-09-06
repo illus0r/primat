@@ -93,6 +93,7 @@
         initFilter()
         drawHierarchy(data)
         drawConnections(data)
+        readImagesTable()
 
         /**/
 
@@ -115,6 +116,28 @@
         drawConnections(data)
 
     });*/
+   function readImagesTable() {
+       Tabletop.init( { key: publicSpreadsheetUrl,
+           callback: drawImages,
+           debug:false,
+           wanted:["Images"],
+           simpleSheet: true } )
+   }
+
+   function drawImages(imgArr) {
+       imgArr.forEach(function (image) {
+           g_img=svg.append("g").attr("class","taxon_images")
+           var xImg, yImg, wImg, hImg
+           xImg=x(-image.x)
+           yImg=parseFloat(d3.select("rect#id"+image.id).attr("y"))+parseFloat(image.y_offset)
+           if (image.visible)
+           g_img.append("svg:image")
+               .attr('x', +xImg)
+               .attr('y', +yImg)
+               .attr('width', x(image.width)-x(0))
+               .attr("xlink:href", "img/animals/"+image.url)
+       })
+   }
 
     function processData(d) {
         var processed = {
