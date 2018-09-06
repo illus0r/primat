@@ -891,7 +891,7 @@
 
         var filter = defs.append("filter")
             .attr("id", "dropshadow")
-            .attr("height", "130%");
+            .attr("height", "120%");
 
         filter.append("feGaussianBlur")
             .attr("in", "SourceAlpha")
@@ -899,12 +899,24 @@
             .attr("result", "blur");
         filter.append("feOffset")
             .attr("in", "blur")
-            .attr("dx", 2)
-            .attr("dy", 2)
+            .attr("dx", 0)
+            .attr("dy", 1)
             .attr("result", "offsetBlur");
+        filter.append("feFlood")
+            .attr("in", "offsetBlur")
+            .attr("flood-color", "#000")
+            .attr("flood-opacity", 0.2)
+            .attr("result", "offsetColor");
+
+        var feComposite = filter.append("feComposite")
+        feComposite.attr("in","offsetColor")
+            .attr("in2","offsetBlur")
+            .attr("operator","in")
+            .attr("result","offsetBlur")
 
         var feMerge = filter.append("feMerge");
-
+        feMerge.append("feMereNode")
+            .attr("in", "feFlood")
         feMerge.append("feMergeNode")
             .attr("in", "offsetBlur")
         feMerge.append("feMergeNode")
