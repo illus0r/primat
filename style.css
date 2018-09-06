@@ -91,7 +91,7 @@ h1{font-family: Arial;
     fill: greenyellow;
 
     opacity:1; /*for production*/
-    fill:#eeeeee;
+    fill:#fff;
     rx:3px;
     ry:3px;
 }
@@ -109,3 +109,7 @@ text.epicOrderName{
 .connections path {
     fill: none;
 }
+
+.backForLabel {
+    fill: #fff;
+    opacity: 0.5}

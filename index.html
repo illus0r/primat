@@ -125,8 +125,9 @@
    }
 
    function drawImages(imgArr) {
+       g_img=svg.append("g").attr("class","taxon_images")
        imgArr.forEach(function (image) {
-           g_img=svg.append("g").attr("class","taxon_images")
+           
            var xImg, yImg, wImg, hImg
            xImg=x(-image.x)
            yImg=parseFloat(d3.select("rect#id"+image.id).attr("y"))+parseFloat(image.y_offset)
@@ -489,7 +490,7 @@
             if (hasSubFum.node())  {newwidth+=20; newex-=10;delta=10;}
             if (text.node())
                 if ((newex+text.node().getBBox().width)>x(0)){ //move text lefter if its on the right edge
-                    newXforText=x(0)-text.node().getBBox().width
+                    newXforText=x(0)-text.node().getBBox().width-3
                 }
                 else newXforText=newex
             //console.log ("made resize "+name+" "+delta)
@@ -507,6 +508,7 @@
                 .attr("x", newex)
 
             text.attr("x", newXforText)
+        d3.select(text).node().each(makeBackgroundForText)
 
        if (flaf) {
             maxWidth=maxRightEdge-rect.node().getBBox().x
@@ -637,7 +639,7 @@
             .attr("y", ypos + 20)
             .attr("width", x((max_period)) - x((min_period)) + 20)
             .attr("height", height_of_taxon * 20)
-            //.attr("filter", "url(#dropshadow)")
+            .attr("filter", "url(#dropshadow)")
         g2.append("text")
         //.attr("class","rec_fam")
             .attr("x", x(-1 * (max_period))-10 )
@@ -645,6 +647,8 @@
             .attr("text-anchor", "start")
             .text("подсем. " + fam)
             .each(moveText)
+            .each(makeBackgroundForText)
+
             greenRec=true
             delta=0
         }
@@ -748,7 +752,22 @@
                 })
             })*/
             .each(moveText)
+            .each(makeBackgroundForText)
         ;
+    }
+
+    function makeBackgroundForText() {
+        var width, height, x, y
+        width=this.getBBox().width
+        height=this.getBBox().height
+        x=this.getBBox().x
+        y=this.getBBox().y
+        d3.select(this.parentNode).insert("rect","text")
+            .attr("x",x)
+            .attr("y",y)
+            .attr("width",width)
+            .attr("height",height)
+            .attr("class","backForLabel")
     }
 
 
@@ -760,7 +779,7 @@
 
         if ((usualX+this.getBBox().width)>x(0)){
             //newX=plotWidth-20-this.getBBox().width
-            newX=x(0)-this.getBBox().width
+            newX=x(0)-this.getBBox().width-3
             //console.log(this)
             this.setAttribute("x",newX)
             //console.log("we need to resize to "+newX+" "+ this.getAttribute("x"))
