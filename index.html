@@ -53,7 +53,7 @@
     </svg>
 </div>
 <div id="header">
-    <img src="header_img.png" width="100" height="100" alt="Станислав Дробышевский">
+    <img src="img/header_img.png" width="100" height="100" alt="Станислав Дробышевский">
     <h1>Эволюция приматов</h1>
     <p>«Эволюция приматов — более сложный процесс, чем многим кажется. Но, слава палеоприматологам, эволюция приматов изучена лучше, чем большинства других организмов.</p>
     <p>Имея тысячи находок, учитывая их географию и датировки, можно построить общую схему. Однако, насколько мне известно, доселе никто не озаботился этим всерьёз, поэтому пришлось делать всё самому.</p>
@@ -68,7 +68,7 @@
     <p><a href="">Лёля Колесникова</a> перенесла данные из ПДФ</p>
 
 </div>
-<div id="legend"><img src="map.svg" alt="Легенда"></div>
+<div id="legend"><img src="img/map.svg" alt="Легенда"></div>
 <script>
     var myleaves=[];
     var publicSpreadsheetUrl = 'https://docs.google.com/spreadsheets/d/1rTL6r7exf_0SzZifpeW4532ggYn8KukEu1fzEKEex9s/edit?usp=sharing'
@@ -127,7 +127,7 @@
    function drawImages(imgArr) {
        g_img=svg.append("g").attr("class","taxon_images")
        imgArr.forEach(function (image) {
-           
+
            var xImg, yImg, wImg, hImg
            xImg=x(-image.x)
            yImg=parseFloat(d3.select("rect#id"+image.id).attr("y"))+parseFloat(image.y_offset)
@@ -190,7 +190,7 @@
                             superFamilys=getSuperFamilys(parvOrder,data)
                             superFamilys.forEach(function (superFamily,k ){
                                 findIds(superFamilysDataRoot[0],superFamily)
-                                if (superFamily) drawRect(myleaves,superFamily,"суперсем.","superfamily",k*100000+l*10000+m*1000+n*100+o*10+2)
+                                if (superFamily) drawRect(myleaves,superFamily,"надсем.","superfamily",k*100000+l*10000+m*1000+n*100+o*10+2)
                                 familys=getFamilys(superFamily,data)
                                 familys.forEach(function (family,j) {
                                     findIds(familysDataRoot[0],family);
@@ -220,7 +220,7 @@
     }
 
     function drawConnections(data) {
-        var g=svg.append("g").attr("class","connections")
+        var g=svg.select("g.connections")
         data.forEach(function (d) {
             if (d.origin) {
                 var brickFrom=svg.select("rect#id"+d.origin+".brick")
@@ -329,7 +329,11 @@
             .attr("width",plotWidth)
             .attr("height",20)
             .append("g").attr("class","axis")
+
+        g_connections = svg.append("g").attr("class","connections");
         g = svg.append("g").attr("class","taxons");
+        //g_labels = svg.append("g").attr("class","labels");
+
     }
 
     function drawAnAxis() {
@@ -541,6 +545,7 @@
         })
 
         g1=g.append("g").attr("id",trimname+i).attr("class", taxon)
+        //g1=g_labels.append("g").attr("id",trimname+i).attr("class", taxon)
 
         if (emptySubFam==false || atLeastOneSubTaxon==true || atLeastOneGen==true) {
 
@@ -554,7 +559,7 @@
             g1.append("text")
             //.attr("class","rec_fam")
                 .attr("x", x(-1 * (max_period)) + 1)
-                .attr("y", ypos)
+                .attr("y", ypos-2)
                 .attr("text-anchor", "start")
                 .text(prefix + " " + name)
                 //.each(moveText)
@@ -690,10 +695,15 @@
         //.on ("click",handleGenusClick)
             .attr("rx", 1.5)
             .attr("ry", 1.5)
-            .attr("x", (d) => {if (!d.period_start) console.log("alert! no period start! id="+d.id); if (d.period_start==0) return x(-1 * (d.period_start))-5; return x(-1 * d.period_start);})
+            .attr("x", (d) => {
+                if (!d.period_start) console.log("alert! no period start! id="+d.id);
+                if (d.period_start==0 && d.period_end==0) return x(-1 * (d.period_start))-5;
+                var wid = x(d.period_start) - x(d.period_end); //calculate length of line
+                if (wid<5 && d.period_end==0) return x(0)-5;
+                return x(-1 * d.period_start);})
             .attr("y",(d,i)=>ypos+i*20+32)
             .attr("width", function (d) {
-                wid = x(d.period_start) - x(d.period_end); //calculate length of line
+                var wid = x(d.period_start) - x(d.period_end); //calculate length of line
                 if (wid<5) wid=5;
                 return wid;
             })
@@ -705,8 +715,11 @@
 
         var desireLength=120;//length of text labels
 
+
         g2.selectAll('text.genus').data(bricks).enter().append("text")//create signs for lines
+        //g_labels.append("g").selectAll('text.genus').data(bricks).enter().append("text")
             .attr("class","genus")
+            .attr("id", (d)=>"label_id_"+d.id)
             .text(function(d){
                 var loc=""
                 if (d.location) loc=" "+" ("+d.location+")"
