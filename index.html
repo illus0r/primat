@@ -326,7 +326,7 @@
         svg.attr("width", plotWidth)
             .attr("viewBox", "0 0 "+plotWidth+" 8100")
         g_axis=d3.select("#axis").append("svg")
-            .attr("width",plotWidth)
+            .attr("width",plotWidth+10)//+10 for 'pozdniy pleystozen' which is larger then others
             .attr("height",20)
             .append("g").attr("class","axis")
         g_connections = svg.append("g").attr("class","connections")
