@@ -329,9 +329,9 @@
             .attr("width",plotWidth)
             .attr("height",20)
             .append("g").attr("class","axis")
-
-        g_connections = svg.append("g").attr("class","connections");
-        g = svg.append("g").attr("class","taxons");
+        g_connections = svg.append("g").attr("class","connections")
+        g_val_scaner = svg.append("g").attr("class","value_val_scaner")
+        g = svg.append("g").attr("class","taxons")
         //g_labels = svg.append("g").attr("class","labels");
 
     }
@@ -403,7 +403,7 @@
         var g_scaner=d3.select("#axis").select("svg")
             .append("g").attr("class","value_scaner")
         //var vertical = g_axis.append("path").attr("class", "trackLine");//add the mouse-tracking vertical line
-        svg.append("path").attr("class", "trackLine");//add the mouse-tracking vertical line
+        g_val_scaner.append("path").attr("class", "trackLine");//add the mouse-tracking vertical line
         //g_axis.append("line").attr("class","startLine").attr("x1",x(0)).attr("y1",0).attr("x2",x(0)).attr("y2",height)
         svg.append("line").attr("class","startLine").attr("x1",x(0)).attr("y1",20).attr("x2",x(0)).attr("y2",height)
         var trackPeriodRect=g_scaner.append("rect");
