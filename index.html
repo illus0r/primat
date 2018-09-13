@@ -91,7 +91,9 @@
         drawAnAxis()
         drawValueScaner()
         initFilter()
+        findPrimers(data)
         drawHierarchy(data)
+
         drawConnections(data)
         readImagesTable()
 
@@ -217,6 +219,34 @@
             })
         })
         svg.attr("height",ypos).attr("viewBox", "0 0 " +plotWidth+ " "+ ypos) /*resize according to content*/
+    }
+
+    function findPrimers(data) {
+        data.forEach(function (item) {
+            if (item.origin) {
+                parent = getParent(item.origin, data)
+
+                if (+item.period_start>+parent.period_start) /*if we found the case of primer*/
+                {
+                    console.log("child = "+item.id)
+                    console.log("parent = "+parent.id)
+                    console.log("PRIMER!!!")
+
+                    primer_start=+item.period_start+1 /*calc new period start*/
+                    parent.period_start_old=parent.period_start /*fix initial period start*/
+                    parent.period_start=primer_start /*write new period start*/
+
+                    findPrimers(data) /*recursively find possible new cases of  primers*/
+
+                    console.log("----------------")
+                }
+            }
+        })
+    }
+
+    function getParent(parent_id,data) {
+        var parent=data.find(x => x.id === parent_id)
+        return parent
     }
 
     function drawConnections(data) {
@@ -688,6 +718,18 @@
         return color
     }
 
+    function drawPrimer(d) {
+        if (d.period_start_old) {
+            d3.select(this).clone(true)
+                .attr("id","primer"+d.id)
+                .attr("width",(d) => {
+                    var wid = x(d.period_start) - x(d.period_start_old);
+                    return wid;
+                })
+                .attr("class","primer")
+        }
+    }
+
     function drawUsualBricks(bricks,ypos,atLeastOneGen,atLeastOneSubTaxon,greenRec) {
         g2.selectAll("rect.brick").data(bricks).enter().append("rect")
             .attr("class","brick") //create lines of period
@@ -711,7 +753,8 @@
             .attr("stroke", "none")
             .attr("fill", "#ff8a00")
 
-            .attr("fill", (d)=>getColorOfTheBrick(d.continent_id));
+            .attr("fill", (d)=>getColorOfTheBrick(d.continent_id))
+            .each(drawPrimer);
 
         var desireLength=120;//length of text labels
 
