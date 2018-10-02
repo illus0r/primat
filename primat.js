@@ -1,6 +1,7 @@
 var Primats = (function() {
     var myleaves = [];
     var publicSpreadsheetUrl = 'https://docs.google.com/spreadsheets/d/1rTL6r7exf_0SzZifpeW4532ggYn8KukEu1fzEKEex9s/edit?usp=sharing'
+    var screenWidth;
 
     var init = function() {
         Tabletop.init({
@@ -34,6 +35,7 @@ var Primats = (function() {
      });*/
 
     var readImagesTable = function() {
+        if (screenWidth>=1024)
         Tabletop.init({
             key: publicSpreadsheetUrl,
             callback: drawImages,
@@ -47,14 +49,16 @@ var Primats = (function() {
         g_img = svg.append("g").attr("class", "taxon_images")
         imgArr.forEach(function (image) {
 
-            var xImg, yImg
+            var xImg, yImg, wImg
             xImg = x(-image.x)
             yImg = parseFloat(d3.select("rect#id" + image.id).attr("y")) + parseFloat(image.y_offset)
+            wImg = x(image.width) - x(0)
+            if (wImg>image.max_width) wImg=image.max_width
             if (image.visible)
                 g_img.append("svg:image")
                     .attr('x', +xImg)
                     .attr('y', +yImg)
-                    .attr('width', x(image.width) - x(0))
+                    .attr('width', wImg)
                     .attr("xlink:href", "img/animals/" + image.url)
         })
     }
@@ -281,9 +285,9 @@ var Primats = (function() {
 
     var drawAnSVG = function() {
         var chartDiv = document.getElementById("plot");
-        ourWidth = chartDiv.clientWidth
-        plotWidth = ourWidth - 259.3
-        console.log("w= " + ourWidth)
+        screenWidth = chartDiv.clientWidth
+        plotWidth = screenWidth - 259.3
+        console.log("w= " + screenWidth)
         svg = d3.select("svg");
         svg.attr("width", plotWidth)
             .attr("viewBox", "0 0 " + plotWidth + " 8100")
