@@ -66,14 +66,16 @@ h1{font-family: Arial;
     font-size: 29px;
 }
 
-.scaner_back{
+.scaner_back {
     fill: #fff;
     border: 1px solid #B6FFD4;
     height: 20px;
     font-size: 10px;
 }
 
-.scaner_back text{fill:#000;}
+.scaner_back text{
+    fill:#000;
+}
 
 .rec_fam{
     fill:cornflowerblue;
@@ -83,9 +85,14 @@ h1{font-family: Arial;
     mix-blend-mode: multiply;
 }
 
-.rec_clone{fill: none; stroke: red}
+.rec_clone{
+    fill: none;
+    stroke: red
+}
 
-.rec_invisible{opacity: 0;}
+.rec_invisible{
+    opacity: 0;
+}
 
 .rec_subfam{
     opacity:0.2; /*for test*/

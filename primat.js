@@ -367,15 +367,27 @@ var Primats = (function() {
     var drawValueScaner = function() {
         height = 10000
         var g_scaner = d3.select("#axis").select("svg")
-            .append("g").attr("class", "value_scaner")
-        //var vertical = g_axis.append("path").attr("class", "trackLine");//add the mouse-tracking vertical line
+            .append("g")
+            .attr("class", "value_scaner");
         g_val_scaner.append("path").attr("class", "trackLine");//add the mouse-tracking vertical line
-        //g_axis.append("line").attr("class","startLine").attr("x1",x(0)).attr("y1",0).attr("x2",x(0)).attr("y2",height)
-        svg.append("line").attr("class", "startLine").attr("x1", x(0)).attr("y1", 20).attr("x2", x(0)).attr("y2", height)
+        svg.append("line").attr("class", "startLine")
+            .attr("x1", x(0))
+            .attr("y1", 20)
+            .attr("x2", x(0))
+            .attr("y2", height);
+
         var trackPeriodRect = g_scaner.append("rect");
         var trackPeriodText = g_scaner.append("text");
         var trackNumberRect = g_scaner.append("rect");
         var trackNumberText = g_scaner.append("text");
+
+        var layersData=[];
+
+        d3.tsv("Primat - Layers.tsv").then(function (data) {
+            data.forEach(function (d) {
+                layersData.push(d)
+            })
+        })
 
         d3.selectAll("svg").on("mousemove", function () {
             mousex = d3.mouse(this);
@@ -383,40 +395,40 @@ var Primats = (function() {
                 if (x.invert(mousex[0]) <= 0) {
                     var d = "M" + mousex[0] + "," + (height);
                     d += " " + mousex[0] + "," + 20;
-                    trackPeriodRect.attr("class", "scaner_back").attr("y", -22).attr("width", 70)
+
+                    trackPeriodRect.attr("class", "scaner_back").attr("y", -22)
+                        .attr("width", trackPeriodText.node().getBBox().width+5)
                         .attr("x", function (d) {
-                            return (mousex[0])
+                            return (mousex[0])-2.5
                         });
 
                     var format = d3.format(".1f");
-                    trackNumberRect.attr("class", "scaner_back").attr("y", 3).attr("x", (mousex[0])).attr("width", 20).attr("height", 10)
-                    trackNumberText.text(format(-x.invert(mousex[0]))).attr("x", mousex[0]).attr("y", 11).attr("text-anchor", "start");
-
+                    trackNumberRect.attr("class", "scaner_back")
+                        .attr("y", 3)
+                        .attr("x", (mousex[0])-2.5)
+                        .attr("width", trackNumberText.node().getBBox().width+5)
+                        .attr("height", 10)
+                    trackNumberText.text(format(-x.invert(mousex[0])))
+                        .attr("x", mousex[0])
+                        .attr("y", 11)
+                        .attr("text-anchor", "start");
                 }
                 return d;
             });
 
             var time = -x.invert(mousex[0]);
-            //console.log(time);
-            d3.tsv("Primat - Layers.tsv").then(function (data) { //
-                data.forEach(function (d, i, a) {
+
+            layersData.forEach(function (d, i, a) {
                     if (i < a.length - 1) {
-                        //console.log(a[i].date_start +" " + time +" "+ a[i + 1].date_start);
                         if (a[i].date_start > time && a[i + 1].date_start < time) {
-                            //console.log("период " + a[i].layer_ru + "  " + a[i].sublayer);
                             trackPeriodText.text(a[i].sublayer + "  " + a[i].layer_ru)
                                 .attr("x", function () {
                                     return (mousex[0])
                                 })
                                 .attr("y", -5);
-
                         }
                     }
                 })
-            })
-            /*begunokText.text(format(x.invert(mousex[0])))
-                .attr("x",function () {return (mousex[0]-20)})
-                .attr("y",-5);*/
         })
         /*.on("mouseout", function(){ //hide the line
         mousex = d3.mouse(this);
@@ -790,16 +802,11 @@ var Primats = (function() {
 
     var moveText = function() {
         var newX = 0
-        //console.log(this.getBBox().width+" "+ this.getBBox().x)
-        //var usualX=x(-1*d.period_start)
         var usualX = this.getBBox().x
 
         if ((usualX + this.getBBox().width) > x(0)) {
-            //newX=plotWidth-20-this.getBBox().width
             newX = x(0) - this.getBBox().width - 3
-            //console.log(this)
             this.setAttribute("x", newX)
-            //console.log("we need to resize to "+newX+" "+ this.getAttribute("x"))
         }
     }
 
