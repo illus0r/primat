@@ -740,20 +740,20 @@ var Primats = (function() {
                 if (d.genus == "—" || d.genus == "") { // oh really, no genus?
                     if (d.subfamily == "—" || d.subfamily == "") {
                         if (atLeastOneGen == true)
-                            fullText = d.id + loc; //завершающая пустышка семейства
+                            fullText = /*d.id +*/ loc; //завершающая пустышка семейства
 
                         else
-                            fullText = d.id + " " + "сем. " + d.family + loc;
+                            fullText = /*d.id + " " +*/ "сем. " + d.family + loc;
                     }
                     else {
                         if (atLeastOneSubTaxon == true && greenRec)
-                            fullText = d.id + loc;//завершающая пустышка подсемейства
+                            fullText = /*d.id +*/ loc;//завершающая пустышка подсемейства
                         else
-                            fullText = d.id + " " + "подсем. " + d.subfamily + loc;
+                            fullText = /*d.id + " " +*/ "подсем. " + d.subfamily + loc;
                     }
                 }
                 else
-                    fullText = d.id + " " + d.genus + loc
+                    fullText = /*d.id + " " +*/ d.genus + loc
                 return fullText //full name of the brick
             })
             .attr("data-fullName", function () {
