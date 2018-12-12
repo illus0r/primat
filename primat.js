@@ -293,7 +293,8 @@ var Primats = (function() {
             .attr("viewBox", "0 0 " + plotWidth + " 8100")
         g_axis = d3.select("#axis").append("svg")
             .attr("width", plotWidth + 10)//+10 for 'pozdniy pleystozen' which is larger then others
-            .attr("height", 20)
+            .attr("height", 22)
+            .attr("viewBox", "0 -10 "+(plotWidth+10)+" 22")
             .append("g").attr("class", "axis")
         g_connections = svg.append("g").attr("class", "connections")
         g_val_scaner = svg.append("g").attr("class", "value_val_scaner")
