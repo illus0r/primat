@@ -512,7 +512,6 @@ var Primats = (function() {
         ypos = ypos + delta + 30
 
         delta = delta + 10
-
     }
 
     var drawRect = function(ids, name, prefix, taxon, i) {
@@ -547,7 +546,7 @@ var Primats = (function() {
                 .attr("x", x(-1 * max_period) - 10)
                 .attr("y", ypos)
                 .attr("width", x((max_period)) - x((min_period)) + 10)
-                //.attr("height", height_of_taxon * 20 + 10)
+                .attr("height", height_of_taxon * 20 + 10)
                 .attr("filter", "url(#dropshadow)")
             g1.append("text")
             //.attr("class","rec_fam")
@@ -567,7 +566,6 @@ var Primats = (function() {
                 .attr("height", height_of_taxon * 20)
             //ypos-=20
         }
-
     }
 
     var drawBricks = function(bricks, fam) {
