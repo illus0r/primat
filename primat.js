@@ -1,7 +1,10 @@
 var Primats = (function() {
     var myleaves = [];
     var publicSpreadsheetUrl = 'https://docs.google.com/spreadsheets/d/1rTL6r7exf_0SzZifpeW4532ggYn8KukEu1fzEKEex9s/edit?usp=sharing'
-    var screenWidth;
+    var screenWidth, height, plotWidth, mousex;
+    var svg, g_img, g_axis, g_connections, g_val_scaner, g, g_pp;
+    var ypos, delta;
+    var x;
 
     var init = function() {
         Tabletop.init({
@@ -47,8 +50,8 @@ var Primats = (function() {
 
     var drawImages = function(imgArr) {
         g_img = svg.append("g").attr("class", "taxon_images")
-        imgArr.forEach(function (image) {
-
+        console.log(g_img)
+        imgArr.forEach(function (image,i) {
             var xImg, yImg, wImg
             xImg = x(-image.x)
             yImg = parseFloat(d3.select("rect#id" + image.id).attr("y")) + parseFloat(image.y_offset)
@@ -56,10 +59,19 @@ var Primats = (function() {
             if (wImg>image.max_width) wImg=image.max_width
             if (image.visible)
                 g_img.append("svg:image")
-                    .attr('x', +xImg)
-                    .attr('y', +yImg)
-                    .attr('width', wImg)
-                    .attr("xlink:href", "img/animals/" + image.url)
+                .attr("id", "image_"+i)
+                .attr("xlink:href", "img/animals/" + image.url)
+                .on("load", function() {
+                    var myImage = new Image();
+                    myImage.onload = function() {
+                        d3.select("#image_"+i)
+                            .attr('x', +xImg)
+                            .attr('y', +yImg)
+                            .attr('width', wImg)
+                            .attr("height", this.height*(wImg/this.width));
+                    }
+                    myImage.src = "img/animals/" + image.url;
+                });
         })
     }
 
@@ -287,7 +299,7 @@ var Primats = (function() {
         var chartDiv = document.getElementById("plot");
         screenWidth = chartDiv.clientWidth
         plotWidth = screenWidth - 259.3
-        console.log("w= " + screenWidth)
+        //console.log("w= " + screenWidth)
         svg = d3.select("svg");
         svg.attr("width", plotWidth)
             .attr("viewBox", "0 0 " + plotWidth + " 8100")
@@ -734,7 +746,7 @@ var Primats = (function() {
             .attr("class", "genus")
             .attr("id", (d) => "label_id_" + d.id)
             .text(function (d) {
-                var loc = ""
+                var loc = "",fullText;
                 if (d.location) loc = " " + " (" + d.location + ")"
                 if (d.genus == "—" || d.genus == "") { // oh really, no genus?
                     if (d.subfamily == "—" || d.subfamily == "") {
@@ -1021,6 +1033,10 @@ var Primats = (function() {
             $('#axis').removeClass("sticky");
             $('#plot').removeClass("sticky_plot");
         }
+    });
+
+    window.addEventListener("resize",  function(){
+        //TODO: resize svg
     });
 
     return {
