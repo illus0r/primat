@@ -1,6 +1,6 @@
 var Primats = (function() {
     var myleaves = [];
-    var publicSpreadsheetUrl = 'https://docs.google.com/spreadsheets/d/1rTL6r7exf_0SzZifpeW4532ggYn8KukEu1fzEKEex9s/edit?usp=sharing'
+    var publicSpreadsheetUrl = 'https://docs.google.com/spreadsheets/d/1rTL6r7exf_0SzZifpeW4532ggYn8KukEu1fzEKEex9s/gviz/tq?tqx=out:csv&sheet=509872353'
     var screenWidth, height, plotWidth, mousex;
     var svg, g_img, g_axis, g_connections, g_val_scaner, g, g_pp;
     var ypos, delta;
