@@ -1,89 +1,142 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta property="og:url"           content="http://primat.dianov.org/" />
-    <meta property="og:type"          content="website" />
-    <meta property="og:title"         content="Эволюция приматов" />
-    <meta property="og:description"   content="Единственная в мире всеобщая эволюция приматов с точностью до подсемейств" />
-    <meta property="og:image"         content="http://primat.dianov.org/img/preview_image.png" />
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="Эволюция приматов">
-    <meta name="twitter:description" content="Единственная в мире всеобщая эволюция приматов с точностью до подсемейств">
-    <meta name="twitter:image" content="http://primat.dianov.org/img/preview_image.png">
+  <head>
+    <meta charset="UTF-8" />
+    <meta property="og:url" content="http://primat.dianov.org/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Эволюция приматов" />
+    <meta
+      property="og:description"
+      content="Единственная в мире всеобщая эволюция приматов с точностью до подсемейств"
+    />
+    <meta
+      property="og:image"
+      content="http://primat.dianov.org/img/preview_image.png"
+    />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Эволюция приматов" />
+    <meta
+      name="twitter:description"
+      content="Единственная в мире всеобщая эволюция приматов с точностью до подсемейств"
+    />
+    <meta
+      name="twitter:image"
+      content="http://primat.dianov.org/img/preview_image.png"
+    />
     <title>Эволюция приматов</title>
     <script src="https://d3js.org/d3.v5.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/tabletop.js/1.5.1/tabletop.min.js'></script>
     <script src="primat.js"></script>
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" type="image/png" href="favicon.png">
-    <style>
-
-    </style>
-    <!-- Yandex.Metrika counter -->
-    <script type="text/javascript" >
-        (function (d, w, c) {
-            (w[c] = w[c] || []).push(function() {
-                try {
-                    w.yaCounter49480489 = new Ya.Metrika2({
-                        id:49480489,
-                        clickmap:true,
-                        trackLinks:true,
-                        accurateTrackBounce:true,
-                        webvisor:true
-                    });
-                } catch(e) { }
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <style></style>
+    Yandex.Metrika counter
+    <script type="text/javascript">
+      (function (d, w, c) {
+        (w[c] = w[c] || []).push(function () {
+          try {
+            w.yaCounter49480489 = new Ya.Metrika2({
+              id: 49480489,
+              clickmap: true,
+              trackLinks: true,
+              accurateTrackBounce: true,
+              webvisor: true,
             });
+          } catch (e) {}
+        });
 
-            var n = d.getElementsByTagName("script")[0],
-                s = d.createElement("script"),
-                f = function () { n.parentNode.insertBefore(s, n); };
-            s.type = "text/javascript";
-            s.async = true;
-            s.src = "https://mc.yandex.ru/metrika/tag.js";
+        var n = d.getElementsByTagName("script")[0],
+          s = d.createElement("script"),
+          f = function () {
+            n.parentNode.insertBefore(s, n);
+          };
+        s.type = "text/javascript";
+        s.async = true;
+        s.src = "https://mc.yandex.ru/metrika/tag.js";
 
-            if (w.opera == "[object Opera]") {
-                d.addEventListener("DOMContentLoaded", f, false);
-            } else { f(); }
-        })(document, window, "yandex_metrika_callbacks2");
+        if (w.opera == "[object Opera]") {
+          d.addEventListener("DOMContentLoaded", f, false);
+        } else {
+          f();
+        }
+      })(document, window, "yandex_metrika_callbacks2");
     </script>
-    <noscript><div><img src="https://mc.yandex.ru/watch/49480489" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-    <!-- /Yandex.Metrika counter -->
-</head>
-<body>
+    <noscript
+      ><div>
+        <img
+          src="https://mc.yandex.ru/watch/49480489"
+          style="position: absolute; left: -9999px"
+          alt=""
+        /></div
+    ></noscript>
+    /Yandex.Metrika counter
+  </head>
+  <body>
+    <div id="axis"></div>
+    <div id="plot">
+      <svg
+        id="chart"
+        height="8100"
+        viewBox="0 0 200 8100"
+        preserveAspectRatio="xMidYMin meet"
+      ></svg>
+    </div>
+    <div id="header">
+      <img
+        src="img/stanislav.jpg"
+        width="100"
+        height="100"
+        alt="Станислав Дробышевский"
+      />
+      <h1>Эволюция приматов</h1>
+      <p>
+        «Эволюция приматов — более сложный процесс, чем многим кажется. Но,
+        слава палеоприматологам, эволюция приматов изучена лучше, чем
+        большинства других организмов.
+      </p>
+      <p>
+        Имея тысячи находок, учитывая их&nbsp;географию и&nbsp;датировки, можно
+        построить общую схему. Однако, насколько мне известно, доселе никто
+        не&nbsp;озаботился этим всерьёз, поэтому пришлось делать всё самому.
+      </p>
+      <p>
+        Итак, перед Вами&nbsp;— единственная в&nbsp;мире всеобщая эволюция
+        приматов с&nbsp;точностью до&nbsp;подсемейств, местами
+        по&nbsp;необходимости указаны и&nbsp;роды.
+      </p>
+      <p>
+        По горизонтали время, справа&nbsp;— современные группы. Великий предок
+        пургаториус сверху слева, мы&nbsp;— снизу справа».
+      </p>
+      <i>Станислав Дробышевский, антрополог и&nbsp;популяризатор науки</i>
+    </div>
+    <div id="footer">
+      <p>
+        <a href="http://dianov.org">Иван Дианов</a> — дизайнер
+        и&nbsp;руководитель
+      </p>
+      <p>
+        <a href="mailto:macrozilla@gmail.com">Ольга Мохова </a> — программист
+      </p>
+      <p>
+        <a href="https://vk.com/sonyasonnyislon">Татьяна Сергеевна</a> —
+        иллюстратор
+      </p>
+      <p>
+        <a href="https://vk.com/id270035082">Лёля</a> и
+        <a href="https://vk.com/cyberliner">Илья</a> — помощь с&nbsp;данными
+      </p>
+      <p>
+        <br />Умеем обрабатывать и&nbsp;визуализировать данные, проектировать
+        интерфейсы.<br /><br />Будем рады сотрудничеству, расскажите нам
+        о&nbsp;своём проекте:
+        <a href="mailto:ivan@dianov.org">ivan@dianov.org</a>
+      </p>
+    </div>
+    <div id="legend"><img src="img/map.svg" alt="Легенда" /></div>
 
-
-
-<div id="axis">  </div>
-<div id="plot">
-    <svg id="chart"  height="8100"
-         viewBox="0 0 200 8100"
-         preserveAspectRatio="xMidYMin meet">
-    </svg>
-</div>
-<div id="header">
-    <img src="img/stanislav.jpg" width="100" height="100" alt="Станислав Дробышевский">
-    <h1>Эволюция приматов</h1>
-    <p>«Эволюция приматов — более сложный процесс, чем многим кажется. Но, слава палеоприматологам, эволюция приматов изучена лучше, чем большинства других организмов.</p>
-    <p>Имея тысячи находок, учитывая их&nbsp;географию и&nbsp;датировки, можно построить общую схему. Однако, насколько мне известно, доселе никто не&nbsp;озаботился этим всерьёз, поэтому пришлось делать всё самому.</p>
-    <p>Итак, перед Вами&nbsp;— единственная в&nbsp;мире всеобщая эволюция приматов с&nbsp;точностью до&nbsp;подсемейств, местами по&nbsp;необходимости указаны и&nbsp;роды.</p>
-    <p>По горизонтали время, справа&nbsp;— современные группы. Великий предок пургаториус сверху слева, мы&nbsp;— снизу справа».</p>
-    <i>Станислав Дробышевский, антрополог и&nbsp;популяризатор науки</i>
-
-</div>
-<div id="footer">
-    <p><a href="http://dianov.org">Иван Дианов</a> — дизайнер и&nbsp;руководитель</p>
-    <p><a href="mailto:macrozilla@gmail.com">Ольга Мохова </a> — программист</p>
-    <p><a href="https://vk.com/sonyasonnyislon">Татьяна Сергеевна</a> — иллюстратор</p>
-    <p><a href="https://vk.com/id270035082">Лёля</a> и <a href="https://vk.com/cyberliner">Илья</a> — помощь с&nbsp;данными</p>
-		<p><br />Умеем обрабатывать и&nbsp;визуализировать данные, проектировать интерфейсы.<br /><br />Будем рады сотрудничеству, расскажите нам о&nbsp;своём проекте: <a href="mailto:ivan@dianov.org">ivan@dianov.org</a></p>
-</div>
-<div id="legend"><img src="img/map.svg" alt="Легенда"></div>
-
-<script type="text/javascript" >
-    Primats.draw();
-</script>
-
-</body>
+    <script type="text/javascript">
+      Primats.draw();
+    </script>
+  </body>
 </html>

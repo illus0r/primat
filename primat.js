@@ -1,27 +1,17 @@
 var Primats = (function () {
   var myleaves = [];
   //https://docs.google.com/spreadsheets/d/1rTL6r7exf_0SzZifpeW4532ggYn8KukEu1fzEKEex9s/gviz/tq?tqx=out:csv&sheet=509872353
-  var publicSpreadsheetUrl = "https://primat.dianov.org/data-2022-09-27.csv";
+  var publicSpreadsheetUrl = "./data-2022-09-27.csv";
   var screenWidth, height, plotWidth, mousex;
   var svg, g_img, g_axis, g_connections, g_val_scaner, g, g_pp;
   var ypos, delta;
   var x;
 
-  var init = function () {
-    Tabletop.init({
-      key: publicSpreadsheetUrl,
-      callback: showInfo,
-      debug: false,
-      wanted: ["Data"],
-      simpleSheet: true,
-    });
-  };
+  var init = function () {};
 
-  var showInfo = function (data, tabletop) {
-    //alert('Successfully processed!')
-    //console.log(data);
-    var data = data.map(processData);
-
+  /*loading from local tsv*/
+  d3.csv("../Primat - Data.csv").then(function (rawdata) {
+    var data = rawdata.map(processData);
     drawAnSVG();
     drawAnAxis();
     drawValueScaner();
@@ -30,23 +20,22 @@ var Primats = (function () {
     drawHierarchy(data);
     drawConnections(data);
     readImagesTable();
-  };
-
-  /*loading from local tsv*/
-  /* d3.tsv("Primat.tsv").then( function(rawdata) {
-         var data = rawdata.map(processData);
-         ...
-     });*/
+  });
 
   var readImagesTable = function () {
-    if (screenWidth >= 1024)
-      Tabletop.init({
-        key: publicSpreadsheetUrl,
-        callback: drawImages,
-        debug: false,
-        wanted: ["Images"],
-        simpleSheet: true,
+    if (screenWidth >= 1024) {
+      d3.csv("../Primat - Images.csv").then(function (rawdata) {
+        console.log("rawdata:", rawdata);
+        drawImages(rawdata);
       });
+    }
+    //Tabletop.init({
+    //  key: publicSpreadsheetUrl,
+    //  callback: drawImages,
+    //  debug: false,
+    //  wanted: ["Images"],
+    //  simpleSheet: true,
+    //});
   };
 
   var drawImages = function (imgArr) {
@@ -400,7 +389,7 @@ var Primats = (function () {
     var periods = [];
     var pp;
 
-    d3.tsv("Primat - Layers.tsv").then(function (data) {
+    d3.tsv("./Primat - Layers.tsv").then(function (data) {
       // make axis with periods from tsv
       data.forEach(function (d) {
         periods.push(d.date_start * -1);
@@ -493,7 +482,8 @@ var Primats = (function () {
 
     var layersData = [];
 
-    d3.tsv("Primat - Layers.tsv").then(function (data) {
+    d3.tsv("./Primat - Layers.tsv").then(function (data) {
+      console.log("data:", data);
       data.forEach(function (d) {
         layersData.push(d);
       });
